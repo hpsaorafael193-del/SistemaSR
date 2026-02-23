@@ -1,4 +1,4 @@
-# CliniSysCore (HPSR)
+# Sistema HPSR
 
 Sistema de agrupamento de módulos médicos do Hospital São Rafael (HPSR), com navegação lateral, carregamento de sistemas via iframe e interface padronizada para uso interno.
 
@@ -26,4 +26,5 @@ Este sistema foi desenvolvido para uso interno em ambiente de RP médico / gest�
 Autor
 
 Desenvolvido e mantido por Luidhy Conceição dos Santos
+
 GitHub: [Luidhycs](https://github.com/Luidhycs)
