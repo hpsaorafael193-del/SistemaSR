@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Planos Médicos · Hospital São Rafael</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+  <header class="top-header">
+    <div class="header-inner">
+      <div class="brand">
+        <h1 class="brand-title">Hospital São Rafael</h1>
+      </div>
+
+      <div class="user-box">
+        <button id="diretoriaBtn">Log in</button>
+        <span id="userIcon" class="avatar" title="">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path fill="currentColor"
+              d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 .001-16.001A8 8 0 0 1 12 20Z" />
+            <path fill="currentColor"
+              d="M12 6.6c.55 0 1 .45 1 1v2.3h2.3c.55 0 1 .45 1 1s-.45 1-1 1H13v2.3c0 .55-.45 1-1 1s-1-.45-1-1V12.9H8.7c-.55 0-1-.45-1-1s.45-1 1-1H11V7.6c0-.55.45-1 1-1Z" />
+            <path fill="currentColor"
+              d="M12 12.1c-2.35 0-4.6.85-6.2 2.35a.9.9 0 0 0-.08 1.25c.33.37.9.4 1.26.08 1.25-1.17 3.15-1.88 5.02-1.88 1.87 0 3.77.71 5.02 1.88.36.32.93.29 1.26-.08a.9.9 0 0 0-.08-1.25C16.6 12.95 14.35 12.1 12 12.1Z" />
+          </svg>
+        </span>
+        <button id="logoutBtn">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <div class="container">
+
+      <div class="top-bar">
+        <input id="passaporte" placeholder="Passaporte do paciente">
+        <button id="buscarBtn">Buscar</button>
+      </div>
+
+      <div class="card resumo">
+        <strong>Status Atual</strong>
+        <div id="statusBadge"></div>
+      </div>
+
+      <div id="alertaPlano"></div>
+
+      <div class="acoes-topo">
+        <button id="cadastroBtn">Cadastrar plano</button>
+        <button id="gerenciarBtn" class="btn-outline" style="display:none">Gerenciar</button>
+        <div id="fecharResultadoSlot"></div>
+      </div>
+
+      <div id="resultadoPaciente"></div>
+
+      <div id="cardsPlanos" class="cards-planos">
+
+        <div class="card plano-card">
+          <h3>Plano Individual</h3>
+          <p>1 titular</p>
+          <p>Sem dependentes</p>
+          <p>20% de desconto</p>
+          <p>Validade: 30 dias</p>
+        </div>
+
+        <div class="card plano-card">
+          <h3>Plano Combo</h3>
+          <p>1 titular</p>
+          <p>Até 2 dependentes</p>
+          <p>20% de desconto</p>
+          <p>Validade: 30 dias</p>
+        </div>
+
+        <div class="card plano-card">
+          <h3>Plano Família</h3>
+          <p>1 titular</p>
+          <p>Até 4 dependentes</p>
+          <p>20% de desconto</p>
+          <p>Validade: 30 dias</p>
+        </div>
+
+      </div>
+
+
+  </main>
+
+  <footer>Sistema HPSR © 2026</footer>
+
+  <!-- LOGIN MODAL -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content login-card">
+      <button id="loginClose" class="login-x" type="button" aria-label="Fechar">×</button>
+
+      <h2 class="login-title">Área de Acesso</h2>
+
+      <form id="loginForm" class="login-form">
+        <div class="login-field">
+          <label for="usuario">Usuário</label>
+          <input id="usuario" type="text" placeholder="Usuário" autocomplete="username" />
+        </div>
+
+        <div class="login-field">
+          <label for="password">Senha</label>
+          <input id="password" type="password" placeholder="Senha" autocomplete="current-password" />
+        </div>
+
+        <div id="error" class="login-error hidden"></div>
+
+        <button type="submit" class="login-btn">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CADASTRO MODAL -->
+  <div id="cadastroModal" class="modal">
+    <div class="modal-content cadastro-card">
+      <button class="cadastro-x" type="button" aria-label="Fechar" id="cadastroClose">×</button>
+
+      <h2 class="cadastro-title">Novo Plano</h2>
+
+      <form id="cadastroForm" class="cadastro-form">
+        <div class="cadastro-field">
+          <label for="nome">Nome do titular</label>
+          <input id="nome" type="text" placeholder="Nome do titular" />
+        </div>
+
+        <div class="cadastro-field">
+          <label for="passaporteCadastro">Passaporte</label>
+          <input id="passaporteCadastro" type="text" placeholder="Passaporte" />
+        </div>
+
+        <div class="cadastro-field">
+          <label for="dataAtivacao">Data de ativação</label>
+          <input id="dataAtivacao" type="date" />
+        </div>
+
+        <div class="cadastro-field">
+          <label for="tipoPlano">Plano</label>
+          <div class="cadastro-select-wrap">
+            <select id="tipoPlano">
+              <option value="">Selecione...</option>
+              <option value="individual">Individual</option>
+              <option value="combo">Combo</option>
+              <option value="familia">Família</option>
+            </select>
+            <span class="cadastro-select-icon">▾</span>
+          </div>
+        </div>
+
+        <div class="cadastro-deps">
+          <div class="cadastro-deps-head">
+            <h3>Dependentes</h3>
+            <button id="addDependenteBtn" type="button" class="cadastro-btn cadastro-btn-ghost">
+              + Adicionar
+            </button>
+          </div>
+
+          <div id="dependentesContainer" class="cadastro-deps-list"></div>
+        </div>
+
+        <button type="submit" class="cadastro-btn cadastro-btn-primary">Salvar plano</button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- GERENCIAR MODAL -->
+  <div id="gerenciarModal" class="modal modal-gerenciar">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Gerenciar Plano</h2>
+        <button id="fecharGerenciarModal" class="modal-close" type="button" aria-label="Fechar">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="gp-field">
+          <label class="gp-label" for="gerenciarSelectPlano">Selecionar plano existente</label>
+
+          <div class="gp-select-wrap">
+            <select id="gerenciarSelectPlano" class="gp-select">
+              <option value="">Carregando...</option>
+            </select>
+            <span class="gp-select-icon">▾</span>
+          </div>
+
+          <div id="gpResumo" class="gp-resumo hidden">
+            <div class="gp-chip" id="gpChipStatus">—</div>
+            <div class="gp-meta">
+              <div class="gp-meta-title" id="gpResumoNome">—</div>
+              <div class="gp-meta-sub" id="gpResumoLinha">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="gerenciarPainel" style="display:none">
+
+          <div class="gp-grid-2">
+            <div class="gp-field">
+              <label class="gp-label" for="gerenciarTipoPlano">Tipo de plano</label>
+              <div class="gp-select-wrap">
+                <select id="gerenciarTipoPlano" class="gp-select">
+                  <option value="individual">Individual</option>
+                  <option value="combo">Combo</option>
+                  <option value="familia">Família</option>
+                </select>
+                <span class="gp-select-icon">▾</span>
+              </div>
+            </div>
+
+            <div class="gp-field">
+              <label class="gp-label" for="gerenciarNovaData">Nova data do plano</label>
+              <input id="gerenciarNovaData" type="date" class="gp-input">
+            </div>
+          </div <div class="gp-deps">
+          <div class="gp-deps-head">
+            <h3>Dependentes</h3>
+            <button type="button" id="gerenciarAddDepBtn" class="gp-btn gp-btn-ghost">Adicionar</button>
+          </div>
+
+          <div id="gerenciarDepsList"></div>
+        </div>
+
+        <div class="gp-actions">
+          <button type="button" id="gerenciarRenovarBtn" class="gp-btn gp-btn-primary">Renovar +30 dias</button>
+          <button type="button" id="gerenciarSalvarBtn" class="gp-btn gp-btn-ghost">Salvar alterações</button>
+          <button type="button" id="gerenciarEncerrarBtn" class="gp-btn gp-btn-danger">Encerrar plano</button>
+        </div>
+
+        <div id="gerenciarMsg" class="gp-msg"></div>
+
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+  <!-- Popup global (substitui alert/confirm do navegador) -->
+  <div id="uiPopup" class="ui-popup hidden" aria-hidden="true">
+    <div class="ui-popup-backdrop"></div>
+
+    <div class="ui-popup-card" role="dialog" aria-modal="true" aria-labelledby="uiPopupTitle">
+      <div class="ui-popup-head">
+        <h3 id="uiPopupTitle">Aviso</h3>
+        <button id="uiPopupClose" class="ui-popup-x" type="button" aria-label="Fechar">×</button>
+      </div>
+
+      <div id="uiPopupMsg" class="ui-popup-msg"></div>
+
+      <div class="ui-popup-actions">
+        <button id="uiPopupCancel" class="btn-outline hidden" type="button">Cancelar</button>
+        <button id="uiPopupOk" class="btn" type="button">OK</button>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="module" src="assets/js/auth.js"></script>
+  <script type="module" src="assets/js/utils.js"></script>
+  <script type="module" src="assets/js/cadastro.js"></script>
+  <script type="module" src="assets/js/dashboard.js"></script>
+  <script type="module" src="assets/js/gerenciar.js"></script>
+
+</body>
+
+</html>

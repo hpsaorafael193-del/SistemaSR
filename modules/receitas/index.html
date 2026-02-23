@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital São Rafael - Receituário Médico</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <div class="header-title">
+                <img src="assets/logo/logo.png" alt="Logo HPSR" class="logo-img">
+                <h1>Receituário Médico</h1>
+            </div>
+        </div>
+
+        <div class="content">
+
+            <div class="form-section">
+
+                <h2>Dados do Profissional</h2>
+                <label>Nome do Médico</label>
+                <input id="medico">
+                <label>CRM</label>
+                <input id="crm">
+
+                <h2>Dados do Paciente</h2>
+                <label>Nome</label>
+                <input id="paciente">
+                <label>Passaporte</label>
+                <input id="passaporte">
+                <label>Data</label>
+                <input id="data">
+
+                <h2>Adicionar medicamento (modo guiado)</h2>
+
+                <input id="med-nome" placeholder="Amoxicilina 500mg">
+
+                <div class="grid-2">
+                    <input id="med-dose" placeholder="1 cápsula">
+                    <input id="med-intervalo" placeholder="a cada 8h">
+                </div>
+
+                <div class="grid-2">
+                    <input id="med-via" placeholder="via oral">
+                    <input id="med-duracao" placeholder="por 7 dias">
+                </div>
+
+                <button class="btn-add" id="btn-add-medicamento">
+                    <i class="fas fa-plus"></i> Adicionar medicamento
+                </button>
+
+                <h2>Medicamentos</h2>
+                <textarea id="medicamentos-texto" rows="6"></textarea>
+
+                <h2>Observações</h2>
+                <textarea id="observacoes"></textarea>
+
+                <h2>Carimbo do Médico</h2>
+                <div class="carimbo-section">
+                    <div class="carimbo-preview" id="carimbo-preview">
+                        <span>Nenhum carimbo carregado</span>
+                    </div>
+
+                    <div class="carimbo-controls">
+                        <button class="btn-assinatura" id="btn-carregar-carimbo">
+                            <i class="fas fa-upload"></i> Carregar carimbo
+                        </button>
+                        <button class="btn-assinatura" id="btn-remover-carimbo">
+                            <i class="fas fa-trash"></i> Remover
+                        </button>
+                    </div>
+
+                    <input type="file" id="carimbo-file" accept="image/png" hidden>
+                </div>
+
+            </div>
+
+            <div class="preview-section">
+
+                <h2>Prévia da Receita</h2>
+
+                <div class="receita-preview" id="receita-preview">
+
+                    <div class="receita-header">
+                        <h3>RECEITUÁRIO MÉDICO</h3>
+                        <p><strong>Receita nº:</strong>
+                            <span id="preview-receita-numero">—</span>
+                        </p>
+                    </div>
+
+                    <div class="paciente-info">
+                        <p><strong>Paciente:</strong> <span id="preview-paciente">—</span></p>
+                        <p><strong>Passaporte:</strong> <span id="preview-passaporte">—</span></p>
+                        <p><strong>Data:</strong> <span id="preview-data">—</span></p>
+                    </div>
+
+                    <div class="medicamentos-list" id="preview-medicamentos"></div>
+
+                    <div class="observacoes">
+                        <p><strong>Observações:</strong></p>
+                        <p id="preview-observacoes" class="texto-quebra">—</p>
+                    </div>
+
+                    <div id="preview-carimbo"></div>
+
+                    <div class="rodape-receita">
+                        <div id="preview-carimbo"></div>
+
+                        <p class="medico-nome" id="preview-medico">—</p>
+                        <p class="medico-crm" id="preview-crm">—</p>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn-gerar" id="btn-gerar-pdf">
+                        <i class="fas fa-download"></i> Gerar PNG
+                    </button>
+                    <button class="btn-limpar" id="btn-limpar">
+                        <i class="fas fa-broom"></i> Limpar Tudo
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+</body>
+
+</html>

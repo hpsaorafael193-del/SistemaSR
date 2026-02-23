@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora HPSR</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="Icones/logo.png" alt="Logo HPSR" class="logo-img">
+            <h1>Calculadora</h1>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2><i class="fas fa-handshake"></i> Convênio do Cliente:</h2>
+                <div class="convenio-options">
+                    <div class="convenio-option active" data-convenio="sem">
+                        <i class="fas fa-times-circle"></i>
+                        <span>Sem Convênio</span>
+                        <div class="desconto-info">Sem desconto</div>
+                    </div>
+                    <div class="convenio-option" data-convenio="plano">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Plano Médico</span>
+                        <div class="desconto-info">20% de desconto</div>
+                    </div>
+                    <div class="convenio-option" data-convenio="parceria">
+                        <i class="fas fa-star"></i>
+                        <span>Parceria</span>
+                        <div class="desconto-info">15% de desconto</div>
+                    </div>
+                </div>
+
+                <!--<div class="combos-section">
+                    <div class="combos-title">
+                        <i class="fas fa-boxes"></i> Combos Especiais:
+                    </div>
+                    <div class="combos-options">
+                        <button class="combo-btn" id="combo-simples">
+                            <i class="fas fa-heartbeat"></i> COMBO SIMPLES
+                            <div class="combo-info">KIT MÉDICO: +2 | BANDAGEM: +5 | ATADURA: +10 | ADRENALINA: +2</div>
+                        </button>
+                        <button class="combo-btn" id="combo-completo">
+                            <i class="fas fa-user-shield"></i> COMBO COMPLETO
+                            <div class="combo-info">KIT MÉDICO: +2 | BANDAGEM: +5 | ATADURA: +20 | ADRENALINA: +2 | SINKALMY: +5 | RITMONEARY: +5 | ANALGÉSICO: +10</div>
+                        </button>
+                    </div>
+                </div>-->
+            </div>
+
+            <div class="zerar-section">
+                <h3><i class="fas fa-percentage"></i> Zerar Juros</h3>
+                <button class="btn-zerar-tudo" id="btn-zerar-tudo">
+                    <i class="fas fa-broom"></i> Zerar Tudo
+                </button>
+                <div class="valor-info">
+                    <div>Valor total da compra</div>
+                    <div>Convênio Aplicado:</div>
+                </div>
+                <div class="valor-info">
+                    <div class="valor-total">R$ 0,00</div>
+                    <div class="convenio-aplicado">Sem Convênio</div>
+                </div>
+            </div>
+
+            <div class="abas-container">
+                <div class="abas-botoes">
+                    <button class="aba-botao ativo" data-aba="medicamentos">
+                        <i class="fas fa-pills"></i> Medicamentos
+                    </button>
+                    <button class="aba-botao" data-aba="procedimentos">
+                        <i class="fas fa-procedures"></i> Procedimentos
+                    </button>
+                    <button class="aba-botao" data-aba="ursos-hp">
+                        <i class="fas fa-paw"></i> Ursos HP
+                    </button>
+                </div>
+
+                <div class="aba-conteudo ativo" id="aba-medicamentos">
+                    <h2><i class="fas fa-pills"></i> Medicamentos</h2>
+                    <div class="produtos-grid" id="produtos-medicamentos">
+                        <!-- Medicamentos serão inseridos via JavaScript -->
+                    </div>
+                </div>
+
+                <div class="aba-conteudo" id="aba-procedimentos">
+                    <h2><i class="fas fa-procedures"></i> Procedimentos</h2>
+                    <div class="produtos-grid" id="produtos-procedimentos">
+                        <!-- Procedimentos serão inseridos via JavaScript -->
+                    </div>
+                </div>
+
+                <div class="aba-conteudo" id="aba-ursos-hp">
+                    <h2><i class="fas fa-paw"></i> Ursos HP</h2>
+                    <div class="produtos-grid" id="produtos-ursos-hp">
+                        <!-- Ursos HP serão inseridos via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Sistema HPSR &copy; 2025 - Todos os direitos reservados</p>
+        </div>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+</body>
+
+</html>

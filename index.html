@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistemas Integrados HPSR</title>
+
+  <!-- Font Awesome 6 (gratuito) para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <link rel="stylesheet" href="./assets/css/core.css">
+</head>
+
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-header-row">
+        <div class="brand-wrap">
+          <img class="brand-logo" src="assets/img/logo.png" alt="Logo Hospital São Rafael">
+          <span class="brand-text">HPSR</span>
+        </div>
+
+        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Minimizar barra lateral"
+          title="Minimizar barra lateral">
+          <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <p class="sidebar-subtitle">Agrupamento de sistemas médicos</p>
+    </div>
+
+    <nav class="nav-menu" id="sidebarNav">
+      <button class="nav-item active" data-page="home"><i class="fas fa-home"></i><span
+          class="label">Principal</span></button>
+      <button class="nav-item" data-page="agenda"><i class="fas fa-calendar-alt"></i><span
+          class="label">Agenda</span></button>
+      <button class="nav-item" data-page="planos"><i class="fas fa-clipboard-list"></i><span
+          class="label">Planos</span></button>
+      <button class="nav-item" data-page="parceiros"><i class="fas fa-handshake"></i><span
+          class="label">Parceiros</span></button>
+      <div style="margin:0.5rem 0.8rem;font-size:0.75rem;opacity:0.6;">FERRAMENTAS</div>
+      <button class="nav-item" data-page="calc"><i class="fas fa-calculator"></i><span
+          class="label">Calculadora</span></button>
+      <button class="nav-item" data-page="exames"><i class="fas fa-file-medical"></i><span
+          class="label">Laudos</span></button>
+      <button class="nav-item" data-page="receitas"><i class="fas fa-prescription-bottle"></i><span
+          class="label">Receitas</span></button>
+      <button class="nav-item" data-page="recibos"><i class="fas fa-receipt"></i><span
+          class="label">Recibos</span></button>
+      <button class="nav-item" data-page="atestados"><i class="fas fa-flask"></i><span
+          class="label">Atestados</span></button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <i class="fas fa-clinic-medical"></i> Hospital São Rafael - Sandy Shores<br>
+      <span style="font-size:0.7rem;">Todos os direitos reservados &copy; 2026</span>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+
+    <section class="content-wrap" id="mainContent"></section>
+  </main>
+
+  <script src="./assets/js/core.js"></script>
+</body>
+
+</html>

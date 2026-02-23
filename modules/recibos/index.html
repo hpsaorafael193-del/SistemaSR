@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Recibos Digitais - Hospital São Rafael</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* RESET E CONFIGURAÇÕES GLOBAIS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #400f00;
+            --primary-dark: #300b00;
+            --primary-light: #f8e1b3;
+            --secondary-color: #422e23;
+            --accent-color: #c7b38d;
+            --light-color: #faf9f5;
+            --dark-color: #422e23;
+            --gray-color: #7d766c;
+            --gray-light: #e9ecef;
+            --border-color: #d4c6b5;
+            --shadow: 0 2px 10px rgba(64, 15, 0, 0.1);
+            --shadow-lg: 0 5px 20px rgba(64, 15, 0, 0.15);
+            --border-radius: 8px;
+            --border-radius-sm: 4px;
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-secondary: 'Roboto Slab', Georgia, serif;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: linear-gradient(135deg, #faf9f5 0%, #e2d2c3 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* CONTAINER PRINCIPAL */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* CABEÇALHO */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .hospital-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hospital-logo-img {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hospital-logo-img i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .hospital-logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .system-title {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-help {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-help:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .auto-save-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9em;
+            opacity: 0.9;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+
+        .auto-save-status i {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            flex: 1;
+            min-height: calc(100vh - 120px);
+        }
+
+        /* PAINEL DE FORMULÁRIOS */
+        .form-panel {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            overflow-y: auto;
+            max-height: calc(100vh - 120px);
+        }
+
+        .form-section {
+            background: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .form-section:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 2px 8px rgba(166, 113, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .section-header i {
+            font-size: 1.5em;
+            color: var(--primary-color);
+        }
+
+        .section-header h2 {
+            font-size: 1.25em;
+            font-weight: 600;
+            color: var(--dark-color);
+            flex: 1;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: var(--primary-light);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        /* FORMULÁRIOS */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background: white;
+            font-family: var(--font-primary);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(64, 15, 0, 0.1);
+        }
+
+        .form-control:read-only {
+            background-color: var(--gray-light);
+            cursor: not-allowed;
+        }
+
+        .input-with-action {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            padding: 0 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+        }
+
+        .btn-action:hover {
+            background: var(--primary-dark);
+        }
+
+        /* CAMPO DE VALOR MONETÁRIO */
+        .input-valor {
+            position: relative;
+        }
+
+        .input-valor::before {
+            content: "R$";
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 600;
+            color: var(--primary-color);
+            z-index: 1;
+        }
+
+        .input-valor .form-control {
+            padding-left: 3rem;
+        }
+
+        /* ÁREA EDITÁVEL */
+        .editable-area {
+            min-height: 120px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            background: white;
+            outline: none;
+            transition: var(--transition);
+            font-family: var(--font-primary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--dark-color);
+        }
+
+        .editable-area:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(64, 15, 0, 0.1);
+        }
+
+        .editable-area:empty:before {
+            content: attr(placeholder);
+            color: var(--gray-color);
+            opacity: 0.6;
+        }
+
+        /* DISPLAY DE REGISTRO PROFISSIONAL */
+        .professional-register-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .register-type {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            min-width: 80px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        /* PAINEL DE PRÉ-VISUALIZAÇÃO */
+        .preview-panel {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-preview-action {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            background: white;
+            color: var(--dark-color);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-preview-action:hover {
+            background: var(--gray-light);
+        }
+
+        /* CONTAINER DO RECIBO PREVIEW */
+        .recibo-preview-container {
+            flex: 1;
+            overflow: auto;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            max-height: 600px;
+        }
+
+        /* RECIBO PREVIEW */
+        .recibo-preview {
+            background: white;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            padding: 20mm;
+            box-sizing: border-box;
+            font-family: var(--font-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+            color: #333;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+            position: relative;
+            transform: scale(0.85);
+            transform-origin: top center;
+        }
+
+        .recibo-pagina {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        /* CABEÇALHO DO RECIBO */
+        .recibo-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px double var(--primary-color);
+        }
+
+        .recibo-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .recibo-logo-img {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .recibo-logo-img i {
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+
+        .recibo-titulo h1 {
+            font-size: 1.8em;
+            margin: 0;
+            letter-spacing: 1px;
+            color: var(--primary-color);
+        }
+
+        .recibo-subtitulo {
+            font-size: 0.9em;
+            margin-top: 0.25rem;
+            color: var(--gray-color);
+        }
+
+        .recibo-info-top {
+            font-size: 0.9em;
+            display: flex;
+            justify-content: space-between;
+            color: var(--dark-color);
+            margin-top: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .info-label {
+            font-weight: 600;
+        }
+
+        /* DIVISOR */
+        .recibo-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--border-color), transparent);
+            margin: 1.5rem 0;
+        }
+
+        /* SEÇÕES DO RECIBO */
+        .recibo-section {
+            margin-bottom: 2rem;
+        }
+
+        .recibo-section-title {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1em;
+        }
+
+        /* VALOR */
+        .valor-container {
+            background: linear-gradient(135deg, var(--light-color), #faeedc);
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .valor-label {
+            font-size: 1.1rem;
+            color: var(--gray-color);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .valor-total {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+            margin: 0.5rem 0;
+        }
+
+        .valor-extenso {
+            font-size: 1rem;
+            color: var(--dark-color);
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        /* GRID */
+        .recibo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .recibo-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field-label {
+            color: var(--gray-color);
+            margin-bottom: 0.25rem;
+            font-size: 0.9em;
+        }
+
+        .field-value {
+            font-weight: 500;
+            color: var(--dark-color);
+            min-height: 1.5rem;
+            border-bottom: 1px dotted var(--border-color);
+            padding-bottom: 0.25rem;
+            font-size: 1em;
+        }
+
+        /* DESCRIÇÃO */
+        .descricao-container {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            min-height: 150px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            font-family: var(--font-primary);
+        }
+
+        /* RODAPÉ */
+        .recibo-footer {
+            margin-top: 3rem;
+        }
+
+        .recibo-rodape {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--gray-color);
+            font-size: 0.85em;
+        }
+
+        .recibo-aviso {
+            font-style: italic;
+            margin-top: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        /* CONTROLES DE EXPORTAÇÃO */
+        .export-controls {
+            background: white;
+            padding: 1rem;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .export-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .export-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 0.95rem;
+        }
+
+        .export-option i {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .export-info {
+            font-size: 0.75rem;
+            color: var(--gray-color);
+            text-align: right;
+        }
+
+        .btn-export {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-export:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* MODAL DE AJUDA */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            max-height: calc(80vh - 80px);
+        }
+
+        .modal-body h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .modal-body ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* NOTIFICAÇÃO */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            z-index: 3000;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .form-panel,
+            .preview-panel {
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .app-header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .header-left {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .hospital-logo {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .assinatura-dupla {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .recibo-preview {
+                transform: scale(0.7);
+            }
+
+            .export-options {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .export-info {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .recibo-preview {
+                transform: scale(0.6);
+            }
+
+            .valor-total {
+                font-size: 2rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* IMPRESSÃO */
+        @media print {
+
+            .app-header,
+            .form-panel,
+            .preview-header,
+            .export-controls {
+                display: none !important;
+            }
+
+            .main-content {
+                display: block;
+                padding: 0;
+            }
+
+            .recibo-preview-container {
+                overflow: visible !important;
+                padding: 0;
+                background: white;
+            }
+
+            .recibo-preview {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                width: 100% !important;
+                height: auto !important;
+                min-height: auto !important;
+                transform: none !important;
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="hospital-logo">
+                    <div class="hospital-logo-img">
+                        <img src="imagens/logo.png" alt="Hospital São Rafael"
+                            style="width: 60px; height: 60px; object-fit: contain;">
+                    </div>
+                    <div>
+                        <h1>Hospital São Rafael</h1>
+                        <div class="system-title">Sistema de Recibos Digitais</div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn-help" title="Ajuda" id="btn-help-recibo">
+                    <i class="fas fa-question-circle"></i>
+                </button>
+                <div class="auto-save-status">
+                    <i class="fas fa-save"></i>
+                    <span>Auto-salvo</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Painel Esquerdo: Formulário do Recibo -->
+            <div class="form-panel">
+                <!-- Dados do Recibo -->
+                <section class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-receipt"></i>
+                        <h2>Dados do Recibo</h2>
+                        <span class="status-badge" id="recibo-status">
+                            <i class="fas fa-edit"></i>
+                            <span>Em edição</span>
+                        </span>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="numero-recibo">Número do Recibo *</label>
+                            <div class="input-with-action">
+                                <input type="text" id="numero-recibo" class="form-control"
+                                    placeholder="Gerado automaticamente" readonly>
+                                <button type="button" id="gerar-numero-recibo" class="btn-action"
+                                    title="Gerar novo número">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="data-recibo">Data do Recibo *</label>
+                            <input type="date" id="data-recibo" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="hora-recibo">Hora</label>
+                            <input type="time" id="hora-recibo" class="form-control">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="referencia">Referência *</label>
+                            <input type="text" id="referencia" class="form-control" required
+                                placeholder="Ex: Consulta médica, Exame laboratorial...">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="descricao-recibo">Descrição Detalhada *</label>
+                            <div class="editable-area" id="descricao-recibo" contenteditable="true"
+                                placeholder="Descreva os serviços prestados..."></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="valor-recibo">Valor Total (R$) *</label>
+                            <div class="input-valor">
+                                <input type="text" id="valor-recibo" class="form-control" required placeholder="0,00">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="forma-pagamento">Forma de Pagamento</label>
+                            <select id="forma-pagamento" class="form-control">
+                                <option value="">Selecione...</option>
+                                <option value="cartao_credito">Crédito</option>
+                                <option value="cartao_debito">Débito</option>
+                                <option value="transferencia">Transferência Bancária</option>
+                                <option value="pix">PIX</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Dados do Emitente -->
+                <section class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-user-md"></i>
+                        <h2>Profissional Emitente</h2>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="emitente-nome">Nome do Profissional *</label>
+                            <input type="text" id="emitente-nome" class="form-control" required
+                                placeholder="Nome completo do profissional">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Registro Profissional</label>
+                            <div class="professional-register-display">
+                                <span class="register-type">
+                                    <i class="fas fa-user-md"></i> CRM
+                                </span>
+                                <input type="text" id="emitente-registro" class="form-control"
+                                    placeholder="Número do CRM" required>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Dados do Recebedor -->
+                <section class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-user"></i>
+                        <h2>Dados do Recebedor</h2>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="recebedor-nome">Nome Completo *</label>
+                            <input type="text" id="recebedor-nome" class="form-control" required
+                                placeholder="Nome completo do recebedor">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="documento-numero">Número do Passaporte *</label>
+                            <input type="text" id="documento-numero" class="form-control" required
+                                placeholder="Número do documento">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="recebedor-telefone">Telefone</label>
+                            <input type="tel" id="recebedor-telefone" class="form-control" placeholder="(00) 000-000">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Painel Direito: Pré-visualização do Recibo -->
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <h2><i class="fas fa-eye"></i> Pré-visualização do Recibo</h2>
+                    <div class="preview-actions">
+                        <button class="btn-preview-action" id="atualizar-preview-recibo">
+                            <i class="fas fa-sync-alt"></i> Atualizar
+                        </button>
+                        <button class="btn-preview-action" id="limpar-recibo">
+                            <i class="fas fa-trash-alt"></i> Limpar Tudo
+                        </button>
+                    </div>
+                </div>
+
+                <div class="recibo-preview-container">
+                    <div class="recibo-preview" id="recibo-container">
+                        <!-- Recibo será gerado aqui -->
+                    </div>
+                </div>
+
+                <!-- Controles de Exportação -->
+                <div class="export-controls">
+                    <div class="export-options">
+                        <div class="export-option">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>Recibo Digital</span>
+                        </div>
+                        <div class="export-info">
+                            <p>Formato: PNG • Tamanho: A4</p>
+                        </div>
+                    </div>
+
+                    <button class="btn-export" id="export-recibo-png">
+                        <i class="fas fa-download"></i> Exportar Recibo (PNG)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal de Ajuda -->
+            <div class="modal" id="help-modal-recibo">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2><i class="fas fa-question-circle"></i> Ajuda - Sistema de Recibos</h2>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Como emitir um recibo:</h3>
+                        <ol>
+                            <li>Preencha os dados básicos do recibo (data, referência)</li>
+                            <li>Descreva detalhadamente os serviços prestados</li>
+                            <li>Informe o valor total e forma de pagamento</li>
+                            <li>Preencha os dados do profissional emitente</li>
+                            <li>Preencha os dados do recebedor</li>
+                            <li>Verifique a pré-visualização</li>
+                            <li>Exporte como imagem PNG</li>
+                        </ol>
+                        <p><strong>Importante:</strong> Todos os campos marcados com * são obrigatórios.</p>
+                        <p><strong>Dica:</strong> Os dados são auto-salvos localmente no seu navegador.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notificação -->
+            <div class="notification" id="notification-recibo">
+                <div class="notification-content">
+                    <span id="notification-message-recibo"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        // Sistema de Recibos Digital
+        document.addEventListener('DOMContentLoaded', function () {
+            // Elementos DOM
+            const btnHelp = document.getElementById('btn-help-recibo');
+            const helpModal = document.getElementById('help-modal-recibo');
+            const modalClose = helpModal.querySelector('.modal-close');
+            const btnAtualizarPreview = document.getElementById('atualizar-preview-recibo');
+            const btnLimpar = document.getElementById('limpar-recibo');
+            const btnExportPNG = document.getElementById('export-recibo-png');
+            const notification = document.getElementById('notification-recibo');
+            const notificationMessage = document.getElementById('notification-message-recibo');
+            const reciboStatus = document.getElementById('recibo-status');
+
+            // Máscara de valor monetário
+            const valorInput = document.getElementById('valor-recibo');
+            valorInput.addEventListener('input', function (e) {
+                let value = e.target.value.replace(/\D/g, '');
+                value = (value / 100).toLocaleString('pt-BR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+                e.target.value = value;
+                updateReciboStatus();
+            });
+
+            const emitenteNomeInput = document.getElementById('emitente-nome');
+            const recebedorNomeInput = document.getElementById('recebedor-nome');
+
+            // Configurar data atual
+            const dataInput = document.getElementById('data-recibo');
+            const hoje = new Date().toISOString().split('T')[0];
+            dataInput.value = hoje;
+
+            // Configurar hora atual
+            const horaInput = document.getElementById('hora-recibo');
+            const agora = new Date();
+            const hora = agora.getHours().toString().padStart(2, '0');
+            const minutos = agora.getMinutes().toString().padStart(2, '0');
+            horaInput.value = `${hora}:${minutos}`;
+
+            // Gerar número do recibo
+            const numeroReciboInput = document.getElementById('numero-recibo');
+            const btnGerarNumero = document.getElementById('gerar-numero-recibo');
+
+            function gerarNumeroRecibo() {
+                const timestamp = Date.now();
+                const random = Math.floor(Math.random() * 1000);
+                const numero = `REC${timestamp.toString().slice(-6)}${random.toString().padStart(3, '0')}`;
+                numeroReciboInput.value = numero;
+                showNotification('Número do recibo gerado com sucesso!');
+                updateReciboStatus();
+            }
+
+            // Carregar número salvo ou gerar novo
+            const savedNumero = localStorage.getItem('numeroRecibo');
+            if (savedNumero) {
+                numeroReciboInput.value = savedNumero;
+            } else {
+                gerarNumeroRecibo();
+            }
+
+            btnGerarNumero.addEventListener('click', gerarNumeroRecibo);
+
+
+
+            // Auto-save para todos os campos
+            const inputs = document.querySelectorAll('.form-control, #descricao-recibo, textarea');
+            inputs.forEach(input => {
+                // Carregar dados salvos
+                const savedValue = localStorage.getItem(input.id);
+                if (savedValue !== null) {
+                    if (input.getAttribute('contenteditable')) {
+                        input.innerHTML = savedValue;
+                    } else {
+                        input.value = savedValue;
+                    }
+                }
+
+                // Salvar ao modificar
+                const saveHandler = function () {
+                    const value = this.getAttribute('contenteditable') ? this.innerHTML : this.value;
+                    localStorage.setItem(this.id, value);
+                    updateReciboStatus();
+
+                    // Atualizar preview se necessário
+                    if (this.id !== 'valor-recibo') {
+                        updatePreview();
+                    }
+                };
+
+                input.addEventListener('input', saveHandler);
+
+                // Para elementos contenteditable, também escutar blur
+                if (input.getAttribute('contenteditable')) {
+                    input.addEventListener('blur', saveHandler);
+                }
+            });
+
+            // Funções auxiliares
+            function showNotification(message, type = 'success') {
+                notificationMessage.textContent = message;
+                notification.className = 'notification';
+                notification.classList.add('show');
+
+                if (type === 'error') {
+                    notification.style.background = '#422e23';
+                } else {
+                    notification.style.background = 'var(--primary-color)';
+                }
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+
+            function updateReciboStatus() {
+                const valorPreenchido = valorInput.value.trim() !== '';
+                const descricaoPreenchida = document.getElementById('descricao-recibo').innerHTML.trim() !== '';
+                const emitentePreenchido = emitenteNomeInput.value.trim() !== '';
+                const recebedorPreenchido = recebedorNomeInput.value.trim() !== '';
+
+                if (valorPreenchido && descricaoPreenchida && emitentePreenchido && recebedorPreenchido) {
+                    reciboStatus.innerHTML = '<i class="fas fa-check-circle"></i><span>Pronto para exportar</span>';
+                } else {
+                    reciboStatus.innerHTML = '<i class="fas fa-edit"></i><span>Em edição</span>';
+                }
+            }
+
+            // Gerar preview do recibo
+            function updatePreview() {
+                const reciboContainer = document.getElementById('recibo-container');
+                const numero = numeroReciboInput.value || 'NÃO INFORMADO';
+                const data = dataInput.value;
+                const hora = horaInput.value;
+                const referencia = document.getElementById('referencia').value || 'NÃO INFORMADO';
+                const descricao = document.getElementById('descricao-recibo').innerHTML || 'NÃO INFORMADA';
+                const valor = valorInput.value || '0,00';
+                const formaPagamento = document.getElementById('forma-pagamento').value || 'NÃO INFORMADA';
+                const emitenteNome = emitenteNomeInput.value || 'NÃO INFORMADO';
+                const emitenteRegistro = document.getElementById('emitente-registro').value || 'NÃO INFORMADO';
+                const recebedorNome = recebedorNomeInput.value || 'NÃO INFORMADO';
+                const documentoNumero = document.getElementById('documento-numero').value || 'NÃO INFORMADO';
+                const telefone = document.getElementById('recebedor-telefone').value || 'NÃO INFORMADO';
+
+                // Formatar data
+                const dataFormatada = data ?  data.split('-').reverse().join('/') : 'NÃO INFORMADA';
+
+                // Formatar forma de pagamento
+                const formasPagamento = {
+                    'dinheiro': 'Dinheiro',
+                    'cartao_credito': 'Cartão de Crédito',
+                    'cartao_debito': 'Cartão de Débito',
+                    'transferencia': 'Transferência Bancária',
+                    'pix': 'PIX',
+                    'cheque': 'Cheque'
+                };
+                const formaPagamentoFormatada = formasPagamento[formaPagamento] || formaPagamento;
+
+                // Gerar HTML do recibo
+                reciboContainer.innerHTML = `
+                    <div class="recibo-pagina">
+                        <!-- Cabeçalho -->
+                        <div class="recibo-header">
+                            <div class="recibo-logo">
+                                <div class="recibo-logo-img">
+                                    <img src="imagens/logo.png" alt="Hospital São Rafael" style="width: 80px; height: 80px; object-fit: contain;">
+                                </div>
+                                <div class="recibo-titulo">
+                                    <h1>Hospital São Rafael</h1>
+                                    <div class="recibo-subtitulo">Sistema de Recibos Digitais</div>
+                                </div>
+                            </div>
+                            
+                            <div class="recibo-info-top">
+                                <div class="info-item">
+                                    <span class="info-label">Recibo nº:</span>
+                                    <span>${numero}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Data:</span>
+                                    <span>${dataFormatada} ${hora ? `às ${hora}` : ''}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="recibo-divider"></div>
+
+                        <!-- Informações do Recibo -->
+                        <div class="recibo-section">
+                            <h3 class="recibo-section-title">
+                                <i class="fas fa-receipt"></i>
+                                RECIBO DE SERVIÇOS MÉDICOS
+                            </h3>
+                            
+                            <div class="valor-container">
+                                <span class="valor-label">VALOR TOTAL</span>
+                                <div class="valor-total">R$ ${valor}</div>
+                                <div class="valor-extenso">${numeroParaExtenso(valor)}</div>
+                            </div>
+
+                            <div class="recibo-grid">
+                                <div class="recibo-field">
+                                    <span class="field-label">Referência:</span>
+                                    <span class="field-value">${referencia}</span>
+                                </div>
+                                <div class="recibo-field">
+                                    <span class="field-label">Forma de Pagamento:</span>
+                                    <span class="field-value">${formaPagamentoFormatada}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Descrição -->
+                        <div class="recibo-section">
+                            <h3 class="recibo-section-title">
+                                <i class="fas fa-clipboard-list"></i>
+                                DESCRIÇÃO DOS SERVIÇOS
+                            </h3>
+                            <div class="descricao-container">
+                                ${descricao}
+                            </div>
+                        </div>
+
+                        <!-- Dados do Emitente -->
+                        <div class="recibo-section">
+                            <h3 class="recibo-section-title">
+                                <i class="fas fa-user-md"></i>
+                                PROFISSIONAL EMITENTE
+                            </h3>
+                            <div class="recibo-grid">
+                                <div class="recibo-field">
+                                    <span class="field-label">Nome:</span>
+                                    <span class="field-value">${emitenteNome}</span>
+                                </div>
+                                <div class="recibo-field">
+                                    <span class="field-label">Registro:</span>
+                                    <span class="field-value">CRM ${emitenteRegistro}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dados do Recebedor -->
+                        <div class="recibo-section">
+                            <h3 class="recibo-section-title">
+                                <i class="fas fa-user"></i>
+                                DADOS DO RECEBEDOR
+                            </h3>
+                            <div class="recibo-grid">
+                                <div class="recibo-field">
+                                    <span class="field-label">Nome:</span>
+                                    <span class="field-value">${recebedorNome}</span>
+                                </div>
+                                <div class="recibo-field">
+                                    <span class="field-label">Documento:</span>
+                                    <span class="field-value">${documentoNumero}</span>
+                                </div>
+                                <div class="recibo-field">
+                                    <span class="field-label">Telefone:</span>
+                                    <span class="field-value">${telefone}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rodapé -->
+                        <div class="recibo-footer">
+                            <div class="recibo-rodape">
+                                <p><strong>Hospital São Rafael</strong></p>
+                                <p>Documento emitido eletronicamente - Sistema de Recibos Digitais</p>
+                                <p class="recibo-aviso">Este recibo comprova a prestação de serviços médicos e o respectivo recebimento.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Função para converter número por extenso
+            function numeroParaExtenso(valor) {
+                const valorNumerico = parseFloat(valor.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+                if (valorNumerico === 0) return 'Zero reais';
+
+                const unidades = ['', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove'];
+                const especiais = ['dez', 'onze', 'doze', 'treze', 'quatorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove'];
+                const dezenas = ['', '', 'vinte', 'trinta', 'quarenta', 'cinquenta', 'sessenta', 'setenta', 'oitenta', 'noventa'];
+                const centenas = ['', 'cento', 'duzentos', 'trezentos', 'quatrocentos', 'quinhentos', 'seiscentos', 'setecentos', 'oitocentos', 'novecentos'];
+
+                function converterNumero(num) {
+                    if (num === 0) return '';
+                    if (num < 10) return unidades[num];
+                    if (num < 20) return especiais[num - 10];
+                    if (num < 100) {
+                        const d = Math.floor(num / 10);
+                        const u = num % 10;
+                        return dezenas[d] + (u > 0 ? ' e ' + unidades[u] : '');
+                    }
+                    if (num < 1000) {
+                        const c = Math.floor(num / 100);
+                        const resto = num % 100;
+                        if (num === 100) return 'cem';
+                        return centenas[c] + (resto > 0 ? ' e ' + converterNumero(resto) : '');
+                    }
+                    return 'mil';
+                }
+
+                const inteiro = Math.floor(valorNumerico);
+                const centavos = Math.round((valorNumerico - inteiro) * 100);
+
+                let extenso = converterNumero(inteiro) + ' real' + (inteiro !== 1 ? 'es' : '');
+                if (centavos > 0) {
+                    extenso += ' e ' + converterNumero(centavos) + ' centavo' + (centavos !== 1 ? 's' : '');
+                }
+
+                return extenso.charAt(0).toUpperCase() + extenso.slice(1);
+            }
+
+            // Event Listeners
+            btnHelp.addEventListener('click', () => {
+                helpModal.classList.add('show');
+            });
+
+            modalClose.addEventListener('click', () => {
+                helpModal.classList.remove('show');
+            });
+
+            helpModal.addEventListener('click', (e) => {
+                if (e.target === helpModal) {
+                    helpModal.classList.remove('show');
+                }
+            });
+
+            btnAtualizarPreview.addEventListener('click', updatePreview);
+
+            btnLimpar.addEventListener('click', function () {
+                if (confirm('Tem certeza que deseja limpar todos os dados do recibo?')) {
+                    localStorage.clear();
+                    inputs.forEach(input => {
+                        if (input.getAttribute('contenteditable')) {
+                            input.innerHTML = '';
+                        } else {
+                            input.value = '';
+                        }
+                    });
+
+                    dataInput.value = hoje;
+                    horaInput.value = `${hora}:${minutos}`;
+                    gerarNumeroRecibo();
+                    updatePreview();
+                    updateReciboStatus();
+                    showNotification('Todos os dados foram limpos!');
+                }
+            });
+
+            // Exportar como PNG
+            btnExportPNG.addEventListener('click', async function () {
+                const reciboContainer = document.getElementById('recibo-container');
+
+                const valor = valorInput.value.trim();
+                const descricao = document.getElementById('descricao-recibo').innerHTML.trim();
+                const emitente = emitenteNomeInput.value.trim();
+                const recebedor = recebedorNomeInput.value.trim();
+
+                if (!valor || valor === '0,00') {
+                    showNotification('Informe o valor do recibo!', 'error');
+                    return;
+                }
+
+                if (!descricao) {
+                    showNotification('Descreva os serviços prestados!', 'error');
+                    return;
+                }
+
+                if (!emitente) {
+                    showNotification('Informe o nome do profissional emitente!', 'error');
+                    return;
+                }
+
+                if (!recebedor) {
+                    showNotification('Informe o nome do recebedor!', 'error');
+                    return;
+                }
+
+                // Força atualização do preview
+                updatePreview();
+
+                // Aguarda renderização do DOM
+                await new Promise(resolve => requestAnimationFrame(resolve));
+
+                const rect = reciboContainer.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) {
+                    showNotification('Erro ao gerar imagem: recibo ainda não renderizado.', 'error');
+                    return;
+                }
+
+                showNotification('Gerando imagem do recibo...');
+
+                html2canvas(reciboContainer, {
+                    scale: 2,
+                    backgroundColor: '#ffffff',
+                    useCORS: true,
+                    logging: false
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    const nomeArquivo = `Recibo_${numeroReciboInput.value}_${recebedor.replace(/\s+/g, '_')}.png`;
+                    link.download = nomeArquivo;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+
+                    showNotification('Recibo exportado com sucesso!');
+                }).catch(error => {
+                    console.error('Erro ao exportar:', error);
+                    showNotification('Erro ao exportar o recibo.', 'error');
+                });
+            });
+
+
+            // Inicializar
+            updatePreview();
+            updateReciboStatus();
+
+            setTimeout(() => {
+                showNotification('Sistema de Recibos Digital carregado. Os dados são auto-salvos automaticamente!');
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>
