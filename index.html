@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HPSR · Sistema Clínico</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/core-dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body class="core-body">
+  <div class="core-app">
+    <aside class="core-sidebar" id="coreSidebar">
+      <div class="core-brand">
+        <div class="core-brand-main">
+          <img class="core-brand-logo" src="assets/img/logo.png" alt="Logo Hospital São Rafael" />
+          <div class="core-brand-text">
+            <div class="core-brand-title">HPSR</div>
+            <p class="core-brand-sub">Sistema Clínico</p>
+          </div>
+        </div>
+
+        <button class="core-sidebar-toggle" id="sidebarToggle" aria-label="Expandir menu">☰</button>
+      </div>
+
+      <nav class="core-nav" id="sidebarNav">
+        <button class="core-nav-item active" data-tab="principal"><i class="fas fa-home"></i><span
+            class="label">Principal</span>
+        </button>
+        <button class="core-nav-item" data-tab="agenda"><i class="fas fa-calendar-alt"></i><span
+            class="label">Agenda</span>
+        </button>
+        <button class="core-nav-item" data-tab="planos"><i class="fas fa-clipboard-list"></i><span
+            class="label">Planos</span>
+        </button>
+        <button class="core-nav-item" data-tab="parceiros"><i class="fas fa-handshake"></i><span
+            class="label">Parceiros</span>
+        </button>
+
+        <div class="core-nav-label">Ferramentas</div>
+        <button class="core-nav-item" data-tab="calculadora"><i class="fas fa-calculator"></i><span
+            class="label">Calculadora</span>
+        </button>
+        <button class="core-nav-item" data-tab="laudos"><i class="fas fa-file-medical"></i><span
+            class="label">Laudos</span>
+        </button>
+        <button class="core-nav-item" data-tab="receitas"><i class="fas fa-file-prescription"></i><span
+            class="label">Receitas</span></button>
+        <button class="core-nav-item" data-tab="recibos"><i class="fas fa-file-invoice-dollar"></i><span
+            class="label">Recibos</span></button>
+        <button class="core-nav-item" data-tab="atestados"><i class="fas fa-stethoscope"></i><span
+            class="label">Atestados</span></button>
+      </nav>
+
+      <div class="core-sidebar-bottom">
+        <!-- botão principal: deslogado = Entrar | logado = nick -->
+        <button id="diretoriaBtn" class="core-login-btn" type="button">Entrar</button>
+
+        <!-- botão secundário de sair (aparece apenas logado) -->
+        <button id="logoutBtn" class="core-login-btn outline" type="button" style="display:none">Sair</button>
+
+        <!-- pill com resumo rápido -->
+        <div id="userIcon" class="core-user-pill" title="" style="display:none"></div>
+
+        <div class="core-footer-note">
+          ✣ Hospital São Rafael - Sandy Shores<br />
+          Todos os direitos reservados © 2026
+        </div>
+      </div>
+    </aside>
+
+    <main class="core-main">
+      <header class="core-topbar">
+        <div>
+          <h1 id="corePageTitle">Principal</h1>
+          <p id="corePageSubtitle">Sistema clínico integrado do Hospital São Rafael</p>
+        </div>
+      </header>
+
+      <section class="core-tab active" data-content="principal">
+        <section class="home-cover">
+          <img src="assets/img/capa.png" alt="Capa Hospital São Rafael" class="home-cover-img">
+          <div class="home-cover-overlay"></div>
+
+          <div class="home-cover-content">
+            <h2>Hospital São Rafael</h2>
+            <p>Centro clínico de referência em Sandy Shores, com foco em atendimento humanizado,
+              integração entre setores e padronização de processos médicos.</p>
+          </div>
+        </section>
+
+        <div class="core-grid two">
+          <article class="core-panel">
+            <h3>Sobre o hospital</h3>
+
+            <p style="margin-top:10px; line-height:1.55;">
+              O Hospital São Rafael (HPSR) prioriza um atendimento <strong>humanizado</strong>, <strong>ágil</strong> e
+              <strong>seguro</strong>, mantendo o paciente no centro de cada decisão. Desde a chegada até a finalização,
+              cada pessoa é acolhida com <strong>respeito</strong>, <strong>empatia</strong> e <strong>escuta ativa</strong>.
+            </p>
+
+            <div class="core-badges" style="margin:10px 0 12px;">
+              <span class="core-badge">Atendimento humanizado</span>
+              <span class="core-badge">Processos padronizados</span>
+              <span class="core-badge">Integração entre setores</span>
+              <span class="core-badge">Foco no paciente</span>
+              <span class="core-badge">Ambiente seguro e acolhedor</span>
+            </div>
+
+            <p style="margin:0; line-height:1.55;">
+              Nossa equipe atua com clareza nas orientações, cuidado individualizado e compromisso com o bem-estar,
+              garantindo que o paciente se sinta <strong>amparado</strong>, <strong>informado</strong> e tratado com
+              <strong>dignidade</strong> em todas as etapas.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="core-tab" data-content="agenda">
+        <iframe class="core-module-frame" src="assets/modules/agenda/index.html" title="Módulo agenda"></iframe>
+      </section>
+
+      <!-- Parceiros -->
+      <section class="core-tab" data-content="parceiros" id="tab-parceiros">
+        <div class="page-container">
+          <div class="card page-card">
+
+            <p class="page-lead">
+              O Hospital São Rafael possui parcerias operacionais e benefícios internos listados abaixo.
+            </p>
+
+            <div class="partner-stack">
+              <div class="partner-box">
+                <h4 class="partner-box__title">
+                  <i class="fas fa-wrench"></i> Mecânica StrokeMaster
+                </h4>
+                <p class="partner-box__text">
+                  Parceiro para manutenção e personalização de veículos do hospital.
+                </p>
+              </div>
+
+              <div class="partner-box">
+                <h4 class="partner-box__title">
+                  <i class="fas fa-tags"></i> Benefício para funcionários
+                </h4>
+                <p class="partner-box__text">
+                  Tanto os colaboradores do Hospital São Rafael quanto da mecânica StrokeMasters obtêm descontos com
+                  ou sem a utilização de farda.
+                </p>
+              </div>
+            </div>
+
+            <div style="margin-top:1.5rem;">
+              <h4 class="section-title">
+                <i class="fas fa-users"></i> Lista de funcionários elegíveis
+              </h4>
+
+              <div class="partner-table">
+                <div class="partner-grid">
+                  <div class="partner-grid__head"><strong>Passaporte</strong></div>
+                  <div class="partner-grid__head"><strong>Nome / Observação</strong></div>
+
+                  <div><strong>2824</strong></div>
+                  <div>Raziel Montenegro</div>
+                  <div><strong>2147</strong></div>
+                  <div>Jack Morgan</div>
+                  <div><strong>313</strong></div>
+                  <div>Sarah Groves</div>
+                  <div><strong>325</strong></div>
+                  <div>Ashley Ootori</div>
+                  <div><strong>3441</strong></div>
+                  <div>Zé V</div>
+                  <div><strong>3140</strong></div>
+                  <div>Antonio Costa</div>
+                  <div><strong>449</strong></div>
+                  <div>Zara Bellini</div>
+                  <div><strong>3777</strong></div>
+                  <div>Ch Stifler</div>
+
+                  <div><strong>281</strong></div>
+                  <div>Aurora Monteiro</div>
+                  <div><strong>844</strong></div>
+                  <div>Majo Santana</div>
+                  <div><strong>1069</strong></div>
+                  <div>Larissa Marilac</div>
+                  <div><strong>4011</strong></div>
+                  <div>João Silveira</div>
+                  <div><strong>405</strong></div>
+                  <div>Yelena Niknov</div>
+                  <div><strong>383</strong></div>
+                  <div>Elizabeth Drake</div>
+                  <div><strong>745</strong></div>
+                  <div>Maria Martini</div>
+                  <div><strong>331</strong></div>
+                  <div>Isabella Higanbana</div>
+
+                  <div><strong>2673</strong></div>
+                  <div>Haru Suzuki</div>
+                  <div><strong>665</strong></div>
+                  <div>Bruno Pellegrini</div>
+                  <div><strong>2236</strong></div>
+                  <div>Yeda Maksimova</div>
+                  <div><strong>319</strong></div>
+                  <div>Hella Sanchez</div>
+                  <div><strong>271</strong></div>
+                  <div>Quinn Tsukuroi</div>
+                </div>
+              </div>
+            </div>
+
+            <p class="partner-note">
+              <i class="fas fa-circle-info"></i>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="core-tab" data-content="calculadora">
+        <iframe class="core-module-frame" src="assets/modules/calculadora/index.html"
+          title="Módulo calculadora"></iframe>
+      </section>
+      <section class="core-tab" data-content="laudos">
+        <iframe class="core-module-frame" src="assets/modules/laudos/index.html" title="Módulo laudos"></iframe>
+      </section>
+      <section class="core-tab" data-content="receitas">
+        <iframe class="core-module-frame" src="assets/modules/receitas/index.html" title="Módulo receitas"></iframe>
+      </section>
+      <section class="core-tab" data-content="recibos">
+        <iframe class="core-module-frame" src="assets/modules/recibos/index.html" title="Módulo recibos"></iframe>
+      </section>
+      <section class="core-tab" data-content="atestados">
+        <iframe class="core-module-frame" src="assets/modules/atestados/index.html" title="Módulo atestados"></iframe>
+      </section>
+
+      <section class="core-tab" data-content="perfil">
+        <div class="module-shell">
+          <div class="module-header">
+            <h2>Perfil do Usuário</h2>
+            <p>Confira informações medicas <strong>nome</strong> e <strong>crm</strong> 
+              <strong></strong>.
+            </p>
+          </div>
+
+          <div class="core-grid two perfil-grid-db">
+            <article class="core-panel">
+              <h3>Dados do banco</h3>
+              <div class="perfil-readonly-list">
+                <div class="perfil-row"><span class="perfil-label">nome</span><strong id="perfilNome">—</strong></div>
+                <div class="perfil-row"><span class="perfil-label">crm</span><strong id="perfilCrm">—</strong></div>
+              </div>
+            </article>
+
+            <article class="core-panel">
+              <h3>Conta (auth)</h3>
+              <div class="perfil-readonly-list">
+                <div class="perfil-row"><span class="perfil-label">usuario</span><strong id="perfilUsername">—</strong>
+                </div>
+                <div class="perfil-row"><span class="perfil-label">email</span><strong id="perfilEmail">—</strong></div>
+              </div>
+            </article>
+          </div>
+
+          <article class="core-panel" style="margin-top: 14px;">
+            <h3>Observação</h3>
+            <p>Em casos de dúvida, entre em contato com a diretoria.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="core-tab" data-content="planos">
+        <div class="module-shell">
+          <div class="module-header">
+            <h2>Planos Médicos</h2>
+          </div>
+
+          <div class="container planos-container">
+            <div class="top-bar">
+              <input id="passaporte" placeholder="Passaporte do paciente" />
+              <button id="buscarBtn">Buscar</button>
+            </div>
+
+            <div class="card resumo">
+              <strong>Status Atual</strong>
+              <div id="statusBadge"></div>
+            </div>
+
+            <div id="alertaPlano"></div>
+
+            <div class="acoes-topo">
+              <button id="cadastroBtn">Cadastrar plano</button>
+              <button id="gerenciarBtn" class="btn-outline" style="display:none">Gerenciar</button>
+              <div id="fecharResultadoSlot"></div>
+            </div>
+
+            <div id="resultadoPaciente"></div>
+
+            <div id="cardsPlanos" class="cards-planos">
+              <div class="card plano-card">
+                <h3>Plano Individual</h3>
+                <p>1 titular</p>
+                <p>Sem dependentes</p>
+                <p>20% de desconto</p>
+                <p>Validade: 30 dias</p>
+              </div>
+              <div class="card plano-card">
+                <h3>Plano Combo</h3>
+                <p>1 titular</p>
+                <p>Até 2 dependentes</p>
+                <p>20% de desconto</p>
+                <p>Validade: 30 dias</p>
+              </div>
+              <div class="card plano-card">
+                <h3>Plano Família</h3>
+                <p>1 titular</p>
+                <p>Até 4 dependentes</p>
+                <p>20% de desconto</p>
+                <p>Validade: 30 dias</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content login-card">
+      <button id="loginClose" class="login-x" type="button" aria-label="Fechar">×</button>
+      <h2 class="login-title">Área de Acesso</h2>
+      <form id="loginForm" class="login-form">
+        <div class="login-field">
+          <label for="usuario">Usuário</label>
+          <input id="usuario" type="text" placeholder="Usuário" autocomplete="username" />
+        </div>
+        <div class="login-field">
+          <label for="password">Senha</label>
+          <input id="password" type="password" placeholder="Senha" autocomplete="current-password" />
+        </div>
+        <div id="error" class="login-error hidden"></div>
+        <button type="submit" class="login-btn">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CADASTRO MODAL -->
+  <div id="cadastroModal" class="modal">
+    <div class="modal-content cadastro-card">
+      <button class="cadastro-x" type="button" aria-label="Fechar" id="cadastroClose">×</button>
+      <h2 class="cadastro-title">Novo Plano</h2>
+      <form id="cadastroForm" class="cadastro-form">
+        <div class="cadastro-field"><label for="nome">Nome do titular</label><input id="nome" type="text"
+            placeholder="Nome do titular" /></div>
+        <div class="cadastro-field"><label for="passaporteCadastro">Passaporte</label><input id="passaporteCadastro"
+            type="text" placeholder="Passaporte" /></div>
+        <div class="cadastro-field"><label for="dataAtivacao">Data de ativação</label><input id="dataAtivacao"
+            type="date" /></div>
+        <div class="cadastro-field">
+          <label for="tipoPlano">Plano</label>
+          <div class="cadastro-select-wrap"><select id="tipoPlano">
+              <option value="">Selecione...</option>
+              <option value="individual">Individual</option>
+              <option value="combo">Combo</option>
+              <option value="familia">Família</option>
+            </select><span class="cadastro-select-icon">▾</span></div>
+        </div>
+        <div class="cadastro-deps">
+          <div class="cadastro-deps-head">
+            <h3>Dependentes</h3><button id="addDependenteBtn" type="button" class="cadastro-btn cadastro-btn-ghost">+
+              Adicionar</button>
+          </div>
+          <div id="dependentesContainer" class="cadastro-deps-list"></div>
+        </div>
+        <button type="submit" class="cadastro-btn cadastro-btn-primary">Salvar plano</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- GERENCIAR MODAL -->
+  <div id="gerenciarModal" class="modal modal-gerenciar">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Gerenciar Plano</h2><button id="fecharGerenciarModal" class="modal-close" type="button"
+          aria-label="Fechar">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="gp-field">
+          <label class="gp-label" for="gerenciarSelectPlano">Selecionar plano existente</label>
+          <div class="gp-select-wrap"><select id="gerenciarSelectPlano" class="gp-select">
+              <option value="">Carregando...</option>
+            </select><span class="gp-select-icon">▾</span></div>
+          <div id="gpResumo" class="gp-resumo hidden">
+            <div class="gp-chip" id="gpChipStatus">—</div>
+            <div class="gp-meta">
+              <div class="gp-meta-title" id="gpResumoNome">—</div>
+              <div class="gp-meta-sub" id="gpResumoLinha">—</div>
+            </div>
+          </div>
+        </div>
+        <div id="gerenciarPainel" style="display:none">
+          <div class="gp-grid-2">
+            <div class="gp-field"><label class="gp-label" for="gerenciarTipoPlano">Tipo de plano</label>
+              <div class="gp-select-wrap"><select id="gerenciarTipoPlano" class="gp-select">
+                  <option value="individual">Individual</option>
+                  <option value="combo">Combo</option>
+                  <option value="familia">Família</option>
+                </select><span class="gp-select-icon">▾</span></div>
+            </div>
+            <div class="gp-field"><label class="gp-label" for="gerenciarNovaData">Nova data do plano</label><input
+                id="gerenciarNovaData" type="date" class="gp-input" /></div>
+          </div>
+          <div class="gp-deps">
+            <div class="gp-deps-head">
+              <h3>Dependentes</h3><button type="button" id="gerenciarAddDepBtn"
+                class="gp-btn gp-btn-ghost">Adicionar</button>
+            </div>
+            <div id="gerenciarDepsList"></div>
+          </div>
+          <div class="gp-actions">
+            <button type="button" id="gerenciarRenovarBtn" class="gp-btn gp-btn-primary">Renovar +30 dias</button>
+            <button type="button" id="gerenciarSalvarBtn" class="gp-btn gp-btn-ghost">Salvar alterações</button>
+            <button type="button" id="gerenciarEncerrarBtn" class="gp-btn gp-btn-danger">Encerrar plano</button>
+          </div>
+          <div id="gerenciarMsg" class="gp-msg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup global -->
+  <div id="uiPopup" class="ui-popup hidden" aria-hidden="true">
+    <div class="ui-popup-backdrop"></div>
+    <div class="ui-popup-card" role="dialog" aria-modal="true" aria-labelledby="uiPopupTitle">
+      <div class="ui-popup-head">
+        <h3 id="uiPopupTitle">Aviso</h3><button id="uiPopupClose" class="ui-popup-x" type="button"
+          aria-label="Fechar">×</button>
+      </div>
+      <div id="uiPopupMsg" class="ui-popup-msg"></div>
+      <div class="ui-popup-actions"><button id="uiPopupCancel" class="btn-outline hidden"
+          type="button">Cancelar</button><button id="uiPopupOk" class="btn" type="button">OK</button></div>
+    </div>
+  </div>
+
+  <!-- Patch (mínimo) para garantir que o main expanda quando colapsar sem depender de :has() -->
+  <script type="module">
+    const sidebar = document.getElementById("coreSidebar");
+    const app = document.querySelector(".core-app");
+    const toggle = document.getElementById("sidebarToggle");
+
+    const apply = () => {
+      app.classList.toggle("sidebar-collapsed", sidebar.classList.contains("collapsed"));
+    };
+
+    toggle?.addEventListener("click", () => {
+      // se o seu dashboard.js já alterna, isso só sincroniza a classe no container
+      setTimeout(apply, 0);
+    });
+
+    // primeira carga
+    apply();
+  </script>
+
+  <script type="module" src="assets/js/core.js"></script>
+  <script type="module" src="assets/js/auth.js"></script>
+  <script type="module" src="assets/js/utils.js"></script>
+  <script type="module" src="assets/js/cadastro.js"></script>
+  <script type="module" src="assets/js/dashboard.js"></script>
+  <script type="module" src="assets/js/gerenciar.js"></script>
+</body>
+
+</html>

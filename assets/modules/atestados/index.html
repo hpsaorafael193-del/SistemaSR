@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atestado Médico - Hospital São Rafael</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+  <div class="wrap">
+
+    <!-- FORMULÁRIO -->
+    <div class="panel">
+      <h1>Atestado Médico</h1>
+
+      <label>Tipo de atestado</label>
+      <select id="tipoAtestado">
+        <option value="comparecimento">Comparecimento</option>
+        <option value="afastamento" selected>Afastamento</option>
+        <option value="restricao">Restrição de atividade</option>
+        <option value="retorno">Retorno ao trabalho</option>
+        <option value="escolar">Escolar</option>
+      </select>
+
+      <label>Nome do paciente</label>
+      <input id="patientName" type="text">
+
+      <label>Data do atendimento</label>
+      <input id="issueDate" type="date">
+
+      <div id="fieldDaysOff">
+        <label>Dias de afastamento</label>
+        <input id="daysOff" type="number" min="0" value="0">
+      </div>
+
+      <label>Observações</label>
+      <textarea id="notes" maxlength="200" placeholder="Observações clínicas (máx. 200 caracteres)">
+    </textarea>
+
+      <label>Nome do médico</label>
+      <input id="doctorName" type="text">
+
+      <label for="crm">CRM</label>
+      <input id="crm" type="text">
+
+      <label>Assinatura</label>
+
+      <label for="signatureUpload" class="signature-button">
+        Inserir assinatura
+      </label>
+
+      <input id="signatureUpload" type="file" accept="image/png,image/jpeg" hidden>
+
+      <div class="signature-hint">
+        PNG ou JPG • fundo claro
+      </div>
+
+
+      <button type="button" id="removeSignatureBtn" class="remove-signature" style="display:none;">
+        Remover assinatura
+      </button>
+
+      <div class="controls">
+        <button id="savePngBtn">Salvar como PNG</button>
+        <button onclick="location.reload()">Limpar</button>
+      </div>
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="panel preview">
+      <div id="paper" class="paper">
+
+        <!-- Marca d'água -->
+        <img src="assets/logo/fundo.png" class="watermark" alt="Marca d'água">
+
+        <!-- Cabeçalho -->
+        <div class="header">
+          <div>
+            <strong>Hospital São Rafael</strong>
+            <div class="meta">Sandy Shores</div>
+          </div>
+          <div class="meta" id="documentDate"></div>
+        </div>
+
+        <hr>
+
+        <!-- Conteúdo do atestado -->
+        <div class="content">
+          <p id="textoAtestado"></p>
+
+          <!-- Observações separadas -->
+          <div id="obsBox" class="obs-box" style="display:none;">
+            <strong>Observações:</strong>
+            <p id="obsPreview"></p>
+          </div>
+        </div>
+
+        <!-- Rodapé fixo -->
+        <div class="footer">
+          <div class="doctor-info">
+            <div id="doctorPreview"></div>
+            <div class="meta" id="crmPreview"></div>
+          </div>
+          <div class="sig">
+            <img id="signaturePreview" style="display:none">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Biblioteca -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <!-- JS -->
+  <script src="assets/js/script.js"></script>
+
+</body>
+
+</html>
