@@ -12,7 +12,7 @@ const medicamentos = [
 const procedimentos = [
             { id: 'p0', nome: "TRATAMENTO", preco: 180000, imagem: "Icones/Tratamento.png" },
             { id: 'p1', nome: "QUEIMADURAS/GESSO", preco: 250000, imagem: "Icones/Gesso.png" },
-            { id: 'p2', nome: "CONSULTAS", preco: 10000000, imagem: "Icones/Consultas.png" },
+            { id: 'p2', nome: "CONSULTAS", preco: 20000000, imagem: "Icones/Consultas.png" },
             { id: 'p3', nome: "EXAMES BASICOS", preco: 250000, imagem: "Icones/Exames_basicos.png" },
             { id: 'p4', nome: "EXAMES DE IMAGEM", preco: 300000, imagem: "Icones/Exames_imagem.png" },
             { id: 'p5', nome: "PROCEDIMENTOS", preco: 25000000, imagem: "Icones/Procedimentos.png" },
