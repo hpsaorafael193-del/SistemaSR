@@ -138,8 +138,8 @@ function setUIByAuth({ logado, cargo, username, displayName }) {
   }
 
   // busca bloqueada se não logado
-  if (passaporteInput) passaporteInput.disabled = !logado;
-  if (buscarBtn) buscarBtn.disabled = !logado;
+  if (passaporteInput) passaporteInput.disabled = false;
+  if (buscarBtn) buscarBtn.disabled = false;
 
   // cadastro só diretoria
   if (cadastroBtn) {
@@ -433,9 +433,7 @@ window.addEventListener("click", (e) => {
 // Buscar
 if (buscarBtn) {
   buscarBtn.addEventListener("click", async () => {
-    const ok = await exigirLoginOuAbrirModal();
-    if (!ok) return;
-
+    
     const pass = passaporteInput?.value?.trim();
     if (!pass) return;
 
