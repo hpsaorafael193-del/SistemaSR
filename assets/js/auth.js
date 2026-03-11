@@ -1,4 +1,4 @@
-import { supabase } from "./supabase.js";
+import { supabase, getSessionLocked, setCachedSession } from "./supabase.js";
 
 window.currentDoctorProfile = null;
 
@@ -141,10 +141,13 @@ window.addEventListener("click", (e) => {
   }
 });
 
-const { data: sessionData } = await supabase.auth.getSession();
+const sessionInicial = await getSessionLocked({ ttlMs: 0 });
 bindAuthBroadcastOnFrameLoad(window.currentDoctorProfile);
-if (sessionData.session) {
-  await carregarUsuario(sessionData.session.user);
+if (sessionInicial) {
+  await carregarUsuario(sessionInicial.user);
+} else {
+  ["cargo", "username", "display_name"].forEach((k) => localStorage.removeItem(k));
+  window.currentDoctorProfile = null;
 }
 
 loginForm.addEventListener("submit", async (e) => {
@@ -181,21 +184,25 @@ loginClose?.addEventListener("click", () => {
   loginModal.style.display = "none";
 });
 
-supabase.auth.onAuthStateChange(async (event, session) => {
-  if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "INITIAL_SESSION") {
-    if (session?.user) {
-      await carregarUsuario(session.user);
-      window.dispatchEvent(new Event("usuario-logado"));
-    }
-    return;
-  }
+supabase.auth.onAuthStateChange((event, session) => {
+  setCachedSession(session || null);
 
-  if (event === "SIGNED_OUT") {
-    ["cargo", "username", "display_name"].forEach((k) => localStorage.removeItem(k));
-    window.currentDoctorProfile = null;
-    broadcastAuthToModuleIframes(null);
-    window.dispatchEvent(new Event("usuario-deslogado"));
-  }
+  window.setTimeout(async () => {
+    if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "INITIAL_SESSION") {
+      if (session?.user) {
+        await carregarUsuario(session.user);
+        window.dispatchEvent(new Event("usuario-logado"));
+      }
+      return;
+    }
+
+    if (event === "SIGNED_OUT") {
+      ["cargo", "username", "display_name"].forEach((k) => localStorage.removeItem(k));
+      window.currentDoctorProfile = null;
+      broadcastAuthToModuleIframes(null);
+      window.dispatchEvent(new Event("usuario-deslogado"));
+    }
+  }, 0);
 });
 
 hideError();
@@ -237,3 +244,35 @@ async function carregarUsuario(user) {
   broadcastAuthToModuleIframes(window.currentDoctorProfile);
   hideError();
 }
+
+let authRefreshEmAndamento = false;
+
+async function revalidarAuthAoVoltar() {
+  if (authRefreshEmAndamento) return;
+  authRefreshEmAndamento = true;
+
+  try {
+    const session = await getSessionLocked({ ttlMs: 0 });
+    if (!session) {
+      ["cargo", "username", "display_name"].forEach((k) => localStorage.removeItem(k));
+      window.currentDoctorProfile = null;
+      window.dispatchEvent(new Event("usuario-deslogado"));
+      return;
+    }
+
+    await carregarUsuario(session.user);
+    window.dispatchEvent(new Event("usuario-logado"));
+  } finally {
+    authRefreshEmAndamento = false;
+  }
+}
+
+window.addEventListener("focus", () => {
+  void revalidarAuthAoVoltar();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    void revalidarAuthAoVoltar();
+  }
+});

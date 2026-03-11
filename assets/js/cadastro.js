@@ -1,4 +1,4 @@
-import { supabase } from "./supabase.js";
+import { supabase, getSessionLocked } from "./supabase.js";
 import { asPassaporte, maxDeps, uiAlert, isoFromDateInput } from "./utils.js";
 
 const cadastroModal = document.getElementById("cadastroModal");
@@ -13,6 +13,20 @@ cadastroModal?.addEventListener("click", (e) => {
 });
 
 const cadastroForm = document.getElementById("cadastroForm");
+let cadastroEmAndamento = false;
+
+function withTimeout(promise, ms = 12000, label = "operação") {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`Tempo limite excedido ao ${label}.`)), ms);
+  });
+
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
+
+async function hasSessaoAtiva() {
+  return !!(await getSessionLocked());
+}
 
 const nomeEl = document.getElementById("nome");
 const passEl = document.getElementById("passaporteCadastro");
@@ -94,6 +108,14 @@ addDependenteBtn?.addEventListener("click", async () => {
 cadastroForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  if (cadastroEmAndamento) return;
+
+  if (!(await hasSessaoAtiva())) {
+    await uiAlert("Sua sessão expirou. Faça login novamente para cadastrar planos.", "Sessão expirada");
+    window.dispatchEvent(new Event("usuario-deslogado"));
+    return;
+  }
+
   if (localStorage.getItem("cargo") !== "diretor") {
     await uiAlert("Apenas diretores podem cadastrar planos.", "Permissão");
     return;
@@ -105,6 +127,7 @@ cadastroForm?.addEventListener("submit", async (e) => {
     cadastroForm.querySelector("button");
 
   if (btn) btn.disabled = true;
+  cadastroEmAndamento = true;
 
   try {
     const nome = (nomeEl?.value || "").trim();
@@ -136,11 +159,15 @@ cadastroForm?.addEventListener("submit", async (e) => {
       return;
     }
 
-    const exists = await supabase
-      .from("pacientes")
-      .select("id")
-      .eq("passaporte", passStr)
-      .maybeSingle();
+    const exists = await withTimeout(
+      supabase
+        .from("pacientes")
+        .select("id")
+        .eq("passaporte", passStr)
+        .maybeSingle(),
+      12000,
+      "validar passaporte"
+    );
 
     if (exists.error) {
       console.error("Erro validando passaporte:", exists.error);
@@ -149,28 +176,28 @@ cadastroForm?.addEventListener("submit", async (e) => {
     }
 
     if (exists.data?.id) {
-      await uiAlert(
-        "Já existe um plano cadastrado para este passaporte.",
-        "Atenção",
-      );
+      await uiAlert("Já existe um plano cadastrado para este passaporte.", "Atenção");
       return;
     }
 
-    // criado_em seguro (meio-dia local via utils)
     const criadoISO = ativacao ? isoFromDateInput(ativacao) : new Date().toISOString();
 
-    const { data: paciente, error } = await supabase
-      .from("pacientes")
-      .insert({
-        nome,
-        passaporte: passStr,
-        tipo_plano: plano,
-        max_dependentes: limite,
-        status: "ativo",
-        criado_em: criadoISO,
-      })
-      .select()
-      .single();
+    const { data: paciente, error } = await withTimeout(
+      supabase
+        .from("pacientes")
+        .insert({
+          nome,
+          passaporte: passStr,
+          tipo_plano: plano,
+          max_dependentes: limite,
+          status: "ativo",
+          criado_em: criadoISO,
+        })
+        .select()
+        .single(),
+      12000,
+      "criar paciente"
+    );
 
     if (error) {
       console.error("Erro insert paciente:", error);
@@ -179,18 +206,19 @@ cadastroForm?.addEventListener("submit", async (e) => {
     }
 
     for (const d of dependentes) {
-      const insDep = await supabase.from("dependentes").insert({
-        paciente_id: paciente.id,
-        nome: (d.nome || "").trim(),
-        passaporte: asPassaporte(d.passaporte),
-      });
+      const insDep = await withTimeout(
+        supabase.from("dependentes").insert({
+          paciente_id: paciente.id,
+          nome: (d.nome || "").trim(),
+          passaporte: asPassaporte(d.passaporte),
+        }),
+        12000,
+        "inserir dependente"
+      );
 
       if (insDep.error) {
         console.error("Erro insert dependente:", insDep.error);
-        await uiAlert(
-          insDep.error.message || "Erro ao inserir dependente.",
-          "Erro",
-        );
+        await uiAlert(insDep.error.message || "Erro ao inserir dependente.", "Erro");
         return;
       }
     }
@@ -198,7 +226,6 @@ cadastroForm?.addEventListener("submit", async (e) => {
     await uiAlert("Plano criado com sucesso.", "Sucesso");
 
     if (cadastroModal) cadastroModal.style.display = "none";
-
     if (nomeEl) nomeEl.value = "";
     if (passEl) passEl.value = "";
     if (tipoPlanoEl) tipoPlanoEl.value = "";
@@ -209,7 +236,11 @@ cadastroForm?.addEventListener("submit", async (e) => {
     }
 
     window.dispatchEvent(new CustomEvent("plano-criado", { detail: passStr }));
+  } catch (error) {
+    console.error("Falha ao salvar plano:", error);
+    await uiAlert(error?.message || "Erro inesperado ao salvar plano.", "Erro");
   } finally {
+    cadastroEmAndamento = false;
     if (btn) btn.disabled = false;
   }
 });

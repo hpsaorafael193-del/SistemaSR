@@ -1,7 +1,19 @@
-import { supabase } from "./supabase.js";
+import { supabase, getSessionLocked } from "./supabase.js";
 import { asPassaporte, calcularValidade, diasRestantes, formatarData, statusPorValidade, uiAlert } from "./utils.js";
 
 let pacienteAtual = null;
+let buscaEmAndamento = false;
+let buscaSeq = 0;
+
+function withTimeout(promise, ms = 12000, label = "operação") {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`Tempo limite excedido ao ${label}.`)), ms);
+  });
+
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
+
 
 /* ---------- Helpers DOM ---------- */
 
@@ -70,9 +82,7 @@ const resultadoPaciente = $("resultadoPaciente");
 /* ---------- Sessão / Permissões ---------- */
 
 async function getSessionSafe() {
-  const { data, error } = await supabase.auth.getSession();
-  if (error) return null;
-  return data?.session || null;
+  return await getSessionLocked();
 }
 
 function getCargo() {
@@ -85,9 +95,10 @@ function normalizarCargo(valor) {
 }
 
 async function ensureCargo(session) {
+  if (!session?.user?.id) return null;
+
   const cargoAtual = normalizarCargo(window.currentDoctorProfile?.cargo || getCargo());
   if (cargoAtual) return cargoAtual;
-  if (!session?.user?.id) return null;
 
   const { data, error } = await supabase
     .from("usuarios")
@@ -138,8 +149,8 @@ function setUIByAuth({ logado, cargo, username, displayName }) {
   }
 
   // busca bloqueada se não logado
-  if (passaporteInput) passaporteInput.disabled = false;
-  if (buscarBtn) buscarBtn.disabled = false;
+  if (passaporteInput) passaporteInput.disabled = !logado;
+  if (buscarBtn) buscarBtn.disabled = !logado;
 
   // cadastro só diretoria
   if (cadastroBtn) {
@@ -308,69 +319,84 @@ function renderResultado(paciente, dependenteBuscado) {
 /* ---------- Busca ---------- */
 
 async function buscarPorPassaporte(passStr) {
-  limparResultado();
-  setHTML(resultadoPaciente, `<div class="loading"></div>`);
-
+  const buscaAtual = ++buscaSeq;
   const passaporte = asPassaporte(passStr);
   let dependenteBuscado = null;
 
-  // 1) Titular
-  const titularRes = await supabase
-    .from("pacientes")
-    .select(`
-      id,nome,passaporte,tipo_plano,status,imagem_url,criado_em,
-      dependentes(nome,passaporte)
-    `)
-    .eq("passaporte", passaporte);
+  limparResultado();
+  setHTML(resultadoPaciente, `<div class="loading"></div>`);
 
-  if (titularRes.error) {
-    console.error(titularRes.error);
-    setHTML(resultadoPaciente, `<p>Erro ao buscar paciente</p>`);
-    return;
+  try {
+    const titularRes = await withTimeout(
+      supabase
+        .from("pacientes")
+        .select(`
+          id,nome,passaporte,tipo_plano,status,imagem_url,criado_em,
+          dependentes(nome,passaporte)
+        `)
+        .eq("passaporte", passaporte),
+      12000,
+      "buscar paciente"
+    );
+
+    if (titularRes.error) {
+      console.error(titularRes.error);
+      throw new Error("Erro ao buscar paciente.");
+    }
+
+    let paciente = titularRes.data?.[0] || null;
+
+    if (!paciente) {
+      const depRes = await withTimeout(
+        supabase
+          .from("dependentes")
+          .select("paciente_id")
+          .eq("passaporte", passaporte)
+          .maybeSingle(),
+        12000,
+        "buscar dependente"
+      );
+
+      if (depRes.error) {
+        console.error(depRes.error);
+        throw new Error("Erro ao buscar dependente.");
+      }
+
+      if (!depRes.data) {
+        setHTML(resultadoPaciente, `<p>Paciente não encontrado</p>`);
+        return;
+      }
+
+      dependenteBuscado = passaporte;
+
+      const pacRes = await withTimeout(
+        supabase
+          .from("pacientes")
+          .select(`
+            id,nome,passaporte,tipo_plano,status,imagem_url,criado_em,
+            dependentes(nome,passaporte)
+          `)
+          .eq("id", depRes.data.paciente_id)
+          .single(),
+        12000,
+        "buscar titular"
+      );
+
+      if (pacRes.error) {
+        console.error(pacRes.error);
+        throw new Error("Erro ao buscar titular.");
+      }
+
+      paciente = pacRes.data;
+    }
+
+    if (buscaAtual !== buscaSeq) return;
+    renderResultado(paciente, dependenteBuscado);
+  } catch (error) {
+    console.error("Falha na busca de plano:", error);
+    if (buscaAtual !== buscaSeq) return;
+    setHTML(resultadoPaciente, `<p>${escapeHTML(error?.message || "Erro ao consultar plano.")}</p>`);
   }
-
-  let paciente = titularRes.data?.[0] || null;
-
-  // 2) Dependente
-  if (!paciente) {
-    const depRes = await supabase
-      .from("dependentes")
-      .select("paciente_id")
-      .eq("passaporte", passaporte)
-      .maybeSingle();
-
-    if (depRes.error) {
-      console.error(depRes.error);
-      setHTML(resultadoPaciente, `<p>Erro ao buscar dependente</p>`);
-      return;
-    }
-
-    if (!depRes.data) {
-      setHTML(resultadoPaciente, `<p>Paciente não encontrado</p>`);
-      return;
-    }
-
-    dependenteBuscado = passStr;
-
-    const pacRes = await supabase
-      .from("pacientes")
-      .select(`
-        id,nome,passaporte,tipo_plano,status,imagem_url,criado_em,
-        dependentes(nome,passaporte)
-      `)
-      .eq("id", depRes.data.paciente_id)
-      .single();
-
-    if (pacRes.error) {
-      console.error(pacRes.error);
-      setHTML(resultadoPaciente, `<p>Erro ao buscar titular</p>`);
-      return;
-    }
-
-    paciente = pacRes.data;
-  }
-
-  renderResultado(paciente, dependenteBuscado);
 }
 
 /* ---------- Eventos / Botões ---------- */
@@ -433,11 +459,23 @@ window.addEventListener("click", (e) => {
 // Buscar
 if (buscarBtn) {
   buscarBtn.addEventListener("click", async () => {
-    
+    if (buscaEmAndamento) return;
+
+    const ok = await exigirLoginOuAbrirModal();
+    if (!ok) return;
+
     const pass = passaporteInput?.value?.trim();
     if (!pass) return;
 
-    await buscarPorPassaporte(pass);
+    buscaEmAndamento = true;
+    buscarBtn.disabled = true;
+
+    try {
+      await buscarPorPassaporte(pass);
+    } finally {
+      buscaEmAndamento = false;
+      buscarBtn.disabled = false;
+    }
   });
 }
 
