@@ -887,6 +887,82 @@ body{
   }
 }
 
+/* ===== Guia de Medicamentos ===== */
+
+#tab-medicamentos .partner-stack {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+
+#tab-medicamentos .partner-box {
+  background: #fff2da;
+  border-radius: 12px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.25s ease;
+}
+
+#tab-medicamentos .partner-box:hover {
+  transform: translateY(-4px);
+  border-color: #3b1408;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+#tab-medicamentos .partner-box__title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #400f00;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#tab-medicamentos .partner-box__title i {
+  color: #4da3ff;
+}
+
+#tab-medicamentos .partner-box p {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 6px;
+  color: #3b1408;
+}
+
+#tab-medicamentos .partner-box b {
+  color: #f3ece3;
+}
+
+/* Destaques clínicos */
+
+#tab-medicamentos .partner-box p:nth-child(2) b {
+  color: #6dd5fa;
+}
+
+#tab-medicamentos .partner-box p:nth-child(3) b {
+  color: #ff9f43;
+}
+
+#tab-medicamentos .partner-box p:nth-child(4) b {
+  color: #ff6b6b;
+}
+
+#tab-medicamentos .partner-box p:nth-child(5) b {
+  color: #55efc4;
+}
+
+/* Responsividade */
+
+@media (max-width: 768px) {
+
+  #tab-medicamentos .partner-stack {
+    grid-template-columns: 1fr;
+  }
+
+}
+
 @media (max-width:768px){
   .core-main{
     padding:12px;
