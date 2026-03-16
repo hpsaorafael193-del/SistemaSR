@@ -8590,13 +8590,11 @@
           "id": "interpretacao",
           "tipo": "textarea",
           "label": "Interpretação",
-          "placeholder": "Correlação clínica com fase do ciclo, suspeita de insuficiência lútea, gravidez ou distúrbios hormonais."
         },
         {
           "id": "conclusao",
           "tipo": "textarea",
           "label": "Conclusão",
-          "placeholder": "Síntese diagnóstica baseada no resultado obtido."
         }
       ]
     },
@@ -8924,13 +8922,11 @@
           "id": "interpretacao",
           "tipo": "textarea",
           "label": "Interpretação",
-          "placeholder": "Correlacionar com idade, história reprodutiva, ultrassonografia ovariana e outros marcadores hormonais."
         },
         {
           "id": "conclusao",
           "tipo": "textarea",
           "label": "Conclusão",
-          "placeholder": "Síntese diagnóstica baseada no valor de AMH e contexto clínico."
         }
       ]
     },
