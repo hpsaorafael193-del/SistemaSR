@@ -8549,6 +8549,58 @@
       ]
     },
     {
+      "id": "hormonal_progesterona",
+      "nome": "Progesterona",
+      "descricao": "Dosagem sérica de progesterona utilizada para avaliação da função lútea, ovulação e acompanhamento gestacional.",
+      "categoria": "hormonal",
+      "icone": "fa-vial",
+      "campos": [
+        {
+          "id": "progesterona_valor",
+          "tipo": "number",
+          "label": "Progesterona",
+          "unidade": "ng/mL",
+          "referencia": "Fase folicular: 0.1–0.9 | Fase lútea: 1.8–23 | Gravidez 1º tri: 11–44"
+        },
+        {
+          "id": "fase_ciclo",
+          "tipo": "select",
+          "label": "Fase do ciclo / contexto clínico",
+          "opcoes": [
+            { "valor": "folicular", "label": "Fase folicular" },
+            { "valor": "ovulatoria", "label": "Periovulatória" },
+            { "valor": "lutea", "label": "Fase lútea" },
+            { "valor": "gestacao", "label": "Gestação" },
+            { "valor": "pos_menopausa", "label": "Pós-menopausa" }
+          ],
+          "referencia": "Contexto fisiológico"
+        },
+        {
+          "id": "impressao",
+          "tipo": "select",
+          "label": "Impressão",
+          "opcoes": [
+            { "valor": "normal", "label": "Valor dentro da faixa esperada" },
+            { "valor": "baixo", "label": "Nível abaixo do esperado" },
+            { "valor": "alto", "label": "Nível acima do esperado" }
+          ],
+          "referencia": "Normal / Alterado"
+        },
+        {
+          "id": "interpretacao",
+          "tipo": "textarea",
+          "label": "Interpretação",
+          "placeholder": "Correlação clínica com fase do ciclo, suspeita de insuficiência lútea, gravidez ou distúrbios hormonais."
+        },
+        {
+          "id": "conclusao",
+          "tipo": "textarea",
+          "label": "Conclusão",
+          "placeholder": "Síntese diagnóstica baseada no resultado obtido."
+        }
+      ]
+    },
+    {
       "id": "horm_fsh",
       "nome": "FSH (Hormônio Folículo-Estimulante)",
       "descricao": "Avaliação da função gonadal e do eixo hipotálamo-hipófise-gonadal",
