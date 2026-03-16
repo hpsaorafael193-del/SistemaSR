@@ -8858,6 +8858,83 @@
       ]
     },
     {
+      "id": "hormonal_amh",
+      "nome": "Hormônio Anti-Mülleriano (AMH)",
+      "descricao": "Dosagem sérica de AMH utilizada para avaliação da reserva ovariana e resposta esperada à estimulação ovariana.",
+      "categoria": "hormonal",
+      "icone": "fa-vial",
+      "campos": [
+        {
+          "id": "amh_valor",
+          "tipo": "number",
+          "label": "AMH",
+          "unidade": "ng/mL",
+          "referencia": "Muito baixo: <0.5 | Baixo: 0.5–1.0 | Normal: 1.0–3.5 | Alto: >3.5"
+        },
+        {
+          "id": "contexto_clinico",
+          "tipo": "select",
+          "label": "Contexto clínico",
+          "opcoes": [
+            {
+              "valor": "avaliacao_reserva_ovariana",
+              "label": "Avaliação de reserva ovariana"
+            },
+            {
+              "valor": "infertilidade",
+              "label": "Investigação de infertilidade"
+            },
+            {
+              "valor": "reproducao_assistida",
+              "label": "Planejamento de reprodução assistida"
+            },
+            {
+              "valor": "suspeita_sop",
+              "label": "Suspeita de síndrome dos ovários policísticos (SOP)"
+            },
+            {
+              "valor": "controle_tratamento",
+              "label": "Acompanhamento de tratamento hormonal"
+            }
+          ],
+          "referencia": "Contexto da solicitação"
+        },
+        {
+          "id": "impressao",
+          "tipo": "select",
+          "label": "Impressão",
+          "opcoes": [
+            {
+              "valor": "normal",
+              "label": "Reserva ovariana dentro do esperado"
+            },
+            { "valor": "baixa", "label": "Reserva ovariana reduzida" },
+            {
+              "valor": "muito_baixa",
+              "label": "Reserva ovariana muito reduzida"
+            },
+            {
+              "valor": "elevada",
+              "label": "AMH elevado (avaliar possibilidade de SOP)"
+            }
+          ],
+          "referencia": "Normal / Alterado"
+        },
+        {
+          "id": "interpretacao",
+          "tipo": "textarea",
+          "label": "Interpretação",
+          "placeholder": "Correlacionar com idade, história reprodutiva, ultrassonografia ovariana e outros marcadores hormonais."
+        },
+        {
+          "id": "conclusao",
+          "tipo": "textarea",
+          "label": "Conclusão",
+          "placeholder": "Síntese diagnóstica baseada no valor de AMH e contexto clínico."
+        }
+      ]
+    },
+    {
       "id": "exame_generico",
       "nome": "Exame Clínico Genérico",
       "descricao": "Modelo universal para registro de exames não padronizados",
