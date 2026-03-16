@@ -8590,11 +8590,13 @@
           "id": "interpretacao",
           "tipo": "textarea",
           "label": "Interpretação",
+          "placeholder": "Interpretação clínica dos achados"
         },
         {
           "id": "conclusao",
           "tipo": "textarea",
           "label": "Conclusão",
+          "placeholder": "Conclusão final do exame"
         }
       ]
     },
@@ -8922,11 +8924,13 @@
           "id": "interpretacao",
           "tipo": "textarea",
           "label": "Interpretação",
+          "placeholder": "Interpretação clínica dos achados"
         },
         {
           "id": "conclusao",
           "tipo": "textarea",
           "label": "Conclusão",
+          "placeholder": "Conclusão final do exame"
         }
       ]
     },
