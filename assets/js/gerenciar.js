@@ -30,8 +30,6 @@ const selectPlano = $("gerenciarSelectPlano");
 const painel = $("gerenciarPainel");
 
 const novaDataEl = $("gerenciarNovaData");
-
-// se você tem select do tipo:
 const tipoPlanoEl = $("gerenciarTipoPlano");
 
 const depsList = $("gerenciarDepsList");
@@ -45,8 +43,6 @@ const msgEl = $("gerenciarMsg");
 
 let pacienteAtual = null;
 let depsAtual = [];
-
-// snapshot dos ids originais carregados (pra deletar corretamente)
 let depsOrigIds = new Set();
 
 function isDiretor() {
@@ -62,6 +58,7 @@ function setMsg(text, ok = true) {
 function showPainel() {
   if (painel) painel.style.display = "block";
 }
+
 function hidePainel() {
   if (painel) painel.style.display = "none";
 }
@@ -76,6 +73,43 @@ function closeModal() {
   if (selectPlano) selectPlano.value = "";
 }
 
+function normalizarStatus(status) {
+  return String(status || "").trim().toLowerCase();
+}
+
+function prioridadeStatus(status) {
+  const s = normalizarStatus(status);
+  if (s === "ativo") return 0;
+  if (s === "pendente") return 1;
+  if (s === "encerrado") return 2;
+  return 3;
+}
+
+function compararPlanos(a, b) {
+  const pa = prioridadeStatus(a.status);
+  const pb = prioridadeStatus(b.status);
+
+  if (pa !== pb) return pa - pb;
+
+  const nomeA = String(a.nome || "").trim().toLowerCase();
+  const nomeB = String(b.nome || "").trim().toLowerCase();
+  const nomeCmp = nomeA.localeCompare(nomeB, "pt-BR");
+  if (nomeCmp !== 0) return nomeCmp;
+
+  const dataA = new Date(a.criado_em || 0).getTime();
+  const dataB = new Date(b.criado_em || 0).getTime();
+  return dataB - dataA;
+}
+
+function resumirPlanoOption(p) {
+  const status = normalizarStatus(p.status);
+  const pass = asPassaporte(p.passaporte || "");
+  const tipo = String(p.tipo_plano || "").trim();
+
+  const badgeAtivo = status === "ativo" ? "" : "";
+  return `${badgeAtivo}${p.nome} — ${pass} — ${tipo} — ${status || "-"}`;
+}
+
 if (closeX) {
   closeX.addEventListener("click", closeModal);
 }
@@ -87,14 +121,7 @@ if (modal) {
 }
 
 /**
- * ------------- TIPOS DE PLANO (anti-bug trigger) -------------
- * - "tipoPlanoSelecionadoRaw": o que o usuário escolheu
- * - "tipoPlanoParaLimite": normaliza pra maxDeps (sem acento)
- * - "tipoPlanoParaDB": grava no banco preservando o padrão existente do registro
- *
- * IMPORTANTE (seu schema):
- * - O banco valida limite via pacientes.max_dependentes (int4)
- * - Então ao mudar tipo_plano, PRECISA atualizar max_dependentes junto.
+ * ------------- TIPOS DE PLANO -------------
  */
 
 function tipoPlanoSelecionadoRaw() {
@@ -110,7 +137,6 @@ function tipoPlanoParaLimite() {
   return "individual";
 }
 
-// grava no banco respeitando como o DB já armazena (com ou sem acento)
 function tipoPlanoParaDB() {
   const raw = tipoPlanoSelecionadoRaw();
   const rawLower = raw.toLowerCase();
@@ -127,12 +153,11 @@ function tipoPlanoParaDB() {
   return raw;
 }
 
-// ✅ fonte de verdade pro limite no banco (pacientes.max_dependentes)
 function maxDependentesPorTipo(tipoPlanoDbOuRaw) {
   const t = String(tipoPlanoDbOuRaw || "").toLowerCase();
-  if (t.includes("fam")) return 4; // familia / família
-  if (t.includes("comb")) return 2; // combo
-  return 0; // individual
+  if (t.includes("fam")) return 4;
+  if (t.includes("comb")) return 2;
+  return 0;
 }
 
 async function carregarListaPlanos() {
@@ -145,8 +170,7 @@ async function carregarListaPlanos() {
   const { data, error } = await supabase
     .from("pacientes")
     .select("id,nome,passaporte,tipo_plano,status,criado_em")
-    .order("criado_em", { ascending: false })
-    .limit(250);
+    .limit(500);
 
   if (error) {
     selectPlano.innerHTML = '<option value="">Erro ao carregar</option>';
@@ -154,12 +178,17 @@ async function carregarListaPlanos() {
     return;
   }
 
+  const planos = [...(data || [])].sort(compararPlanos);
+
   const opts = ['<option value="">Selecione...</option>'].concat(
-    (data || []).map((p) => {
-      const pass = p.passaporte ?? "";
-      const tipo = p.tipo_plano ?? "";
-      const st = p.status ?? "";
-      return `<option value="${escapeAttr(p.id)}" data-passaporte="${escapeAttr(pass)}">${escapeHTML(p.nome)} — ${escapeHTML(pass)} — ${escapeHTML(tipo)} — ${escapeHTML(st)}</option>`;
+    planos.map((p) => {
+      const pass = asPassaporte(p.passaporte || "");
+      const label = resumirPlanoOption({
+        ...p,
+        passaporte: pass,
+      });
+
+      return `<option value="${escapeAttr(p.id)}" data-passaporte="${escapeAttr(pass)}" data-status="${escapeAttr(normalizarStatus(p.status))}">${escapeHTML(label)}</option>`;
     }),
   );
 
@@ -196,7 +225,28 @@ function renderDeps() {
       const idx = Number(inp.dataset.idx);
       const field = inp.dataset.field;
       if (!Number.isFinite(idx) || !field) return;
-      depsAtual[idx][field] = inp.value;
+
+      let value = inp.value;
+      if (field === "passaporte") {
+        value = asPassaporte(value);
+        inp.value = value;
+      }
+
+      depsAtual[idx][field] = value;
+    });
+
+    inp.addEventListener("blur", () => {
+      const idx = Number(inp.dataset.idx);
+      const field = inp.dataset.field;
+      if (!Number.isFinite(idx) || !field) return;
+
+      if (field === "passaporte") {
+        const value = asPassaporte(inp.value);
+        inp.value = value;
+        depsAtual[idx][field] = value;
+      } else {
+        depsAtual[idx][field] = String(inp.value || "").trim();
+      }
     });
   });
 
@@ -240,13 +290,12 @@ async function carregarPlano(pacienteId) {
   pacienteAtual = paciente;
   depsAtual = (deps || []).map((d) => ({
     id: d.id,
-    nome: d.nome,
-    passaporte: d.passaporte,
+    nome: String(d.nome || "").trim(),
+    passaporte: asPassaporte(d.passaporte || ""),
   }));
 
   depsOrigIds = new Set(depsAtual.map((d) => d.id).filter(Boolean));
 
-  // preenche tipo no select respeitando o que veio do banco
   if (tipoPlanoEl) {
     const t = String(pacienteAtual?.tipo_plano || "individual");
     tipoPlanoEl.value = t;
@@ -273,7 +322,7 @@ function normalizarDependentesValidosComId() {
     .map((d) => ({
       id: d.id ?? null,
       nome: String(d.nome || "").trim(),
-      passaporte: String(d.passaporte || "").trim(),
+      passaporte: asPassaporte(d.passaporte || ""),
     }))
     .filter((d) => d.nome && d.passaporte);
 }
@@ -281,7 +330,6 @@ function normalizarDependentesValidosComId() {
 function depsPayload() {
   if (!pacienteAtual) return [];
 
-  // ✅ limite do FRONT baseado no tipo selecionado (normalizado)
   const limite = maxDeps(tipoPlanoParaLimite());
   const validos = normalizarDependentesValidosComId();
 
@@ -289,16 +337,20 @@ function depsPayload() {
     throw new Error("Limite de dependentes atingido");
   }
 
-  const titular = String(pacienteAtual.passaporte || "").trim();
+  const titular = asPassaporte(pacienteAtual.passaporte || "");
   const vistos = new Set();
+
   for (const d of validos) {
-    const pass = String(d.passaporte || "").trim();
-    if (pass === titular) throw new Error("O passaporte do dependente não pode ser igual ao do titular");
-    if (vistos.has(pass)) throw new Error("Há passaportes de dependentes duplicados");
+    const pass = asPassaporte(d.passaporte || "");
+    if (pass === titular) {
+      throw new Error("O passaporte do dependente não pode ser igual ao do titular");
+    }
+    if (vistos.has(pass)) {
+      throw new Error("Há passaportes de dependentes duplicados");
+    }
     vistos.add(pass);
   }
 
-  // Envia passaporte como STRING para não quebrar BigInt/precisão
   return validos.map((d) => ({
     id: d.id,
     nome: d.nome,
@@ -307,7 +359,57 @@ function depsPayload() {
   }));
 }
 
-// ✅ SYNC correto: DELETE → UPDATE → INSERT (evita trigger estourar)
+async function validarDependentesEmOutroPlanoAtivo(novosDeps) {
+  if (!pacienteAtual) return;
+
+  const passaportes = [...new Set(
+    novosDeps
+      .map((d) => asPassaporte(d.passaporte || ""))
+      .filter(Boolean),
+  )];
+
+  if (!passaportes.length) return;
+
+  const { data, error } = await supabase
+    .from("dependentes")
+    .select(`
+      id,
+      nome,
+      passaporte,
+      paciente_id,
+      pacientes!inner (
+        id,
+        nome,
+        status,
+        passaporte
+      )
+    `)
+    .in("passaporte", passaportes);
+
+  if (error) {
+    throw new Error("Erro ao validar dependentes: " + error.message);
+  }
+
+  const conflitos = (data || []).filter((item) => {
+    const statusPlano = normalizarStatus(item.pacientes?.status);
+    const mesmoPlanoAtual = item.paciente_id === pacienteAtual.id;
+    return statusPlano === "ativo" && !mesmoPlanoAtual;
+  });
+
+  if (conflitos.length) {
+    const lista = conflitos
+      .map((c) => {
+        const nomeDep = c.nome || "Dependente";
+        const pass = asPassaporte(c.passaporte || "");
+        const titular = c.pacientes?.nome || "Titular";
+        return `${nomeDep} (${pass}) já pertence ao plano ativo de ${titular}`;
+      })
+      .join(" | ");
+
+    throw new Error(lista);
+  }
+}
+
 async function syncDependentes(pacienteId, novosDeps) {
   const paraUpdate = novosDeps.filter((d) => d.id);
   const paraInsert = novosDeps.filter((d) => !d.id);
@@ -315,7 +417,6 @@ async function syncDependentes(pacienteId, novosDeps) {
   const idsMantidos = new Set(paraUpdate.map((d) => d.id));
   const idsParaDeletar = [...depsOrigIds].filter((id) => !idsMantidos.has(id));
 
-  // 1) DELETE
   if (idsParaDeletar.length) {
     const del = await supabase
       .from("dependentes")
@@ -326,7 +427,6 @@ async function syncDependentes(pacienteId, novosDeps) {
     if (del.error) throw new Error(del.error.message);
   }
 
-  // 2) UPDATE
   for (const d of paraUpdate) {
     const up = await supabase
       .from("dependentes")
@@ -337,19 +437,20 @@ async function syncDependentes(pacienteId, novosDeps) {
     if (up.error) throw new Error(up.error.message);
   }
 
-  // 3) INSERT
   if (paraInsert.length) {
-    const ins = await supabase.from("dependentes").insert(
-      paraInsert.map((d) => ({
-        paciente_id: pacienteId,
-        nome: d.nome,
-        passaporte: d.passaporte,
-      })),
-    );
+    const ins = await supabase
+      .from("dependentes")
+      .insert(
+        paraInsert.map((d) => ({
+          paciente_id: pacienteId,
+          nome: d.nome,
+          passaporte: d.passaporte,
+        })),
+      );
 
     if (ins.error) {
       console.error("Detalhe Supabase insert dependentes:", ins.error);
-      throw new Error(ins.error.message || "Falha ao inserir dependentes (400)");
+      throw new Error(ins.error.message || "Falha ao inserir dependentes");
     }
   }
 }
@@ -375,7 +476,7 @@ async function renovar30() {
 
   window.dispatchEvent(
     new CustomEvent("plano-atualizado", {
-      detail: { passaporte: pacienteAtual.passaporte },
+      detail: { passaporte: asPassaporte(pacienteAtual.passaporte || "") },
     }),
   );
 }
@@ -392,10 +493,9 @@ async function salvarAlteracoes() {
       criadoISO = isoFromDateInput(novaDataEl.value);
     }
 
-    // valida dependentes antes
     const deps = depsPayload();
+    await validarDependentesEmOutroPlanoAtivo(deps);
 
-    // ✅ tipo e max_dependentes precisam andar juntos (seu trigger usa max_dependentes)
     const tipoDb = tipoPlanoParaDB();
     const novoMax = maxDependentesPorTipo(tipoDb);
 
@@ -412,7 +512,6 @@ async function salvarAlteracoes() {
 
     if (upPac.error) throw new Error(upPac.error.message);
 
-    // 🔎 Confirma tipo + max_dependentes no banco (evita trigger usando valor antigo)
     const check = await supabase
       .from("pacientes")
       .select("tipo_plano,max_dependentes")
@@ -441,10 +540,15 @@ async function salvarAlteracoes() {
 
     setMsg("Alterações salvas.");
     await carregarPlano(pacienteAtual.id);
+    await carregarListaPlanos();
+
+    if (selectPlano) {
+      selectPlano.value = String(pacienteAtual.id);
+    }
 
     window.dispatchEvent(
       new CustomEvent("plano-atualizado", {
-        detail: { passaporte: pacienteAtual.passaporte },
+        detail: { passaporte: asPassaporte(pacienteAtual.passaporte || "") },
       }),
     );
   } catch (e) {
@@ -465,15 +569,21 @@ async function encerrarPlano() {
 
   setMsg("Plano encerrado.");
   await carregarPlano(pacienteAtual.id);
+  await carregarListaPlanos();
+
+  if (selectPlano) {
+    selectPlano.value = String(pacienteAtual.id);
+  }
 
   window.dispatchEvent(
     new CustomEvent("plano-atualizado", {
-      detail: { passaporte: pacienteAtual.passaporte },
+      detail: { passaporte: asPassaporte(pacienteAtual.passaporte || "") },
     }),
   );
 }
 
 /* eventos */
+
 window.addEventListener("abrir-gerenciar", () => {
   if (!isDiretor()) return;
   carregarListaPlanos();
@@ -497,7 +607,6 @@ if (addDepBtn) {
   addDepBtn.addEventListener("click", () => {
     if (!pacienteAtual) return;
 
-    // remove entradas 100% vazias pra não inflar
     depsAtual = depsAtual.filter(
       (d) => String(d.nome || "").trim() || String(d.passaporte || "").trim(),
     );

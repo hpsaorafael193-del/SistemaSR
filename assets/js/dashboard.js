@@ -14,7 +14,6 @@ function withTimeout(promise, ms = 12000, label = "operação") {
   return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
 
-
 /* ---------- Helpers DOM ---------- */
 
 function $(id) {
@@ -133,13 +132,13 @@ async function ensureCargo(session) {
 }
 
 function setUIByAuth({ logado, cargo, username, displayName }) {
-  // login/perfil na barra lateral
   if (diretoriaBtn) {
     diretoriaBtn.style.display = "inline-flex";
     diretoriaBtn.textContent = logado ? (displayName || username) : "Entrar";
     diretoriaBtn.title = logado ? `Abrir perfil (${cargo})` : "Abrir login";
     diretoriaBtn.dataset.auth = logado ? "logged" : "guest";
   }
+
   if (logoutBtn) logoutBtn.style.display = logado ? "inline-flex" : "none";
 
   if (userIcon) {
@@ -148,12 +147,10 @@ function setUIByAuth({ logado, cargo, username, displayName }) {
     userIcon.textContent = logado ? `${displayName || username} · ${cargo}` : "";
   }
 
-  // cadastro só diretoria
   if (cadastroBtn) {
     cadastroBtn.style.display = logado && cargo === "diretor" ? "inline-flex" : "none";
   }
 
-  // gerenciar só diretoria
   if (gerenciarBtn) {
     gerenciarBtn.style.display = logado && cargo === "diretor" ? "inline-flex" : "none";
   }
@@ -222,7 +219,6 @@ function renderAlertaValidade(status, dias, validadeDate) {
     return;
   }
 
-  // vencido
   if (dias < 0) {
     alertaPlano.innerHTML = `
       <div class="alerta-vencido">
@@ -232,7 +228,6 @@ function renderAlertaValidade(status, dias, validadeDate) {
     return;
   }
 
-  // vence hoje
   if (dias === 0) {
     alertaPlano.innerHTML = `
       <div class="alerta-pendente">
@@ -242,7 +237,6 @@ function renderAlertaValidade(status, dias, validadeDate) {
     return;
   }
 
-  // perto do vencimento
   if (dias <= 7) {
     alertaPlano.innerHTML = `
       <div class="alerta-pendente">
@@ -276,8 +270,6 @@ function renderResultado(paciente, dependenteBuscado) {
        </div>`
     : "";
 
-  // MUITO IMPORTANTE: NÃO criar <div id="resultadoPaciente"> dentro do #resultadoPaciente.
-  // O container já é #resultadoPaciente e o CSS faz o grid.
   resultadoPaciente.innerHTML = `
     <div class="card">
       <h3 style="margin-top:0;">${nomePaciente}</h3>
@@ -299,7 +291,7 @@ function renderResultado(paciente, dependenteBuscado) {
               ${paciente.dependentes
                 .map((d) => {
                   const destaque =
-                    dependenteBuscado && String(d.passaporte) === String(dependenteBuscado)
+                    dependenteBuscado && asPassaporte(d.passaporte || "") === asPassaporte(dependenteBuscado || "")
                       ? "dep-destaque"
                       : "";
                   return `<li class="${destaque}">${escapeHTML(d.nome)} (${escapeHTML(d.passaporte)})</li>`;
@@ -340,15 +332,33 @@ async function buscarPorPassaporte(passStr) {
       throw new Error("Erro ao buscar paciente.");
     }
 
-    let paciente = titularRes.data?.[0] || null;
+    let paciente = null;
+
+    if (titularRes.data && titularRes.data.length > 0) {
+      paciente =
+        titularRes.data.find((p) => String(p.status || "").trim().toLowerCase() === "ativo") ||
+        titularRes.data[0];
+    }
 
     if (!paciente) {
       const depRes = await withTimeout(
         supabase
           .from("dependentes")
-          .select("paciente_id")
-          .eq("passaporte", passaporte)
-          .maybeSingle(),
+          .select(`
+            paciente_id,
+            nome,
+            passaporte,
+            pacientes!inner (
+              id,
+              nome,
+              passaporte,
+              tipo_plano,
+              status,
+              imagem_url,
+              criado_em
+            )
+          `)
+          .eq("passaporte", passaporte),
         12000,
         "buscar dependente"
       );
@@ -358,11 +368,17 @@ async function buscarPorPassaporte(passStr) {
         throw new Error("Erro ao buscar dependente.");
       }
 
-      if (!depRes.data) {
+      if (!depRes.data || depRes.data.length === 0) {
         setHTML(resultadoPaciente, `<p>Paciente não encontrado</p>`);
         return;
       }
 
+      const depEscolhido =
+        depRes.data.find(
+          (d) => String(d.pacientes?.status || "").trim().toLowerCase() === "ativo"
+        ) || depRes.data[0];
+
+      const pacienteId = depEscolhido.paciente_id;
       dependenteBuscado = passaporte;
 
       const pacRes = await withTimeout(
@@ -372,7 +388,7 @@ async function buscarPorPassaporte(passStr) {
             id,nome,passaporte,tipo_plano,status,imagem_url,criado_em,
             dependentes(nome,passaporte)
           `)
-          .eq("id", depRes.data.paciente_id)
+          .eq("id", pacienteId)
           .single(),
         12000,
         "buscar titular"
@@ -407,7 +423,6 @@ async function exigirLoginOuAbrirModal() {
   return true;
 }
 
-// Botão lateral: deslogado abre login | logado abre perfil
 if (diretoriaBtn) {
   diretoriaBtn.addEventListener("click", async () => {
     const { logado } = await refreshAuthUI();
@@ -415,11 +430,10 @@ if (diretoriaBtn) {
       show(loginModal);
       return;
     }
-    if (typeof window.coreActivateTab === 'function') window.coreActivateTab('perfil');
+    if (typeof window.coreActivateTab === "function") window.coreActivateTab("perfil");
   });
 }
 
-// Logout
 if (logoutBtn) {
   logoutBtn.addEventListener("click", async () => {
     await supabase.auth.signOut();
@@ -427,7 +441,6 @@ if (logoutBtn) {
   });
 }
 
-// Abrir cadastro
 if (cadastroBtn) {
   cadastroBtn.addEventListener("click", async () => {
     const ok = await exigirLoginOuAbrirModal();
@@ -441,18 +454,15 @@ if (cadastroBtn) {
   });
 }
 
-// Fechar cadastro pelo X
 if (fecharCadastroX) {
   fecharCadastroX.addEventListener("click", () => hide(cadastroModal));
 }
 
-// Clique fora fecha modais
 window.addEventListener("click", (e) => {
   if (e.target === loginModal) hide(loginModal);
   if (e.target === cadastroModal) hide(cadastroModal);
 });
 
-// Buscar
 if (buscarBtn) {
   buscarBtn.addEventListener("click", async () => {
     if (buscaEmAndamento) return;
@@ -472,7 +482,6 @@ if (buscarBtn) {
   });
 }
 
-// Enter no input faz buscar
 if (passaporteInput) {
   passaporteInput.addEventListener("keydown", async (e) => {
     if (e.key === "Enter") {
@@ -482,7 +491,6 @@ if (passaporteInput) {
   });
 }
 
-// Quando o auth.js finalizar login
 window.addEventListener("usuario-logado", async () => {
   hide(loginModal);
   await refreshAuthUI();
@@ -494,22 +502,20 @@ window.addEventListener("usuario-deslogado", async () => {
 });
 
 window.addEventListener("plano-atualizado", async (e) => {
-  const pass = String(e?.detail?.passaporte || "").trim();
+  const pass = asPassaporte(e?.detail?.passaporte || "");
   if (!pass || !pacienteAtual) return;
 
-  const atualPass = String(pacienteAtual.passaporte || "").trim();
+  const atualPass = asPassaporte(pacienteAtual.passaporte || "");
   const atualDeps = Array.isArray(pacienteAtual.dependentes) ? pacienteAtual.dependentes : [];
-  const dependeDoAtual = atualDeps.some((d) => String(d.passaporte || "").trim() === pass);
+  const dependeDoAtual = atualDeps.some((d) => asPassaporte(d.passaporte || "") === pass);
 
   if (pass === atualPass || dependeDoAtual) {
     await buscarPorPassaporte(pass);
   }
 });
 
-// Quando o cadastro.js criar um plano
 window.addEventListener("plano-criado", async (e) => {
-  // e.detail deve ser o passaporte do titular
-  const pass = String(e.detail || "").trim();
+  const pass = asPassaporte(e.detail || "");
   if (!pass) return;
 
   hide(cadastroModal);
@@ -523,6 +529,7 @@ window.addEventListener("plano-criado", async (e) => {
 await refreshAuthUI();
 
 /* ---------- Gerenciar Modal (UI básica) ---------- */
+
 if (gerenciarBtn && gerenciarModal) {
   gerenciarBtn.addEventListener("click", () => {
     const cargo = getCargo();
@@ -547,4 +554,3 @@ if (gerenciarModal) {
 window.addEventListener("usuario-deslogado", () => {
   if (gerenciarModal) gerenciarModal.style.display = "none";
 });
-
