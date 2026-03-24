@@ -1,30 +1,59 @@
 // Dados dos produtos organizados por categoria (valores em centavos)
 const medicamentos = [
-            { id: 'm0', nome: "KIT MÉDICO", preco: 230000, imagem: "Icones/Kit medico.png" },
-            { id: 'm1', nome: "BANDAGEM", preco: 30000, imagem: "Icones/Bandagem.png" },
-            { id: 'm2', nome: "ATADURA", preco: 25000, imagem: "Icones/Atadura.png" },
-            { id: 'm3', nome: "ADRENALINA", preco: 780000, imagem: "Icones/Adrenalina.png" },
-            { id: 'm4', nome: "SINKALMY", preco: 80000, imagem: "Icones/Sinkalmy.png" },
-            { id: 'm5', nome: "RITMONEARY", preco: 55000, imagem: "Icones/Ritmoneary.png" },
-            { id: 'm6', nome: "ANALGÉSICO", preco: 55000, imagem: "Icones/Analgesico.png" },
+            { id: 'm0', nome: "KIT MÉDICO", preco: 230000, imagem: "Icones/produtos/Kit medico.png" },
+            { id: 'm1', nome: "BANDAGEM", preco: 30000, imagem: "Icones/produtos/Bandagem.png" },
+            { id: 'm2', nome: "ATADURA", preco: 25000, imagem: "Icones/produtos/Atadura.png" },
+            { id: 'm3', nome: "ADRENALINA", preco: 780000, imagem: "Icones/produtos/Adrenalina.png" },
+            { id: 'm4', nome: "SINKALMY", preco: 80000, imagem: "Icones/produtos/Sinkalmy.png" },
+            { id: 'm5', nome: "RITMONEARY", preco: 55000, imagem: "Icones/produtos/Ritmoneary.png" },
+            { id: 'm6', nome: "ANALGÉSICO", preco: 55000, imagem: "Icones/produtos/Analgesico.png" },
         ];
 
 const procedimentos = [
-            { id: 'p0', nome: "TRATAMENTO", preco: 180000, imagem: "Icones/Tratamento.png" },
-            { id: 'p1', nome: "QUEIMADURAS/GESSO", preco: 250000, imagem: "Icones/Gesso.png" },
-            { id: 'p2', nome: "CONSULTAS", preco: 20000000, imagem: "Icones/Consultas.png" },
-            { id: 'p3', nome: "EXAMES BASICOS", preco: 250000, imagem: "Icones/Exames_basicos.png" },
-            { id: 'p4', nome: "EXAMES DE IMAGEM", preco: 300000, imagem: "Icones/Exames_imagem.png" },
-            { id: 'p5', nome: "PROCEDIMENTOS", preco: 25000000, imagem: "Icones/Procedimentos.png" },
-            { id: 'p6', nome: "FERT IN VITRO", preco: 40000000, imagem: "Icones/Fiv.png" },
-            { id: 'p7', nome: "PARTO NORMAL", preco: 40000000, imagem: "Icones/Partos.png" },
-            { id: 'p8', nome: "PARTO HUMANIZADO", preco: 80000000, imagem: "Icones/Partos_H.png" },
+            { id: 'p0', nome: "TRATAMENTO", preco: 180000, imagem: "Icones/procedimentos/Tratamento.png" },
+            { id: 'p1', nome: "QUEIMADURAS/GESSO", preco: 250000, imagem: "Icones/procedimentos/Gesso.png" },
+            { id: 'p2', nome: "CONSULTAS", preco: 20000000, imagem: "Icones/procedimentos/Consultas.png" },
+            { id: 'p3', nome: "EXAMES BASICOS", preco: 250000, imagem: "Icones/procedimentos/Exames_basicos.png" },
+            { id: 'p4', nome: "EXAMES DE IMAGEM", preco: 300000, imagem: "Icones/procedimentos/Exames_imagem.png" },
+            { id: 'p5', nome: "PROCEDIMENTOS", preco: 25000000, imagem: "Icones/procedimentos/Procedimentos.png" },
+            { id: 'p6', nome: "FERT IN VITRO", preco: 40000000, imagem: "Icones/procedimentos/Fiv.png" },
+            { id: 'p7', nome: "PARTO NORMAL", preco: 40000000, imagem: "Icones/procedimentos/Partos.png" },
+            { id: 'p8', nome: "PARTO HUMANIZADO", preco: 80000000, imagem: "Icones/procedimentos/Partos_H.png" },
+        ];
+
+const farmacia = [
+            { id: 'f0', nome: 'GlicoVida', preco: 72000, imagem: 'Icones/farmacia/GlicoVida.png' },
+            { id: 'f1', nome: 'OrgaBloq', preco: 72000, imagem: 'Icones/farmacia/OrgaBloq.png'},
+            { id: 'f2', nome: 'FertiPlus', preco: 72000, imagem: 'Icones/farmacia/FertiPlus.png' },
+            { id: 'f3', nome: 'GestaVida', preco: 72000, imagem: 'Icones/farmacia/GestaVida.png' },
+            { id: 'f4', nome: 'CalciFort', preco: 184000, imagem: 'Icones/farmacia/CalciFort.png' },
+            { id: 'f5', nome: 'MaterPlus', preco: 80000, imagem: 'Icones/farmacia/MaterPlus.png' },
+            { id: 'f6', nome: 'DorMax', preco: 40000, imagem: 'Icones/farmacia/DorMax.png' },
+            { id: 'f7', nome: 'Cefaliv', preco: 40000, imagem: 'Icones/farmacia/Cefaliv.png' },
+            { id: 'f8', nome: 'Musculiv', preco: 100000, imagem: 'Icones/farmacia/Musculiv.png' },
+            { id: 'f9', nome: 'Analgex', preco: 100000, imagem: 'Icones/farmacia/Analgex.png' },
+            { id: 'f10', nome: 'Parador', preco: 100000, imagem: 'Icones/farmacia/Parador.png' },
+            { id: 'f11', nome: 'Calmivita', preco: 100000, imagem: 'Icones/farmacia/Calmivita.png' },
+            { id: 'f12', nome: 'Alergicor', preco: 104000, imagem: 'Icones/farmacia/Alergicor.png' },
+            { id: 'f13', nome: 'Alergix', preco: 100000, imagem: 'Icones/farmacia/Alergix.png' },
+            { id: 'f14', nome: 'Respimax', preco: 100000, imagem: 'Icones/farmacia/Respimax.png' },
+            { id: 'f15', nome: 'Gripex', preco: 100000, imagem: 'Icones/farmacia/Gripex.png' },
+            { id: 'f16', nome: 'Bactrimed', preco: 100000, imagem: 'Icones/farmacia/Bactrimed.png' },
+            { id: 'f17', nome: 'Bacteron', preco: 104000, imagem: 'Icones/farmacia/Bacteron.png' },
+            { id: 'f18', nome: 'Inflamol', preco: 100000, imagem: 'Icones/farmacia/Inflamol.png' },
+            { id: 'f19', nome: 'Inflamax', preco: 104000, imagem: 'Icones/farmacia/Inflamax.png' },
+            { id: 'f20', nome: 'Gastrix', preco: 100000, imagem: 'Icones/farmacia/Gastrix.png' },
+            { id: 'f21', nome: 'Gasiliv', preco: 100000, imagem: 'Icones/farmacia/Gasiliv.png' },
+            { id: 'f22', nome: 'HepaVida', preco: 100000, imagem: 'Icones/farmacia/HepaVida.png' },
+            { id: 'f23', nome: 'NáuseaZero', preco: 100000, imagem: 'Icones/farmacia/NáuseaZero.png' },
+            { id: 'f24', nome: 'CólicaCalm', preco: 40000, imagem: 'Icones/farmacia/CólicaCalm.png' },
+            { id: 'f25', nome: 'Ressak', preco: 100000, imagem: 'Icones/farmacia/Ressak.png' },
         ];
 
 const ursosHP = [
-            { id: 'u0', nome: "CATZINHA", preco: 3000000, imagem: "Icones/CatZinha.png" },
-            { id: 'u1', nome: "CAPIZINHA", preco: 3000000, imagem: "Icones/CapZinha.png" },
-            { id: 'u2', nome: "PANDINHO", preco: 3000000, imagem: "Icones/PanDinho.png" },
+            { id: 'u0', nome: "CATZINHA", preco: 3000000, imagem: "Icones/ursos/CatZinha.png" },
+            { id: 'u1', nome: "CAPIZINHA", preco: 3000000, imagem: "Icones/ursos/CapZinha.png" },
+            { id: 'u2', nome: "PANDINHO", preco: 3000000, imagem: "Icones/ursos/PanDinho.png" },
         ];
 
 const combos = {
@@ -66,7 +95,7 @@ let carrinho = {};
 let convenioAtual = "sem";
 
 // Inicializar carrinho para todos os produtos
-[...medicamentos, ...procedimentos, ...ursosHP].forEach((produto) => {
+[...medicamentos, ...farmacia, ...procedimentos, ...ursosHP].forEach((produto) => {
   carrinho[produto.id] = 0;
 });
 
@@ -74,6 +103,7 @@ let convenioAtual = "sem";
 function renderizarProdutos() {
   renderizarCategoria("medicamentos", medicamentos);
   renderizarCategoria("procedimentos", procedimentos);
+  renderizarCategoria("farmacia", farmacia);
   renderizarCategoria("ursos-hp", ursosHP);
   adicionarEventListeners();
 }
@@ -87,12 +117,14 @@ function renderizarCategoria(tipo, produtos) {
     produtoCard.className = "produto-card";
     produtoCard.style.animationDelay = `${index * 0.05}s`;
 
+    const camposEditaveis = `<div class="produto-preco">R$ ${formatarPreco(produto.preco)}</div>`;
+
     produtoCard.innerHTML = `
                     <div class="produto-imagem-container">
                         <img src="${produto.imagem}" alt="${produto.nome}" class="produto-imagem" onerror="this.src='https://via.placeholder.com/150x150/f9e2b5/491100?text=${encodeURIComponent(produto.nome)}'">
                     </div>
                     <div class="produto-nome">${produto.nome}</div>
-                    <div class="produto-preco">R$ ${formatarPreco(produto.preco)}</div>
+                    ${camposEditaveis}
                     <div class="produto-controles">
                         <div class="quantidade">
                             <button class="btn-quantidade diminuir" data-produto-id="${produto.id}">-</button>
@@ -107,7 +139,9 @@ function renderizarCategoria(tipo, produtos) {
 
     container.appendChild(produtoCard);
   });
+
 }
+
 
 function adicionarEventListeners() {
   // Botões de aumentar
@@ -206,6 +240,12 @@ function calcularTotal() {
     total += produto.preco * quantidade;
   });
 
+  // Calcular total da farmácia
+  farmacia.forEach((produto) => {
+    const quantidade = carrinho[produto.id] || 0;
+    total += produto.preco * quantidade;
+  });
+
   // Calcular total de procedimentos
   procedimentos.forEach((produto) => {
     const quantidade = carrinho[produto.id] || 0;
@@ -259,7 +299,7 @@ function formatarPreco(preco) {
 
 function zerarTudo() {
   // Zerar todas as quantidades
-  [...medicamentos, ...procedimentos, ...ursosHP].forEach((produto) => {
+  [...medicamentos, ...farmacia, ...procedimentos, ...ursosHP].forEach((produto) => {
     carrinho[produto.id] = 0;
     atualizarQuantidade(produto.id);
   });
