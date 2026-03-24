@@ -34,7 +34,7 @@ const modalDetails = document.getElementById("modal-details");
 const DOCTORS = {
   anne: "Dra. Anne D'Luddhiev",
   natalie: "Dra. Natalie Bianchi",
-  igor: "Dr. Igor Luddhiev",
+  luidhy: "Dr. Luidhy Luddhiev",
   luan: "Dr. Luan D'Amato",
   lia: "Dra. Lia Vespucci",
 };
@@ -47,7 +47,7 @@ function normalizeDoctor(raw) {
 
   if (v.includes("anne")) return "anne";
   if (v.includes("natalie")) return "natalie";
-  if (v.includes("igor")) return "igor";
+  if (v.includes("luidhy")) return "luidhy";
   if (v.includes("luan")) return "luan";
   if (v.includes("lia")) return "lia";
 
