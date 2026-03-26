@@ -50,6 +50,56 @@ function safeImageURL(value) {
   return "";
 }
 
+
+async function excluirPlanoExpirado(pacienteOuId) {
+  const pacienteId = typeof pacienteOuId === "object" ? pacienteOuId?.id : pacienteOuId;
+  if (!pacienteId) throw new Error("Plano inválido para exclusão.");
+
+  const { data: plano, error: planoError } = await supabase
+    .from("pacientes")
+    .select("id,criado_em")
+    .eq("id", pacienteId)
+    .maybeSingle();
+
+  if (planoError) {
+    throw new Error(planoError.message || "Falha ao validar plano vencido.");
+  }
+
+  if (!plano) return;
+
+  const validade = calcularValidade(plano.criado_em);
+  if (!(validade < new Date())) return;
+
+  const { data: deps, error: depsError } = await supabase
+    .from("dependentes")
+    .select("id")
+    .eq("paciente_id", pacienteId);
+
+  if (depsError) {
+    throw new Error(depsError.message || "Falha ao localizar dependentes do plano vencido.");
+  }
+
+  const depIds = (deps || []).map((d) => d.id).filter(Boolean);
+  if (depIds.length) {
+    const delDeps = await supabase.from("dependentes").delete().in("id", depIds);
+    if (delDeps.error) throw new Error(delDeps.error.message || "Falha ao excluir dependentes do plano vencido.");
+  }
+
+  const delPac = await supabase.from("pacientes").delete().eq("id", pacienteId);
+  if (delPac.error) throw new Error(delPac.error.message || "Falha ao excluir plano vencido.");
+}
+
+async function excluirSePlanoExpirado(paciente) {
+  if (!paciente?.id || !paciente?.criado_em) return false;
+
+  const validade = calcularValidade(paciente.criado_em);
+  const expirou = validade < new Date();
+  if (!expirou) return false;
+
+  await excluirPlanoExpirado(paciente);
+  return true;
+}
+
 function getPlanoStatus(paciente, dias) {
   const statusBanco = String(paciente?.status || "").trim().toLowerCase();
   if (statusBanco === "encerrado") return "encerrado";
@@ -335,9 +385,16 @@ async function buscarPorPassaporte(passStr) {
     let paciente = null;
 
     if (titularRes.data && titularRes.data.length > 0) {
+      const pacientesDisponiveis = [];
+      for (const item of titularRes.data) {
+        if (await excluirSePlanoExpirado(item)) continue;
+        pacientesDisponiveis.push(item);
+      }
+
       paciente =
-        titularRes.data.find((p) => String(p.status || "").trim().toLowerCase() === "ativo") ||
-        titularRes.data[0];
+        pacientesDisponiveis.find((p) => String(p.status || "").trim().toLowerCase() === "ativo") ||
+        pacientesDisponiveis[0] ||
+        null;
     }
 
     if (!paciente) {
@@ -373,10 +430,21 @@ async function buscarPorPassaporte(passStr) {
         return;
       }
 
+      const dependentesDisponiveis = [];
+      for (const item of depRes.data) {
+        if (await excluirSePlanoExpirado(item.pacientes)) continue;
+        dependentesDisponiveis.push(item);
+      }
+
+      if (!dependentesDisponiveis.length) {
+        setHTML(resultadoPaciente, `<p>Paciente não encontrado</p>`);
+        return;
+      }
+
       const depEscolhido =
-        depRes.data.find(
+        dependentesDisponiveis.find(
           (d) => String(d.pacientes?.status || "").trim().toLowerCase() === "ativo"
-        ) || depRes.data[0];
+        ) || dependentesDisponiveis[0];
 
       const pacienteId = depEscolhido.paciente_id;
       dependenteBuscado = passaporte;

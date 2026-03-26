@@ -101,6 +101,49 @@ function compararPlanos(a, b) {
   return dataB - dataA;
 }
 
+
+async function excluirPlanoExpirado(pacienteOuId) {
+  const pacienteId = typeof pacienteOuId === "object" ? pacienteOuId?.id : pacienteOuId;
+  if (!pacienteId) throw new Error("Plano inválido para exclusão");
+
+  const { data: plano, error: planoError } = await supabase
+    .from("pacientes")
+    .select("id,criado_em")
+    .eq("id", pacienteId)
+    .maybeSingle();
+
+  if (planoError) {
+    throw new Error(planoError.message || "Falha ao validar plano expirado");
+  }
+
+  if (!plano) return;
+  if (!planoExpirou(plano)) return;
+
+  const { data: deps, error: depsError } = await supabase
+    .from("dependentes")
+    .select("id")
+    .eq("paciente_id", pacienteId);
+
+  if (depsError) {
+    throw new Error(depsError.message || "Falha ao localizar dependentes do plano expirado");
+  }
+
+  const depIds = (deps || []).map((d) => d.id).filter(Boolean);
+  if (depIds.length) {
+    const delDeps = await supabase.from("dependentes").delete().in("id", depIds);
+    if (delDeps.error) throw new Error(delDeps.error.message || "Falha ao excluir dependentes do plano expirado");
+  }
+
+  const delPac = await supabase.from("pacientes").delete().eq("id", pacienteId);
+  if (delPac.error) throw new Error(delPac.error.message || "Falha ao excluir plano expirado");
+}
+
+function planoExpirou(paciente) {
+  if (!paciente?.criado_em) return false;
+  const validade = calcularValidade(paciente.criado_em);
+  return validade < new Date();
+}
+
 function resumirPlanoOption(p) {
   const status = normalizarStatus(p.status);
   const pass = asPassaporte(p.passaporte || "");
@@ -178,7 +221,23 @@ async function carregarListaPlanos() {
     return;
   }
 
-  const planos = [...(data || [])].sort(compararPlanos);
+  const registros = [...(data || [])];
+  const expirados = registros.filter(planoExpirou);
+
+  if (expirados.length) {
+    const exclusoes = await Promise.allSettled(
+      expirados.map((p) => excluirPlanoExpirado(p)),
+    );
+
+    const falha = exclusoes.find((r) => r.status === "rejected");
+    if (falha) {
+      selectPlano.innerHTML = '<option value="">Erro ao carregar</option>';
+      setMsg("Erro ao excluir planos vencidos: " + falha.reason.message, false);
+      return;
+    }
+  }
+
+  const planos = registros.filter((p) => !planoExpirou(p)).sort(compararPlanos);
 
   const opts = ['<option value="">Selecione...</option>'].concat(
     planos.map((p) => {
