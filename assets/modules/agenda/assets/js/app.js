@@ -8,6 +8,7 @@ let appointments = []; // vem do Supabase
 let currentDate = new Date();
 let selectedDoctor = null;
 let currentAppointment = null;
+const AGENDA_FORM_DRAFT_KEY = "hpsr_agenda_form_draft";
 
 // ELEMENTOS DOM
 const patientNameInput = document.getElementById("patient-name");
@@ -101,7 +102,10 @@ function applySelectedDoctor(doctorKey) {
     }
   });
 
-  if (matched) validateForm();
+  if (matched) {
+    validateForm();
+    persistFormDraft();
+  }
   return matched;
 }
 
@@ -168,10 +172,8 @@ birthTimeInput.value = "08:00";
 // Seleção de médico
 doctorOptions.forEach((option) => {
   option.addEventListener("click", () => {
-    doctorOptions.forEach((opt) => opt.classList.remove("selected"));
-    option.classList.add("selected");
-    selectedDoctor = option.getAttribute("data-doctor");
-    validateForm();
+    applySelectedDoctor(option.getAttribute("data-doctor"));
+    persistFormDraft();
   });
 });
 
@@ -199,11 +201,20 @@ btnCancelAppointment.addEventListener("click", () => {
 });
 
 // Validar formulário em tempo real
-[patientNameInput, patientPhoneInput, birthDateInput, birthTimeInput].forEach(
-  (input) => {
-    input.addEventListener("input", validateForm);
-  },
-);
+[
+  patientNameInput,
+  patientPhoneInput,
+  birthTypeSelect,
+  birthDateInput,
+  birthTimeInput,
+  notesInput,
+].forEach((input) => {
+  const eventName = input.tagName === "SELECT" ? "change" : "input";
+  input.addEventListener(eventName, () => {
+    validateForm();
+    persistFormDraft();
+  });
+});
 
 // Fechar modal ao clicar fora
 window.addEventListener("click", (e) => {
@@ -229,12 +240,74 @@ patientPhoneInput.addEventListener("input", (e) => {
 });
 
 // INIT
+restoreFormDraft();
 renderCalendar();
 validateForm();
 loadAppointments();
 autoSelectDoctorFromLoggedUser();
 
 // FUNÇÕES
+
+function getFormDraft() {
+  return {
+    patient_name: patientNameInput.value.trim(),
+    patient_phone: patientPhoneInput.value.trim(),
+    birth_type: birthTypeSelect.value,
+    doctor: normalizeDoctor(selectedDoctor),
+    date: birthDateInput.value,
+    time: birthTimeInput.value,
+    notes: notesInput.value,
+  };
+}
+
+function persistFormDraft() {
+  try {
+    const draft = getFormDraft();
+    const hasValue = Object.values(draft).some((value) => String(value || "").trim() !== "");
+
+    if (!hasValue) {
+      localStorage.removeItem(AGENDA_FORM_DRAFT_KEY);
+      return;
+    }
+
+    localStorage.setItem(AGENDA_FORM_DRAFT_KEY, JSON.stringify(draft));
+  } catch (error) {
+    console.warn("Não foi possível salvar o rascunho do agendamento:", error);
+  }
+}
+
+function restoreFormDraft() {
+  try {
+    const rawDraft = localStorage.getItem(AGENDA_FORM_DRAFT_KEY);
+    if (!rawDraft) return;
+
+    const draft = JSON.parse(rawDraft);
+    if (!draft || typeof draft !== "object") return;
+
+    patientNameInput.value = draft.patient_name || "";
+    patientPhoneInput.value = draft.patient_phone || "";
+    birthTypeSelect.value = draft.birth_type || "consulta";
+    birthDateInput.value = draft.date || formattedToday;
+    birthTimeInput.value = draft.time || "08:00";
+    notesInput.value = draft.notes || "";
+
+    if (draft.doctor) {
+      applySelectedDoctor(draft.doctor);
+    }
+  } catch (error) {
+    console.warn("Não foi possível restaurar o rascunho do agendamento:", error);
+    localStorage.removeItem(AGENDA_FORM_DRAFT_KEY);
+  }
+}
+
+function clearFormDraft() {
+  try {
+    localStorage.removeItem(AGENDA_FORM_DRAFT_KEY);
+  } catch (error) {
+    console.warn("Não foi possível limpar o rascunho do agendamento:", error);
+  }
+}
+
 function validateForm() {
   const isFormValid =
     patientNameInput.value.trim() !== "" &&
@@ -345,6 +418,7 @@ function scheduleAppointment() {
     status: "agendado",
   };
 
+  persistFormDraft();
   showConfirmationModal(currentAppointment);
 }
 
@@ -419,7 +493,9 @@ async function confirmAppointment() {
 
   confirmationModal.style.display = "none";
   showAlert("Consulta agendada com sucesso!", "success");
-  clearForm();
+  currentAppointment = null;
+  persistFormDraft();
+  validateForm();
   await loadAppointments();
 }
 
@@ -701,10 +777,12 @@ function clearForm() {
   doctorOptions.forEach((opt) => opt.classList.remove("selected"));
   selectedDoctor = null;
   notesInput.value = "";
+  currentAppointment = null;
 
   birthDateInput.value = formattedToday;
   birthTimeInput.value = "08:00";
 
+  clearFormDraft();
   validateForm();
 }
 
