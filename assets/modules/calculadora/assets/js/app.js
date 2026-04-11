@@ -45,8 +45,8 @@ const farmacia = [
             { id: 'f20', nome: 'Gastrix', preco: 100000, imagem: 'Icones/farmacia/Gastrix.png' },
             { id: 'f21', nome: 'Gasiliv', preco: 100000, imagem: 'Icones/farmacia/Gasiliv.png' },
             { id: 'f22', nome: 'HepaVida', preco: 100000, imagem: 'Icones/farmacia/HepaVida.png' },
-            { id: 'f23', nome: 'NáuseaZero', preco: 100000, imagem: 'Icones/farmacia/NáuseaZero.png' },
-            { id: 'f24', nome: 'CólicaCalm', preco: 40000, imagem: 'Icones/farmacia/CólicaCalm.png' },
+            { id: 'f23', nome: 'NáuseaZero', preco: 100000, imagem: 'Icones/farmacia/NauseaZero.png' },
+            { id: 'f24', nome: 'CólicaCalm', preco: 40000, imagem: 'Icones/farmacia/ColicaCalm.png' },
             { id: 'f25', nome: 'Ressak', preco: 100000, imagem: 'Icones/farmacia/Ressak.png' },
         ];
 
