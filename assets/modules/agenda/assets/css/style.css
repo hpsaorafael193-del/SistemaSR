@@ -488,6 +488,12 @@ textarea.form-input {
     border-left: 3px solid #8d6e63;
 }
 
+.appointment-alex {
+    background: linear-gradient(135deg, #f1dfd8 0%, #573b32 100%);
+    color: #f1eae1;
+    border-left: 3px solid #8d6e63;
+}
+
 .appointment-time {
     font-weight: 700;
     font-size: 0.74rem;
