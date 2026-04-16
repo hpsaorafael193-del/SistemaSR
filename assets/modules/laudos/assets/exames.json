@@ -7877,10 +7877,10 @@
     },
     {
       "id": "oftalmo_erg_pediatrico",
-      "nome": "Eletrorretinograma (ERG) Pediátrico",
-      "descricao": "Avaliação funcional da retina em pacientes pediátricos, com foco em distrofias retinianas e alterações congênitas.",
+      "nome": "Eletrorretinograma (ERG)",
+      "descricao": "Avaliação funcional da retina, com foco em distrofias retinianas e alterações congênitas.",
       "categoria": "oftalmologia",
-      "icone": "fa-child",
+      "icone": "fa-eye-low-vision",
       "campos": [
         {
           "id": "condicao_exame",
