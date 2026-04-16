@@ -686,8 +686,12 @@
               "label": "Sorologia sem alterações significativas"
             },
             {
+              "valor": "imunidade_previa",
+              "label": "Evidência de imunidade Inata ou Adaptativa"
+            },
+            {
               "valor": "infeccao_previa",
-              "label": "Evidência de infecção prévia / imunidade"
+              "label": "Evidência de infecção prévia,"
             },
             {
               "valor": "infeccao_ativa",
@@ -2659,6 +2663,150 @@
           "id": "conclusao",
           "tipo": "textarea",
           "label": "Conclusão"
+        }
+      ]
+    },
+    {
+      "id": "genetico_sexagem_fetal",
+      "nome": "Sexagem Fetal",
+      "descricao": "Exame molecular para determinação do sexo fetal por detecção de DNA fetal livre no sangue materno.",
+      "categoria": "genetico",
+      "icone": "fa-dna",
+      "campos": [
+        {
+          "id": "metodo",
+          "tipo": "select",
+          "label": "Método",
+          "opcoes": [
+            {
+              "valor": "dna_fetal_materno",
+              "label": "DNA fetal livre no sangue materno"
+            },
+            { "valor": "outro", "label": "Outro método" }
+          ],
+          "referencia": "Metodologia utilizada"
+        },
+        {
+          "id": "idade_gestacional",
+          "tipo": "text",
+          "label": "Idade gestacional",
+          "placeholder": "Ex: 8 semanas"
+        },
+        {
+          "id": "tipo_gestacao",
+          "tipo": "select",
+          "label": "Tipo de gestação",
+          "opcoes": [
+            { "valor": "unica", "label": "Gestação única" },
+            { "valor": "gemelar", "label": "Gestação gemelar" },
+            { "valor": "multipla", "label": "Gestação múltipla (≥3 fetos)" }
+          ],
+          "referencia": "Número de fetos"
+        },
+        {
+          "id": "corionicidade",
+          "tipo": "select",
+          "label": "Corionicidade / Zigosidade",
+          "opcoes": [
+            {
+              "valor": "nao_aplicavel",
+              "label": "Não aplicável (gestação única)"
+            },
+            { "valor": "univitelina", "label": "Univitelina (monozigótica)" },
+            { "valor": "bivitelina", "label": "Bivitelina (dizigótica)" },
+            { "valor": "indeterminado", "label": "Indeterminado" }
+          ],
+          "referencia": "Importante em gestações múltiplas"
+        },
+        {
+          "id": "vitalidade_fetal",
+          "tipo": "select",
+          "label": "Vitalidade fetal (USG)",
+          "opcoes": [
+            { "valor": "nao_avaliado", "label": "Não avaliado" },
+            { "valor": "presente", "label": "Vitalidade presente" },
+            { "valor": "ausente", "label": "Vitalidade ausente" },
+            { "valor": "indeterminado", "label": "Indeterminado" }
+          ],
+          "referencia": "Baseado em ultrassonografia"
+        },
+        {
+          "id": "resultado",
+          "tipo": "select",
+          "label": "Resultado",
+          "opcoes": [
+            {
+              "valor": "presenca_cromossomo_y",
+              "label": "Sexo fetal masculino"
+            },
+            {
+              "valor": "ausencia_cromossomo_y",
+              "label": "Sexo fetal feminino"
+            },
+            {
+              "valor": "presenca_y_gestacao_multipla",
+              "label": "Gestação múltipla, sexo fetais feminino e masculino"
+            },
+            {
+              "valor": "presenca_y_gestacao_multipla",
+              "label": "Gestação múltipla, sexo fetais masculino"
+            },
+            {
+              "valor": "ausencia_y_gestacao_multipla",
+              "label": "Gestação múltipla, sexo fetais feminino"
+            },
+            {
+              "valor": "inconclusivo",
+              "label": "Resultado inconclusivo devido a limitações técnicas ou baixa fração fetal"
+            }
+          ],
+          "referencia": "Detecção do cromossomo Y"
+        },
+        {
+          "id": "confiabilidade",
+          "tipo": "select",
+          "label": "Confiabilidade da amostra",
+          "opcoes": [
+            { "valor": "adequada", "label": "Amostra adequada" },
+            { "valor": "baixa_fracao_fetal", "label": "Baixa fração fetal" },
+            { "valor": "inadequada", "label": "Amostra inadequada" }
+          ],
+          "referencia": "Qualidade da amostra"
+        },
+        {
+          "id": "impressao",
+          "tipo": "select",
+          "label": "Impressão",
+          "opcoes": [
+            { "valor": "masculino", "label": "Sexo masculino identificado" },
+            { "valor": "feminino", "label": "Sexo feminino identificado" },
+            {
+              "valor": "masculino_feminino_gemelar",
+              "label": "Presença de ambos os sexos masculino e feminino"
+            },
+            {
+              "valor": "provavel_feminino_gemelar",
+              "label": "Provável gestação feminina (sem detecção de Y)"
+            },
+            {
+              "valor": "provavel_masculino_gemelar",
+              "label": "Provável gestação feminina (com detecção de Y)"
+            },
+            { "valor": "inconclusivo", "label": "Resultado inconclusivo" }
+          ],
+          "referencia": "Conclusão do exame"
+        },
+        {
+          "id": "interpretacao",
+          "tipo": "textarea",
+          "label": "Interpretação",
+          "placeholder": "Correlacionar com ultrassonografia. Em gestações múltiplas, não é possível definir sexo individual por este método."
+        },
+        {
+          "id": "conclusao",
+          "tipo": "textarea",
+          "label": "Conclusão",
+          "placeholder": "Síntese final com recomendação de seguimento."
         }
       ]
     },
@@ -6150,205 +6298,6 @@
       ]
     },
     {
-      "id": "lab_sorologia_gestante",
-      "nome": "Sorologia Gestante",
-      "descricao": "Pesquisa sorológica completa para rastreio de infecções com impacto materno-fetal",
-      "categoria": "obstetricia",
-      "icone": "fa-baby",
-      "campos": [
-        {
-          "id": "hiv",
-          "tipo": "select",
-          "label": "HIV",
-          "opcoes": [
-            {
-              "valor": "reagente",
-              "label": "Reagente"
-            },
-            {
-              "valor": "nao_reagente",
-              "label": "Não reagente"
-            }
-          ],
-          "referencia": "Não reagente"
-        },
-        {
-          "id": "sifilis",
-          "tipo": "select",
-          "label": "Sífilis",
-          "opcoes": [
-            {
-              "valor": "reagente",
-              "label": "Reagente"
-            },
-            {
-              "valor": "nao_reagente",
-              "label": "Não reagente"
-            }
-          ],
-          "referencia": "Não reagente"
-        },
-        {
-          "id": "hepatite_b",
-          "tipo": "select",
-          "label": "Hepatite B (HBsAg)",
-          "opcoes": [
-            {
-              "valor": "reagente",
-              "label": "Reagente"
-            },
-            {
-              "valor": "nao_reagente",
-              "label": "Não reagente"
-            }
-          ],
-          "referencia": "Não reagente"
-        },
-        {
-          "id": "hepatite_c",
-          "tipo": "select",
-          "label": "Hepatite C (Anti-HCV)",
-          "opcoes": [
-            {
-              "valor": "reagente",
-              "label": "Reagente"
-            },
-            {
-              "valor": "nao_reagente",
-              "label": "Não reagente"
-            }
-          ],
-          "referencia": "Não reagente"
-        },
-        {
-          "id": "toxoplasmose_igg",
-          "tipo": "select",
-          "label": "Toxoplasmose IgG",
-          "opcoes": [
-            {
-              "valor": "positivo",
-              "label": "Positivo"
-            },
-            {
-              "valor": "negativo",
-              "label": "Negativo"
-            }
-          ],
-          "referencia": "—"
-        },
-        {
-          "id": "toxoplasmose_igm",
-          "tipo": "select",
-          "label": "Toxoplasmose IgM",
-          "opcoes": [
-            {
-              "valor": "positivo",
-              "label": "Positivo"
-            },
-            {
-              "valor": "negativo",
-              "label": "Negativo"
-            }
-          ],
-          "referencia": "—"
-        },
-        {
-          "id": "rubeola_igg",
-          "tipo": "select",
-          "label": "Rubéola IgG",
-          "opcoes": [
-            {
-              "valor": "positivo",
-              "label": "Positivo"
-            },
-            {
-              "valor": "negativo",
-              "label": "Negativo"
-            }
-          ],
-          "referencia": "—"
-        },
-        {
-          "id": "rubeola_igm",
-          "tipo": "select",
-          "label": "Rubéola IgM",
-          "opcoes": [
-            {
-              "valor": "positivo",
-              "label": "Positivo"
-            },
-            {
-              "valor": "negativo",
-              "label": "Negativo"
-            }
-          ],
-          "referencia": "—"
-        },
-        {
-          "id": "citomegalovirus_igg",
-          "tipo": "select",
-          "label": "Citomegalovírus IgG",
-          "opcoes": [
-            {
-              "valor": "positivo",
-              "label": "Positivo"
-            },
-            {
-              "valor": "negativo",
-              "label": "Negativo"
-            }
-          ],
-          "referencia": "—"
-        },
-        {
-          "id": "citomegalovirus_igm",
-          "tipo": "select",
-          "label": "Citomegalovírus IgM",
-          "opcoes": [
-            {
-              "valor": "positivo",
-              "label": "Positivo"
-            },
-            {
-              "valor": "negativo",
-              "label": "Negativo"
-            }
-          ],
-          "referencia": "—"
-        },
-        {
-          "id": "impressao",
-          "tipo": "select",
-          "label": "Impressão Obstétrica",
-          "opcoes": [
-            {
-              "valor": "normal",
-              "label": "Sorologia gestacional sem alterações relevantes"
-            },
-            {
-              "valor": "acompanhar",
-              "label": "Necessita acompanhamento sorológico"
-            },
-            {
-              "valor": "alto_risco",
-              "label": "Achados sugestivos de alto risco materno-fetal"
-            }
-          ],
-          "referencia": "Normal / Alterado"
-        },
-        {
-          "id": "interpretacao",
-          "tipo": "textarea",
-          "label": "Interpretação"
-        },
-        {
-          "id": "conclusao",
-          "tipo": "textarea",
-          "label": "Conclusão"
-        }
-      ]
-    },
-    {
       "id": "img_us_morfologica",
       "nome": "USG Morfológica",
       "descricao": "Avaliação morfológica fetal detalhada para rastreio de malformações estruturais",
@@ -6610,6 +6559,126 @@
           "id": "conclusao",
           "tipo": "textarea",
           "label": "Conclusão"
+        }
+      ]
+    },
+    {
+      "id": "obst_us_abdominal_gestacao_inicial",
+      "nome": "Ultrassonografia Abdominal – Obstetrica",
+      "descricao": "Avaliação ultrassonográfica abdominal.",
+      "categoria": "obstetricia",
+      "icone": "fa-baby",
+      "campos": [
+        {
+          "id": "saco_gestacional",
+          "tipo": "select",
+          "label": "Saco gestacional",
+          "opcoes": [
+            { "valor": "presente", "label": "Presente" },
+            { "valor": "ausente", "label": "Ausente" }
+          ],
+          "referencia": "Visualização intrauterina esperada"
+        },
+        {
+          "id": "localizacao",
+          "tipo": "select",
+          "label": "Localização da gestação",
+          "opcoes": [
+            { "valor": "intrauterina", "label": "Intrauterina" },
+            { "valor": "indefinida", "label": "Indefinida" },
+            { "valor": "suspeita_ectopica", "label": "Suspeita de ectópica" }
+          ],
+          "referencia": "Localização da gestação"
+        },
+        {
+          "id": "vesicula_vitelina",
+          "tipo": "select",
+          "label": "Vesícula vitelina",
+          "opcoes": [
+            { "valor": "presente", "label": "Presente" },
+            { "valor": "ausente", "label": "Ausente" }
+          ],
+          "referencia": "Estrutura embrionária inicial"
+        },
+        {
+          "id": "embriao",
+          "tipo": "select",
+          "label": "Embrião visível",
+          "opcoes": [
+            { "valor": "sim", "label": "Sim" },
+            { "valor": "nao", "label": "Não" }
+          ],
+          "referencia": "Visualização embrionária"
+        },
+        {
+          "id": "batimentos_cardiacos",
+          "tipo": "select",
+          "label": "Batimentos cardíacos fetais",
+          "opcoes": [
+            { "valor": "presentes", "label": "Presentes" },
+            { "valor": "ausentes", "label": "Ausentes" },
+            { "valor": "nao_avaliavel", "label": "Não avaliável" }
+          ],
+          "referencia": "Viabilidade fetal"
+        },
+        {
+          "id": "frequencia_cardiaca",
+          "tipo": "number",
+          "label": "Frequência cardíaca fetal",
+          "unidade": "bpm",
+          "referencia": "Normal: 110–160 bpm"
+        },
+        {
+          "id": "diametro_saco",
+          "tipo": "number",
+          "label": "Diâmetro médio do saco gestacional (DMS)",
+          "unidade": "mm",
+          "referencia": "Compatível com idade gestacional"
+        },
+        {
+          "id": "idade_gestacional",
+          "tipo": "text",
+          "label": "Idade gestacional estimada",
+          "placeholder": "Ex: 6 semanas e 3 dias"
+        },
+        {
+          "id": "achados_adicionais",
+          "tipo": "textarea",
+          "label": "Achados adicionais",
+          "placeholder": "Ex: descolamento ovular, hematoma subcoriônico, etc."
+        },
+        {
+          "id": "impressao",
+          "tipo": "select",
+          "label": "Impressão",
+          "opcoes": [
+            {
+              "valor": "gestacao_inicial_viavel",
+              "label": "Gestação inicial viável"
+            },
+            {
+              "valor": "gestacao_inicial_sem_viabilidade_definida",
+              "label": "Gestação inicial sem viabilidade definida"
+            },
+            { "valor": "suspeita_aborto", "label": "Suspeita de abortamento" },
+            {
+              "valor": "suspeita_ectopica",
+              "label": "Suspeita de gestação ectópica"
+            }
+          ],
+          "referencia": "Classificação inicial"
+        },
+        {
+          "id": "interpretacao",
+          "tipo": "textarea",
+          "label": "Interpretação",
+          "placeholder": "Correlacionar com beta-hCG, idade gestacional e evolução clínica."
+        },
+        {
+          "id": "conclusao",
+          "tipo": "textarea",
+          "label": "Conclusão",
+          "placeholder": "Síntese diagnóstica e orientação de seguimento."
         }
       ]
     },
@@ -7407,73 +7476,31 @@
     {
       "id": "oftalmo_acuidade_visual",
       "nome": "Acuidade Visual",
-      "descricao": "Avaliação da capacidade visual com e sem correção",
+      "descricao": "Avaliação da acuidade visual utilizando escala de Snellen.",
       "categoria": "oftalmologia",
       "icone": "fa-eye",
       "campos": [
         {
-          "id": "olho_direito",
+          "id": "condicao_avaliacao",
           "tipo": "select",
-          "label": "Olho Direito (OD)",
+          "label": "Condição da avaliação",
           "opcoes": [
-            {
-              "valor": "20_20",
-              "label": "20/20"
-            },
-            {
-              "valor": "20_40",
-              "label": "20/40"
-            },
-            {
-              "valor": "20_60",
-              "label": "20/60"
-            },
-            {
-              "valor": "conta_dedos",
-              "label": "Conta dedos"
-            }
+            { "valor": "sem_correcao", "label": "Sem correção óptica" },
+            { "valor": "com_correcao", "label": "Com correção óptica" }
           ],
-          "referencia": "20/20"
+          "referencia": "Uso de óculos/lentes"
         },
         {
-          "id": "olho_esquerdo",
-          "tipo": "select",
-          "label": "Olho Esquerdo (OE)",
-          "opcoes": [
-            {
-              "valor": "20_20",
-              "label": "20/20"
-            },
-            {
-              "valor": "20_40",
-              "label": "20/40"
-            },
-            {
-              "valor": "20_60",
-              "label": "20/60"
-            },
-            {
-              "valor": "conta_dedos",
-              "label": "Conta dedos"
-            }
-          ],
-          "referencia": "20/20"
+          "id": "acuidade_od",
+          "tipo": "text",
+          "label": "Acuidade visual – Olho Direito (OD)",
+          "placeholder": "Ex: 20/20, 20/40, CD, MM, PL, NPL"
         },
         {
-          "id": "correcao",
-          "tipo": "select",
-          "label": "Avaliação com Correção",
-          "opcoes": [
-            {
-              "valor": "sem",
-              "label": "Sem correção"
-            },
-            {
-              "valor": "com",
-              "label": "Com correção"
-            }
-          ],
-          "referencia": "—"
+          "id": "acuidade_oe",
+          "tipo": "text",
+          "label": "Acuidade visual – Olho Esquerdo (OE)",
+          "placeholder": "Ex: 20/20, 20/40, CD, MM, PL, NPL"
         },
         {
           "id": "impressao",
@@ -7482,123 +7509,25 @@
           "opcoes": [
             {
               "valor": "normal",
-              "label": "Acuidade preservada"
+              "label": "Acuidade visual dentro dos padrões de normalidade"
             },
-            {
-              "valor": "reduzida",
-              "label": "Redução da acuidade visual"
-            }
+            { "valor": "reduzida", "label": "Redução da acuidade visual" },
+            { "valor": "baixa_visao", "label": "Baixa visão" },
+            { "valor": "cegueira_funcional", "label": "Cegueira funcional" }
           ],
-          "referencia": "Normal / Alterado"
+          "referencia": "Classificação funcional"
         },
         {
           "id": "interpretacao",
           "tipo": "textarea",
-          "label": "Interpretação"
+          "label": "Interpretação",
+          "placeholder": "Correlacionar com uso de correção óptica, assimetria entre os olhos e sintomas visuais."
         },
         {
           "id": "conclusao",
           "tipo": "textarea",
-          "label": "Conclusão"
-        }
-      ]
-    },
-    {
-      "id": "oftalmo_acuidade_visual",
-      "nome": "Acuidade Visual",
-      "descricao": "Avaliação da capacidade visual com e sem correção",
-      "categoria": "oftalmologia",
-      "icone": "fa-eye",
-      "campos": [
-        {
-          "id": "olho_direito",
-          "tipo": "select",
-          "label": "Olho Direito (OD)",
-          "opcoes": [
-            {
-              "valor": "20_20",
-              "label": "20/20"
-            },
-            {
-              "valor": "20_40",
-              "label": "20/40"
-            },
-            {
-              "valor": "20_60",
-              "label": "20/60"
-            },
-            {
-              "valor": "conta_dedos",
-              "label": "Conta dedos"
-            }
-          ],
-          "referencia": "20/20"
-        },
-        {
-          "id": "olho_esquerdo",
-          "tipo": "select",
-          "label": "Olho Esquerdo (OE)",
-          "opcoes": [
-            {
-              "valor": "20_20",
-              "label": "20/20"
-            },
-            {
-              "valor": "20_40",
-              "label": "20/40"
-            },
-            {
-              "valor": "20_60",
-              "label": "20/60"
-            },
-            {
-              "valor": "conta_dedos",
-              "label": "Conta dedos"
-            }
-          ],
-          "referencia": "20/20"
-        },
-        {
-          "id": "correcao",
-          "tipo": "select",
-          "label": "Avaliação com Correção",
-          "opcoes": [
-            {
-              "valor": "sem",
-              "label": "Sem correção"
-            },
-            {
-              "valor": "com",
-              "label": "Com correção"
-            }
-          ],
-          "referencia": "—"
-        },
-        {
-          "id": "impressao",
-          "tipo": "select",
-          "label": "Impressão Oftalmológica",
-          "opcoes": [
-            {
-              "valor": "normal",
-              "label": "Acuidade preservada"
-            },
-            {
-              "valor": "reduzida",
-              "label": "Redução da acuidade visual"
-            }
-          ],
-          "referencia": "Normal / Alterado"
-        },
-        {
-          "id": "interpretacao",
-          "tipo": "textarea",
-          "label": "Interpretação"
-        },
-        {
-          "id": "conclusao",
-          "tipo": "textarea",
-          "label": "Conclusão"
+          "label": "Conclusão",
+          "placeholder": "Síntese clínica e recomendação de avaliação oftalmológica."
         }
       ]
     },
@@ -7943,6 +7872,133 @@
           "id": "conclusao",
           "tipo": "textarea",
           "label": "Conclusão"
+        }
+      ]
+    },
+    {
+      "id": "oftalmo_erg_pediatrico",
+      "nome": "Eletrorretinograma (ERG) Pediátrico",
+      "descricao": "Avaliação funcional da retina em pacientes pediátricos, com foco em distrofias retinianas e alterações congênitas.",
+      "categoria": "oftalmologia",
+      "icone": "fa-child",
+      "campos": [
+        {
+          "id": "condicao_exame",
+          "tipo": "select",
+          "label": "Condição do exame",
+          "opcoes": [
+            { "valor": "vigilia", "label": "Realizado em vigília" },
+            { "valor": "sedacao", "label": "Realizado sob sedação" },
+            {
+              "valor": "limitado",
+              "label": "Exame limitado por baixa colaboração"
+            }
+          ],
+          "referencia": "Condições técnicas"
+        },
+        {
+          "id": "resposta_global",
+          "tipo": "select",
+          "label": "Resposta retiniana global",
+          "opcoes": [
+            { "valor": "normal", "label": "Resposta dentro da normalidade" },
+            { "valor": "reduzida", "label": "Resposta global reduzida" },
+            { "valor": "ausente", "label": "Resposta ausente" }
+          ],
+          "referencia": "Avaliação geral"
+        },
+        {
+          "id": "padrao_resposta",
+          "tipo": "select",
+          "label": "Padrão de resposta",
+          "opcoes": [
+            { "valor": "normal", "label": "Padrão normal" },
+            {
+              "valor": "predominio_bastonetes",
+              "label": "Comprometimento predominante de bastonetes"
+            },
+            {
+              "valor": "predominio_cones",
+              "label": "Comprometimento predominante de cones"
+            },
+            {
+              "valor": "disfuncao_mista",
+              "label": "Disfunção mista (cones e bastonetes)"
+            },
+            { "valor": "extinto", "label": "Extinção da resposta retiniana" }
+          ],
+          "referencia": "Classificação funcional"
+        },
+        {
+          "id": "simetria",
+          "tipo": "select",
+          "label": "Simetria entre os olhos",
+          "opcoes": [
+            { "valor": "simetrico", "label": "Simétrico" },
+            { "valor": "assimetrico", "label": "Assimétrico" },
+            { "valor": "nao_avaliavel", "label": "Não avaliável" }
+          ],
+          "referencia": "Comparação OD/OE"
+        },
+        {
+          "id": "suspeita_clinica",
+          "tipo": "select",
+          "label": "Correlação clínica sugerida",
+          "opcoes": [
+            {
+              "valor": "normal",
+              "label": "Sem evidência de disfunção retiniana significativa"
+            },
+            {
+              "valor": "acromatopsia",
+              "label": "Padrão compatível com acromatopsia"
+            },
+            {
+              "valor": "retinose_pigmentar",
+              "label": "Padrão compatível com retinose pigmentar"
+            },
+            {
+              "valor": "distrofia_cones",
+              "label": "Sugestivo de distrofia de cones"
+            },
+            {
+              "valor": "distrofia_bastonetes",
+              "label": "Sugestivo de distrofia de bastonetes"
+            },
+            { "valor": "indeterminado", "label": "Padrão inespecífico" }
+          ],
+          "referencia": "Hipótese diagnóstica"
+        },
+        {
+          "id": "impressao",
+          "tipo": "select",
+          "label": "Impressão",
+          "opcoes": [
+            { "valor": "normal", "label": "Função retiniana preservada" },
+            { "valor": "alteracao_leve", "label": "Alteração funcional leve" },
+            {
+              "valor": "alteracao_moderada",
+              "label": "Alteração funcional moderada"
+            },
+            {
+              "valor": "alteracao_grave",
+              "label": "Alteração funcional grave"
+            },
+            { "valor": "extincao", "label": "Extinção da atividade retiniana" }
+          ],
+          "referencia": "Gravidade"
+        },
+        {
+          "id": "interpretacao",
+          "tipo": "textarea",
+          "label": "Interpretação",
+          "placeholder": "Correlacionar com quadro clínico, desenvolvimento visual e história familiar."
+        },
+        {
+          "id": "conclusao",
+          "tipo": "textarea",
+          "label": "Conclusão",
+          "placeholder": "Síntese diagnóstica e orientação para seguimento especializado."
         }
       ]
     },
