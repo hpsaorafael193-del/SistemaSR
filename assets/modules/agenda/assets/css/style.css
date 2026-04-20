@@ -138,6 +138,7 @@ h1 {
 
 .agenda-section {
     border-top: 6px solid var(--primary);
+    overflow: hidden;
 }
 
 .form-section::after,
@@ -215,7 +216,7 @@ textarea.form-input {
 
 .doctors-container {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 14px;
     margin-bottom: 20px;
 }
@@ -298,6 +299,7 @@ textarea.form-input {
     box-shadow: none;
 }
 
+/* ========== AGENDA / CALENDÁRIO ========== */
 .agenda-header {
     display: flex;
     justify-content: space-between;
@@ -330,6 +332,7 @@ textarea.form-input {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .btn-nav:hover {
@@ -347,6 +350,7 @@ textarea.form-input {
     letter-spacing: 0.2px;
 }
 
+/* Legendas */
 .legend {
     display: flex;
     gap: 10px;
@@ -372,13 +376,14 @@ textarea.form-input {
     box-shadow: inset 0 0 0 1px rgba(73, 17, 0, 0.08);
 }
 
+/* ========== CALENDÁRIO - CORRIGIDO (CARDS CORTADOS) ========== */
 .calendar {
     width: 100%;
-    overflow: hidden;
     border-radius: 18px;
     border: 1px solid var(--border);
     box-shadow: var(--shadow-sm);
     background: #f7ead6;
+    overflow: hidden;
 }
 
 .calendar-header {
@@ -386,6 +391,7 @@ textarea.form-input {
     grid-template-columns: repeat(7, 1fr);
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
     color: #f1eae1;
+    width: 100%;
 }
 
 .calendar-header-cell {
@@ -394,6 +400,9 @@ textarea.form-input {
     font-weight: 700;
     letter-spacing: 0.2px;
     border-right: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .calendar-header-cell:last-child {
@@ -405,21 +414,25 @@ textarea.form-input {
     grid-template-columns: repeat(7, 1fr);
     gap: 1px;
     background-color: #ebd9bc;
+    width: 100%;
 }
 
 .calendar-day {
     min-height: 134px;
+    max-height: 180px;
     background: linear-gradient(180deg, #fff8ed 0%, #fff4e4 100%);
     padding: 10px;
     position: relative;
-    transition: transform var(--transition), box-shadow var(--transition), background-color var(--transition);
+    transition: background var(--transition);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 100%;
+    min-width: 0;
 }
 
 .calendar-day:hover {
     background: #fffaf1;
-    transform: translateY(-2px);
-    z-index: 1;
-    box-shadow: 0 8px 20px rgba(73, 17, 0, 0.1);
 }
 
 .day-number {
@@ -433,14 +446,19 @@ textarea.form-input {
     min-width: 30px;
     min-height: 30px;
     border-radius: 999px;
+    flex-shrink: 0;
 }
 
 .day-appointments {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
 }
 
+/* Cards de agendamento - CORTADOS na borda da célula */
 .appointment {
     padding: 8px 9px;
     border-radius: 10px;
@@ -451,11 +469,15 @@ textarea.form-input {
     cursor: pointer;
     transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
+    width: 100%;
+    overflow: hidden;
 }
 
 .appointment:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    z-index: 10;
 }
 
 .appointment-natalie {
@@ -498,6 +520,9 @@ textarea.form-input {
     font-weight: 700;
     font-size: 0.74rem;
     opacity: 0.96;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .appointment-patient {
@@ -507,6 +532,12 @@ textarea.form-input {
     text-overflow: ellipsis;
 }
 
+.appointment-done {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+/* Dias especiais */
 .day-disabled {
     background: linear-gradient(180deg, #f6efe4 0%, #f1e8da 100%);
     color: #a1887f;
@@ -526,6 +557,7 @@ textarea.form-input {
     background: rgba(73, 17, 0, 0.08);
 }
 
+/* ========== MODAL ========== */
 .modal {
     display: none;
     position: fixed;
@@ -575,6 +607,7 @@ textarea.form-input {
     color: var(--text);
     cursor: pointer;
     transition: transform var(--transition), background-color var(--transition), color var(--transition);
+    flex-shrink: 0;
 }
 
 .btn-close:hover {
@@ -593,11 +626,6 @@ textarea.form-input {
     border-radius: 16px;
     margin-bottom: 18px;
     border: 1px solid rgba(232, 213, 181, 0.9);
-}
-
-.appointment-done {
-    opacity: 0.6;
-    text-decoration: line-through;
 }
 
 .detail-row {
@@ -657,6 +685,7 @@ textarea.form-input {
     box-shadow: 0 8px 18px rgba(109, 76, 65, 0.22);
 }
 
+/* ========== TOAST ========== */
 #toast-root {
     position: fixed;
     top: 18px;
@@ -779,6 +808,7 @@ textarea.form-input {
     fill: #ef6c00;
 }
 
+/* ========== FOOTER ========== */
 .footer {
     text-align: center;
     padding: 18px 20px;
@@ -787,6 +817,7 @@ textarea.form-input {
     font-size: 0.92rem;
 }
 
+/* ========== RESPONSIVO ========== */
 @media (max-width: 1024px) {
     .form-section {
         position: static;
@@ -794,6 +825,22 @@ textarea.form-input {
 
     .legend {
         width: 100%;
+    }
+}
+
+@media (max-width: 900px) {
+    .calendar {
+        overflow-x: auto;
+    }
+
+    .calendar-header,
+    .calendar-body {
+        min-width: 700px;
+    }
+
+    .calendar-day {
+        min-height: 110px;
+        max-height: 160px;
     }
 }
 
@@ -828,23 +875,23 @@ textarea.form-input {
         font-size: 1.05rem;
     }
 
-    .calendar {
-        overflow-x: auto;
-    }
-
-    .calendar-header,
-    .calendar-body {
-        min-width: 740px;
-    }
-
     .calendar-day {
-        min-height: 118px;
+        min-height: 100px;
+        max-height: 140px;
         padding: 8px 6px;
     }
 
     .appointment {
         padding: 5px 6px;
         font-size: 0.7rem;
+    }
+
+    .appointment-time {
+        font-size: 0.68rem;
+    }
+
+    .appointment-patient {
+        font-size: 0.65rem;
     }
 
     .calendar-header-cell {
@@ -901,5 +948,19 @@ textarea.form-input {
         left: 12px;
         right: 12px;
         max-width: none;
+    }
+
+    .calendar-day {
+        min-height: 90px;
+        max-height: 120px;
+    }
+
+    .appointment {
+        padding: 4px 5px;
+    }
+
+    .appointment-time,
+    .appointment-patient {
+        font-size: 0.6rem;
     }
 }

@@ -312,8 +312,6 @@ function clearFormDraft() {
 
 function validateForm() {
   const isFormValid =
-    patientNameInput.value.trim() !== "" &&
-    patientPhoneInput.value.trim() !== "" &&
     birthDateInput.value !== "" &&
     birthTimeInput.value !== "" &&
     selectedDoctor !== null;
@@ -426,6 +424,7 @@ function scheduleAppointment() {
 
 function showConfirmationModal(appointment) {
   modalDetails.innerHTML = `
+        ${appointment.patient_name ? `
         <div class="detail-row">
             <div class="detail-label">Paciente:</div>
             <div class="detail-value">${appointment.patient_name}</div>
@@ -434,6 +433,7 @@ function showConfirmationModal(appointment) {
             <div class="detail-label">Telefone:</div>
             <div class="detail-value">${appointment.patient_phone}</div>
         </div>
+        ` : ""}
         <div class="detail-row">
             <div class="detail-label">Médico:</div>
             <div class="detail-value">${DOCTOR_NAME(appointment.doctor)}</div>
@@ -675,7 +675,7 @@ function renderCalendar() {
 
       appointmentElement.innerHTML = `
                 <div class="appointment-time">${app.time}</div>
-                <div class="appointment-patient">${(app.patient_name || "").split(" ")[0]}</div>
+                <div class="appointment-patient">${DOCTOR_NAME(app.doctor)}</div>
             `;
 
       appointmentElement.addEventListener("click", (e) => {
