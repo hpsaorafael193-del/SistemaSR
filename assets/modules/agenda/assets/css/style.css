@@ -209,11 +209,6 @@ h1 {
     box-shadow: 0 0 0 4px var(--primary-soft);
 }
 
-textarea.form-input {
-    resize: vertical;
-    min-height: 96px;
-}
-
 .doctors-container {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -376,7 +371,7 @@ textarea.form-input {
     box-shadow: inset 0 0 0 1px rgba(73, 17, 0, 0.08);
 }
 
-/* ========== CALENDÁRIO - CORRIGIDO (CARDS CORTADOS) ========== */
+/* ========== CALENDÁRIO ========== */
 .calendar {
     width: 100%;
     border-radius: 18px;
@@ -454,11 +449,27 @@ textarea.form-input {
     flex-direction: column;
     gap: 6px;
     flex: 1;
-    overflow: hidden;
+    overflow-y: auto;
     min-height: 0;
+    max-height: 100%;
 }
 
-/* Cards de agendamento - CORTADOS na borda da célula */
+/* Scroll personalizado para a lista de agendamentos */
+.day-appointments::-webkit-scrollbar {
+    width: 4px;
+}
+
+.day-appointments::-webkit-scrollbar-track {
+    background: rgba(73, 17, 0, 0.08);
+    border-radius: 4px;
+}
+
+.day-appointments::-webkit-scrollbar-thumb {
+    background: rgba(73, 17, 0, 0.3);
+    border-radius: 4px;
+}
+
+/* Cards de agendamento */
 .appointment {
     padding: 8px 9px;
     border-radius: 10px;
@@ -480,40 +491,41 @@ textarea.form-input {
     z-index: 10;
 }
 
-.appointment-natalie {
+/* Cores dos médicos - compatível com app.js */
+.appointment-anny {
     background: linear-gradient(135deg, #8d6e63 0%, #6d4c41 100%);
     color: #f1eae1;
-    border-left: 3px solid #6d4c41;
+    border-left: 3px solid #5d3a2e;
 }
 
-.appointment-anny {
+.appointment-natalie {
     background: linear-gradient(135deg, #a1887f 0%, #8d6e63 100%);
     color: #f1eae1;
-    border-left: 3px solid #8d6e63;
+    border-left: 3px solid #6d4c41;
 }
 
 .appointment-luidhy {
-    background: linear-gradient(135deg, #6d4c41 0%, #491100 100%);
+    background: linear-gradient(135deg, #6d4c41 0%, #5d3a2e 100%);
     color: #f1eae1;
-    border-left: 3px solid #491100;
+    border-left: 3px solid #3a0e00;
 }
 
 .appointment-luan {
-    background: linear-gradient(135deg, #8d6e63 0%, #491100 100%);
-    color: #f1eae1;
-    border-left: 3px solid #6d4c41;
+    background: linear-gradient(135deg, #bcaaa4 0%, #a1887f 100%);
+    color: #491100;
+    border-left: 3px solid #8d6e63;
 }
 
 .appointment-lia {
-    background: linear-gradient(135deg, #a1887f 0%, #6d4c41 100%);
-    color: #f1eae1;
-    border-left: 3px solid #8d6e63;
+    background: linear-gradient(135deg, #d7ccc8 0%, #bcaaa4 100%);
+    color: #491100;
+    border-left: 3px solid #a1887f;
 }
 
 .appointment-alex {
-    background: linear-gradient(135deg, #f1dfd8 0%, #573b32 100%);
-    color: #f1eae1;
-    border-left: 3px solid #8d6e63;
+    background: linear-gradient(135deg, #efe7db 0%, #d7ccc8 100%);
+    color: #491100;
+    border-left: 3px solid #bcaaa4;
 }
 
 .appointment-time {
@@ -533,8 +545,9 @@ textarea.form-input {
 }
 
 .appointment-done {
-    opacity: 0.6;
+    opacity: 0.55;
     text-decoration: line-through;
+    filter: grayscale(0.15);
 }
 
 /* Dias especiais */
@@ -549,12 +562,14 @@ textarea.form-input {
 
 .day-today {
     background: linear-gradient(180deg, #fff3dc 0%, #ffe8bf 100%);
+    position: relative;
 }
 
 .day-today .day-number {
     color: var(--primary);
     font-weight: 800;
-    background: rgba(73, 17, 0, 0.08);
+    background: rgba(73, 17, 0, 0.1);
+    border-radius: 999px;
 }
 
 /* ========== MODAL ========== */
@@ -564,7 +579,7 @@ textarea.form-input {
     inset: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(34, 18, 11, 0.45);
+    background-color: rgba(34, 18, 11, 0.55);
     z-index: 1000;
     justify-content: center;
     align-items: center;
@@ -577,6 +592,8 @@ textarea.form-input {
     border-radius: 22px;
     padding: 28px;
     width: min(100%, 560px);
+    max-height: 90vh;
+    overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
     border: 1px solid rgba(73, 17, 0, 0.1);
 }
@@ -632,6 +649,7 @@ textarea.form-input {
     display: flex;
     gap: 12px;
     margin-bottom: 10px;
+    flex-wrap: wrap;
 }
 
 .detail-row:last-child {
@@ -640,18 +658,20 @@ textarea.form-input {
 
 .detail-label {
     font-weight: 700;
-    width: 128px;
+    min-width: 110px;
     color: var(--text);
 }
 
 .detail-value {
     flex: 1;
     color: var(--text-soft);
+    word-break: break-word;
 }
 
 .modal-buttons {
     display: flex;
     gap: 14px;
+    margin-top: 8px;
 }
 
 .btn-confirm,
@@ -743,6 +763,12 @@ textarea.form-input {
     margin-top: 1px;
     border: 1px solid rgba(232, 213, 181, 0.9);
     background: rgba(241, 234, 225, 0.9);
+}
+
+.toast .icon svg {
+    fill: currentColor;
+    width: 16px;
+    height: 16px;
 }
 
 .toast .content {
@@ -900,7 +926,17 @@ textarea.form-input {
     }
 
     .doctors-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .doctor-option {
+        padding: 12px 10px;
+        min-height: 100px;
+    }
+    
+    .doctor-name {
+        font-size: 0.85rem;
     }
 
     .agenda-header {
@@ -919,11 +955,16 @@ textarea.form-input {
 
 @media (max-width: 480px) {
     h1 {
-        font-size: 1.85rem;
+        font-size: 1.65rem;
     }
 
     .header {
-        padding: 22px 16px;
+        padding: 18px 12px;
+    }
+    
+    .logo-img {
+        width: 55px;
+        height: 55px;
     }
 
     .content {
@@ -934,6 +975,14 @@ textarea.form-input {
     .modal-title {
         font-size: 1.2rem;
     }
+    
+    .form-section {
+        padding: 16px;
+    }
+    
+    .agenda-section {
+        padding: 16px;
+    }
 
     .detail-row {
         flex-direction: column;
@@ -941,7 +990,7 @@ textarea.form-input {
     }
 
     .detail-label {
-        width: 100%;
+        min-width: 100%;
     }
 
     #toast-root {
@@ -951,8 +1000,9 @@ textarea.form-input {
     }
 
     .calendar-day {
-        min-height: 90px;
-        max-height: 120px;
+        min-height: 85px;
+        max-height: 110px;
+        padding: 6px 4px;
     }
 
     .appointment {
@@ -963,4 +1013,29 @@ textarea.form-input {
     .appointment-patient {
         font-size: 0.6rem;
     }
+    
+    .doctors-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ========== UTILITÁRIOS ========== */
+.text-center {
+    text-align: center;
+}
+
+.mt-2 {
+    margin-top: 8px;
+}
+
+.mt-3 {
+    margin-top: 12px;
+}
+
+.mb-2 {
+    margin-bottom: 8px;
+}
+
+.mb-3 {
+    margin-bottom: 12px;
 }

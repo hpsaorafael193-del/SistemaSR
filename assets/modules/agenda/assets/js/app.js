@@ -11,12 +11,10 @@ let currentAppointment = null;
 const AGENDA_FORM_DRAFT_KEY = "hpsr_agenda_form_draft";
 
 // ELEMENTOS DOM
-const patientNameInput = document.getElementById("patient-name");
-const patientPhoneInput = document.getElementById("patient-phone");
+const specialtySelect = document.getElementById("specialty");
 const birthTypeSelect = document.getElementById("birth-type");
 const birthDateInput = document.getElementById("birth-date");
 const birthTimeInput = document.getElementById("birth-time");
-const notesInput = document.getElementById("notes");
 const btnSchedule = document.getElementById("btn-schedule");
 const doctorOptions = document.querySelectorAll(".doctor-option");
 const calendarElement = document.getElementById("calendar");
@@ -38,7 +36,20 @@ const DOCTORS = {
   luidhy: "Dr. Luidhy Luddhiev",
   luan: "Dr. Luan D'Amato",
   lia: "Dra. Lia Vespucci",
-  alex: "Dr. Alex Grerogy"
+  alex: "Dr. Alex Gregory"
+};
+
+const SPECIALTIES = {
+  clinica: "Clínica Geral",
+  pediatria: "Pediatria",
+  obstetricia: "Obstetricia",
+  ginecologia: "Ginecologia",
+  psicologia: "Psicologia",
+  psiquiatria: "Psiquiatria",
+  cardiologia: "Cardiologia",
+  oftalmologia: "Oftalmologia",
+  nutricionista: "Nutricionista",
+  dermatologia: "Dermatologia"
 };
 
 function normalizeDoctor(raw) {
@@ -62,7 +73,7 @@ const DOCTOR_NAME = (doctor) => {
   return DOCTORS[key] || String(doctor);
 };
 
-// Tipo de consulta (sem teleconsulta)
+// Tipo de consulta
 const CONSULT_TYPE_NAMES = {
   consulta: "Consulta",
   retorno: "Retorno",
@@ -73,7 +84,6 @@ const CONSULT_TYPE_NAMES = {
 // REGRAS DE INTERVALO (GLOBAL, independente do médico)
 function isProcedureType(type) {
   const t = String(type || "").toLowerCase();
-  // compatibilidade: se ainda existir "parto" no banco, trate como procedimento (4h apenas com procedimento)
   return t === "procedimento" || t === "parto";
 }
 
@@ -81,10 +91,7 @@ function getRequiredIntervalMs(newType, existingType) {
   const newIsProc = isProcedureType(newType);
   const oldIsProc = isProcedureType(existingType);
 
-  // Só exige 4h quando os DOIS são procedimento/parto
   if (newIsProc && oldIsProc) return 4 * 60 * 60 * 1000;
-
-  // Qualquer combinação com consulta/retorno => 1h
   return 1 * 60 * 60 * 1000;
 }
 
@@ -111,7 +118,7 @@ function applySelectedDoctor(doctorKey) {
   return matched;
 }
 
-// Auto seleciona o médico com base no usuário logado (tabela: usuarios)
+// Auto seleciona o médico com base no usuário logado
 async function autoSelectDoctorFromLoggedUser() {
   try {
     const { data, error } = await supabaseClient.auth.getSession();
@@ -203,14 +210,7 @@ btnCancelAppointment.addEventListener("click", () => {
 });
 
 // Validar formulário em tempo real
-[
-  patientNameInput,
-  patientPhoneInput,
-  birthTypeSelect,
-  birthDateInput,
-  birthTimeInput,
-  notesInput,
-].forEach((input) => {
+[birthTypeSelect, birthDateInput, birthTimeInput, specialtySelect].forEach((input) => {
   const eventName = input.tagName === "SELECT" ? "change" : "input";
   input.addEventListener(eventName, () => {
     validateForm();
@@ -225,22 +225,6 @@ window.addEventListener("click", (e) => {
   }
 });
 
-// Formatar telefone automaticamente (modelo atual: (055) 000-000)
-patientPhoneInput.addEventListener("input", (e) => {
-  let value = e.target.value.replace(/\D/g, "");
-  value = value.substring(0, 9);
-
-  if (value.length > 6) {
-    value = value.replace(/^(\d{3})(\d{3})(\d{0,3})/, "($1) $2-$3");
-  } else if (value.length > 3) {
-    value = value.replace(/^(\d{3})(\d{0,3})/, "($1) $2");
-  } else if (value.length > 0) {
-    value = value.replace(/^(\d{0,3})/, "($1");
-  }
-
-  e.target.value = value;
-});
-
 // INIT
 restoreFormDraft();
 renderCalendar();
@@ -252,13 +236,11 @@ autoSelectDoctorFromLoggedUser();
 
 function getFormDraft() {
   return {
-    patient_name: patientNameInput.value.trim(),
-    patient_phone: patientPhoneInput.value.trim(),
     birth_type: birthTypeSelect.value,
     doctor: normalizeDoctor(selectedDoctor),
     date: birthDateInput.value,
     time: birthTimeInput.value,
-    notes: notesInput.value,
+    specialty: specialtySelect.value,
   };
 }
 
@@ -286,12 +268,10 @@ function restoreFormDraft() {
     const draft = JSON.parse(rawDraft);
     if (!draft || typeof draft !== "object") return;
 
-    patientNameInput.value = draft.patient_name || "";
-    patientPhoneInput.value = draft.patient_phone || "";
     birthTypeSelect.value = draft.birth_type || "consulta";
     birthDateInput.value = draft.date || formattedToday;
     birthTimeInput.value = draft.time || "08:00";
-    notesInput.value = draft.notes || "";
+    specialtySelect.value = draft.specialty || "clinica";
 
     if (draft.doctor) {
       applySelectedDoctor(draft.doctor);
@@ -321,17 +301,13 @@ function validateForm() {
 }
 
 /**
- * LOAD APPOINTMENTS
- * - ordena por date+time (evita depender de "datetime" no banco)
- * - gera datetime_ms no front para facilitar cálculos
- * - normaliza doctor
+ * LOAD APPOINTMENTS - Carrega todos os dados antigos do Supabase
+ * Mantém compatibilidade com registros que possuem patient_name, patient_phone, notes
  */
 async function loadAppointments() {
   const { data, error } = await supabaseClient
     .from("appointments")
-    .select(
-      "id,patient_name,patient_phone,birth_type,doctor,date,time,notes,status,datetime",
-    )
+    .select("*") // Carrega todos os campos existentes (incluindo dados antigos)
     .order("date", { ascending: true })
     .order("time", { ascending: true });
 
@@ -350,16 +326,17 @@ async function loadAppointments() {
       const doctorKey = normalizeDoctor(app.doctor);
       const dt = new Date(`${app.date}T${app.time}`);
       return {
-        ...app,
+        ...app, // Mantém todos os dados originais (patient_name, patient_phone, notes, etc)
         doctor: doctorKey,
         datetime_ms: Number.isNaN(dt.getTime()) ? null : dt.getTime(),
       };
     });
 
+  console.log(`Carregados ${appointments.length} agendamentos do Supabase`);
   renderCalendar();
 }
 
-// CONFLITOS (GLOBAL, independente do médico)
+// CONFLITOS
 function checkForConflicts(appointmentDate, appointmentId, newType) {
   return appointments.filter((app) => {
     if (!app) return false;
@@ -378,7 +355,7 @@ function checkForConflicts(appointmentDate, appointmentId, newType) {
   });
 }
 
-// CRIAR AGENDAMENTO
+// CRIAR AGENDAMENTO (novos registros sem paciente/telefone/observações)
 function scheduleAppointment() {
   if (!validateForm()) {
     showAlert("Preencha todos os campos obrigatórios!", "error");
@@ -399,23 +376,25 @@ function scheduleAppointment() {
 
   if (conflicts.length > 0) {
     showAlert(
-      "Conflito de horário: intervalo mínimo — Consultas/Retornos: 1h | Partos/Procedimentos: 4h.",
+      "Conflito de horário: intervalo mínimo — Consultas/Retornos: 1h | Procedimentos: 4h.",
       "error",
     );
     return;
   }
 
+  // Novos agendamentos NÃO incluem patient_name, patient_phone, notes
   currentAppointment = {
-    patient_name: patientNameInput.value.trim(),
-    patient_phone: patientPhoneInput.value.trim(),
     birth_type: birthTypeSelect.value,
     doctor: normalizeDoctor(selectedDoctor),
     date: birthDateInput.value,
     time: birthTimeInput.value,
-    // Se a coluna datetime existir no banco, pode manter. Se não existir, remova.
+    specialty: specialtySelect.value,
     datetime: `${birthDateInput.value}T${birthTimeInput.value}:00`,
-    notes: notesInput.value.trim() || null,
     status: "agendado",
+    // Campos opcionais que podem existir no banco - deixar como null para novos registros
+    patient_name: null,
+    patient_phone: null,
+    notes: null
   };
 
   persistFormDraft();
@@ -424,19 +403,13 @@ function scheduleAppointment() {
 
 function showConfirmationModal(appointment) {
   modalDetails.innerHTML = `
-        ${appointment.patient_name ? `
-        <div class="detail-row">
-            <div class="detail-label">Paciente:</div>
-            <div class="detail-value">${appointment.patient_name}</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-label">Telefone:</div>
-            <div class="detail-value">${appointment.patient_phone}</div>
-        </div>
-        ` : ""}
         <div class="detail-row">
             <div class="detail-label">Médico:</div>
             <div class="detail-value">${DOCTOR_NAME(appointment.doctor)}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Especialidade:</div>
+            <div class="detail-value">${SPECIALTIES[appointment.specialty] || appointment.specialty}</div>
         </div>
         <div class="detail-row">
             <div class="detail-label">Data:</div>
@@ -453,16 +426,6 @@ function showConfirmationModal(appointment) {
               appointment.birth_type
             }</div>
         </div>
-        ${
-          appointment.notes
-            ? `
-        <div class="detail-row">
-            <div class="detail-label">Observações:</div>
-            <div class="detail-value">${appointment.notes}</div>
-        </div>
-        `
-            : ""
-        }
     `;
 
   const modalTitle = document.querySelector(".modal-title");
@@ -496,7 +459,7 @@ async function confirmAppointment() {
   confirmationModal.style.display = "none";
   showAlert("Consulta agendada com sucesso!", "success");
   currentAppointment = null;
-  persistFormDraft();
+  clearFormDraft();
   validateForm();
   await loadAppointments();
 }
@@ -541,12 +504,12 @@ async function deleteAppointment(appointmentId) {
     html: `
       <div class="appointment-details">
         <div class="detail-row">
-          <div class="detail-label">Paciente:</div>
-          <div class="detail-value">${appointment.patient_name}</div>
-        </div>
-        <div class="detail-row">
           <div class="detail-label">Médico:</div>
           <div class="detail-value">${DOCTOR_NAME(appointment.doctor)}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Especialidade:</div>
+          <div class="detail-value">${SPECIALTIES[appointment.specialty] || appointment.specialty}</div>
         </div>
         <div class="detail-row">
           <div class="detail-label">Data:</div>
@@ -693,26 +656,50 @@ function renderCalendar() {
   calendarElement.appendChild(calendarBody);
 }
 
-// DETALHES DO AGENDAMENTO (modal)
+// DETALHES DO AGENDAMENTO (modal) - Mostra também dados antigos se existirem
 function showAppointmentDetails(appointmentId) {
   const appointment = appointments.find(
     (app) => app && app.id === appointmentId,
   );
   if (!appointment) return;
 
+  // Verifica se o registro antigo tem dados de paciente
+  const hasPatientData = appointment.patient_name || appointment.patient_phone || appointment.notes;
+  
+  let patientDetailsHtml = "";
+  if (hasPatientData) {
+    patientDetailsHtml = `
+      ${appointment.patient_name ? `
+      <div class="detail-row">
+          <div class="detail-label">Paciente:</div>
+          <div class="detail-value">${appointment.patient_name}</div>
+      </div>
+      ` : ""}
+      ${appointment.patient_phone ? `
+      <div class="detail-row">
+          <div class="detail-label">Telefone:</div>
+          <div class="detail-value">${appointment.patient_phone}</div>
+      </div>
+      ` : ""}
+      ${appointment.notes ? `
+      <div class="detail-row">
+          <div class="detail-label">Observações:</div>
+          <div class="detail-value">${appointment.notes}</div>
+      </div>
+      ` : ""}
+    `;
+  }
+
   const details = `
         <div class="appointment-details">
-            <div class="detail-row">
-                <div class="detail-label">Paciente:</div>
-                <div class="detail-value">${appointment.patient_name}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">Telefone:</div>
-                <div class="detail-value">${appointment.patient_phone}</div>
-            </div>
+            ${patientDetailsHtml}
             <div class="detail-row">
                 <div class="detail-label">Médico:</div>
                 <div class="detail-value">${DOCTOR_NAME(appointment.doctor)}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Especialidade:</div>
+                <div class="detail-value">${SPECIALTIES[appointment.specialty] || appointment.specialty || "Não especificada"}</div>
             </div>
             <div class="detail-row">
                 <div class="detail-label">Data:</div>
@@ -726,16 +713,6 @@ function showAppointmentDetails(appointmentId) {
                 <div class="detail-label">Tipo:</div>
                 <div class="detail-value">${CONSULT_TYPE_NAMES[appointment.birth_type] || appointment.birth_type}</div>
             </div>
-            ${
-              appointment.notes
-                ? `
-            <div class="detail-row">
-                <div class="detail-label">Observações:</div>
-                <div class="detail-value">${appointment.notes}</div>
-            </div>
-            `
-                : ""
-            }
             <div class="detail-row">
                 <div class="detail-label">Status:</div>
                 <div class="detail-value">${
@@ -773,13 +750,10 @@ function showAppointmentDetails(appointmentId) {
 
 // LIMPAR FORM
 function clearForm() {
-  patientNameInput.value = "";
-  patientPhoneInput.value = "";
   birthTypeSelect.value = "consulta";
   doctorOptions.forEach((opt) => opt.classList.remove("selected"));
   selectedDoctor = null;
-  notesInput.value = "";
-  currentAppointment = null;
+  specialtySelect.value = "clinica";
 
   birthDateInput.value = formattedToday;
   birthTimeInput.value = "08:00";
@@ -789,8 +763,7 @@ function clearForm() {
 }
 
 /**
- * ✅ POPUP (TOAST) NA TELA
- * Substitui o antigo alert em container fixo.
+ * POPUP (TOAST) NA TELA
  */
 function showAlert(message, type) {
   const TOAST_LIFETIME = 4500;
@@ -861,14 +834,11 @@ function showActionConfirmModal({
     modalTitle.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${title}`;
   }
 
-  // Botões
   btnConfirmAppointment.textContent = confirmText;
   btnCancelAppointment.textContent = cancelText;
 
-  // Limpa handlers antigos e define novos
   btnConfirmAppointment.onclick = async () => {
     try {
-      // trava para evitar duplo clique
       btnConfirmAppointment.disabled = true;
       await onConfirm();
     } finally {
@@ -880,7 +850,6 @@ function showActionConfirmModal({
     confirmationModal.style.display = "none";
   };
 
-  // Garantir que o modal abre
   confirmationModal.style.display = "flex";
 }
 
