@@ -198,8 +198,7 @@
 
         function updateReciboStatus() {
           const valorPreenchido = valorInput.value.trim() !== "";
-          const descricaoPreenchida =
-            document.getElementById("descricao-recibo").innerHTML.trim() !== "";
+          const descricaoPreenchida = getDescricaoTexto().trim() !== "";
           const emitentePreenchido = emitenteNomeInput.value.trim() !== "";
           const recebedorPreenchido = recebedorNomeInput.value.trim() !== "";
 
@@ -389,6 +388,11 @@
 
         function getDescricaoTexto() {
           const descricaoEl = document.getElementById("descricao-recibo");
+
+          if ("value" in descricaoEl) {
+            return descricaoEl.value.replace(/\r\n/g, "\n");
+          }
+
           const html = descricaoEl.innerHTML || "";
           const withBreaks = html
             .replace(/<\s*br\s*\/?\s*>/gi, "\n")
@@ -399,8 +403,7 @@
           temp.innerHTML = withBreaks;
           return (temp.textContent || temp.innerText || "")
             .replace(/\u00a0/g, " ")
-            .replace(/\n{3,}/g, "\n\n")
-            .trim();
+            .replace(/\r\n/g, "\n");
         }
 
         function getReciboData() {
@@ -418,13 +421,15 @@
             cheque: "Cheque",
           };
 
+          const descricaoTexto = getDescricaoTexto();
+
           return {
             numero: numeroReciboInput.value || "NÃO INFORMADO",
             data,
             hora: horaInput.value || "",
             referencia:
               document.getElementById("referencia").value || "NÃO INFORMADO",
-            descricao: getDescricaoTexto() || "NÃO INFORMADA",
+            descricao: descricaoTexto.trim() ? descricaoTexto : "NÃO INFORMADA",
             valor: valorInput.value || "0,00",
             valorExtenso: numeroParaExtenso(valorInput.value || "0,00"),
             formaPagamento: formasPagamento[formaPagamento] || formaPagamento,
@@ -454,23 +459,42 @@
         }
 
         function wrapText(ctx, text, maxWidth) {
-          const paragraphs = String(text || "").split(/\n/);
+          const paragraphs = String(text || "").replace(/\r\n/g, "\n").split(/\n/);
           const lines = [];
-          paragraphs.forEach((paragraph, idx) => {
-            const words = paragraph.trim() ? paragraph.split(/\s+/) : [""];
+
+          paragraphs.forEach((paragraph) => {
+            if (paragraph === "") {
+              lines.push("");
+              return;
+            }
+
+            const tokens = paragraph.match(/\S+|\s+/g) || [""];
             let line = "";
-            words.forEach((word) => {
-              const testLine = line ? `${line} ${word}` : word;
-              if (ctx.measureText(testLine).width > maxWidth && line) {
-                lines.push(line);
-                line = word;
-              } else {
+
+            tokens.forEach((token) => {
+              const testLine = line + token;
+
+              if (ctx.measureText(testLine).width <= maxWidth || !line) {
                 line = testLine;
+                return;
+              }
+
+              lines.push(line.replace(/[ \t]+$/g, ""));
+              line = token.replace(/^[ \t]+/g, "");
+
+              while (ctx.measureText(line).width > maxWidth && line.length > 1) {
+                let cut = line.length;
+                while (cut > 1 && ctx.measureText(line.slice(0, cut)).width > maxWidth) {
+                  cut--;
+                }
+                lines.push(line.slice(0, cut));
+                line = line.slice(cut);
               }
             });
-            lines.push(line);
-            if (idx < paragraphs.length - 1) lines.push("");
+
+            lines.push(line.replace(/[ \t]+$/g, ""));
           });
+
           return lines;
         }
 
@@ -512,34 +536,9 @@
         async function generateReciboCanvas() {
           const data = getReciboData();
           const width = 1240;
+          const pageHeight = 1754;
           const margin = 90;
           const contentWidth = width - margin * 2;
-          const descriptionBoxWidth = contentWidth;
-          const descFont = "28px Georgia";
-
-          const measureCanvas = document.createElement("canvas");
-          const measureCtx = measureCanvas.getContext("2d");
-          measureCtx.font = descFont;
-          const descLines = wrapText(
-            measureCtx,
-            data.descricao,
-            descriptionBoxWidth - 80,
-          );
-          const descLineHeight = 38;
-          const descHeight = Math.max(
-            180,
-            70 + descLines.length * descLineHeight,
-          );
-          const height = Math.max(1754, 1310 + descHeight);
-
-          const canvas = document.createElement("canvas");
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext("2d");
-
-          ctx.fillStyle = "#ffffff";
-          ctx.fillRect(0, 0, width, height);
-          ctx.textBaseline = "top";
 
           const colors = {
             primary: "#400f00",
@@ -549,68 +548,211 @@
             light: "#faf6ec",
           };
 
+          let logo = null;
           try {
-            const logo = await loadImage("imagens/logo.png");
-            ctx.drawImage(logo, 250, 60, 80, 80);
+            logo = await loadImage("imagens/logo.png");
           } catch (error) {
             console.warn("Logo não carregou para exportação:", error);
           }
 
-          ctx.fillStyle = colors.primary;
-          ctx.font = "bold 34px Georgia";
-          ctx.textAlign = "center";
-          ctx.fillText("Hospital São Rafael", width / 2 + 60, 62);
-          ctx.fillStyle = colors.gray;
-          ctx.font = "20px Georgia";
-          ctx.textAlign = "left";
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = pageHeight;
+          const ctx = canvas.getContext("2d");
+          ctx.textBaseline = "top";
 
-          ctx.fillStyle = colors.dark;
-          ctx.font = "bold 21px Georgia";
-          ctx.fillText("Recibo nº:", margin, 208);
-          ctx.font = "20px Georgia";
-          ctx.fillText(data.numero, margin + 130, 208);
+          function fitTextToWidth(text, maxWidth, baseFont, minSize = 18) {
+            const family = baseFont.includes("Georgia") ? "Georgia" : "Arial";
+            const isBold = baseFont.includes("bold");
+            const isItalic = baseFont.includes("italic");
+            let sizeMatch = baseFont.match(/(\d+)px/);
+            let size = sizeMatch ? Number(sizeMatch[1]) : 28;
+            const prefix = `${isItalic ? "italic " : ""}${isBold ? "bold " : ""}`;
 
-          ctx.font = "bold 21px Georgia";
-          const dataLabel = "Data:";
-          const dataValor = `${data.data}${data.hora ? ` às ${data.hora}` : ""}`;
-          const dataValorWidth = ctx.measureText(dataValor).width;
-          const dataLabelWidth = ctx.measureText(dataLabel).width;
-          const rightX = width - margin - dataValorWidth - dataLabelWidth - 12;
-          ctx.fillText(dataLabel, rightX, 208);
-          ctx.font = "20px Georgia";
-          ctx.fillText(dataValor, rightX + dataLabelWidth + 12, 208);
+            while (size > minSize) {
+              ctx.font = `${prefix}${size}px ${family}`;
+              if (ctx.measureText(text).width <= maxWidth) break;
+              size -= 1;
+            }
 
-          ctx.strokeStyle = colors.primary;
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(margin, 280);
-          ctx.lineTo(width - margin, 280);
-          ctx.stroke();
-          ctx.strokeStyle = colors.border;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(margin, 284);
-          ctx.lineTo(width - margin, 284);
-          ctx.stroke();
+            return `${prefix}${size}px ${family}`;
+          }
 
-          let y = 350;
+          function drawTextLine(text, x, y, maxWidth, baseFont, fillStyle = colors.dark, align = "left") {
+            ctx.font = fitTextToWidth(String(text || ""), maxWidth, baseFont);
+            ctx.fillStyle = fillStyle;
+            ctx.textAlign = align;
+            ctx.fillText(String(text || ""), x, y);
+          }
 
-          function drawSectionTitle(text) {
+          function drawPageBase() {
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, width, pageHeight);
+
+            if (logo) {
+              ctx.drawImage(logo, 250, 50, 74, 74);
+            }
+
             ctx.fillStyle = colors.primary;
-            ctx.font = "bold 24px Georgia";
+            ctx.font = "bold 32px Georgia";
+            ctx.textAlign = "center";
+            ctx.fillText("Hospital São Rafael", width / 2 + 60, 58);
+
+            ctx.fillStyle = colors.dark;
+            ctx.font = "bold 20px Georgia";
+            ctx.textAlign = "left";
+            ctx.fillText("Recibo nº:", margin, 188);
+            ctx.font = "19px Georgia";
+            ctx.fillText(data.numero, margin + 120, 188);
+
+            ctx.font = "bold 20px Georgia";
+            const dataLabel = "Data:";
+            const dataValor = `${data.data}${data.hora ? ` às ${data.hora}` : ""}`;
+            const dataValorWidth = ctx.measureText(dataValor).width;
+            const dataLabelWidth = ctx.measureText(dataLabel).width;
+            const rightX = width - margin - dataValorWidth - dataLabelWidth - 12;
+            ctx.fillText(dataLabel, rightX, 188);
+            ctx.font = "19px Georgia";
+            ctx.fillText(dataValor, rightX + dataLabelWidth + 12, 188);
+
+            ctx.strokeStyle = colors.primary;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(margin, 252);
+            ctx.lineTo(width - margin, 252);
+            ctx.stroke();
+            ctx.strokeStyle = colors.border;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(margin, 256);
+            ctx.lineTo(width - margin, 256);
+            ctx.stroke();
+          }
+
+          function drawSectionTitle(text, y) {
+            ctx.fillStyle = colors.primary;
+            ctx.font = "bold 22px Georgia";
+            ctx.textAlign = "left";
             ctx.fillText(text, margin, y);
             ctx.strokeStyle = colors.border;
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.moveTo(margin, y + 54);
-            ctx.lineTo(width - margin, y + 54);
+            ctx.moveTo(margin, y + 46);
+            ctx.lineTo(width - margin, y + 46);
             ctx.stroke();
-            y += 78;
+            return y + 66;
           }
 
-          drawSectionTitle("RECIBO DE SERVIÇOS MÉDICOS");
+          function drawCompactLabelValue(x, y, boxWidth, label, value, options = {}) {
+            const labelFont = options.labelFont || "20px Georgia";
+            const valueFont = options.valueFont || "bold 23px Georgia";
+            const valueTop = options.valueTop || 36;
 
-          roundedRect(ctx, margin, y, contentWidth, 240, 14);
+            ctx.font = labelFont;
+            ctx.fillStyle = colors.gray;
+            ctx.textAlign = "left";
+            ctx.fillText(label, x, y);
+
+            drawTextLine(value, x, y + valueTop, boxWidth, valueFont, colors.dark, "left");
+
+            ctx.strokeStyle = colors.border;
+            ctx.lineWidth = 1;
+            ctx.setLineDash([2, 4]);
+            ctx.beginPath();
+            ctx.moveTo(x, y + valueTop + 28);
+            ctx.lineTo(x + boxWidth, y + valueTop + 28);
+            ctx.stroke();
+            ctx.setLineDash([]);
+          }
+
+          function calculateDescriptionFit(text, maxWidth, maxHeight) {
+            const measureCanvas = document.createElement("canvas");
+            const measureCtx = measureCanvas.getContext("2d");
+            const paddingX = 34;
+            const paddingY = 28;
+            const innerWidth = maxWidth - paddingX * 2;
+            const availableTextHeight = maxHeight - paddingY * 2;
+
+            for (let fontSize = 28; fontSize >= 7; fontSize -= 1) {
+              const lineHeight = Math.max(10, Math.ceil(fontSize * 1.32));
+              measureCtx.font = `${fontSize}px Georgia`;
+              const lines = wrapText(measureCtx, text, innerWidth);
+
+              if (lines.length * lineHeight <= availableTextHeight) {
+                return { fontSize, lineHeight, paddingX, paddingY, lines, overflowScaleY: 1 };
+              }
+            }
+
+            measureCtx.font = "7px Georgia";
+            const lines = wrapText(measureCtx, text, innerWidth);
+            const lineHeight = 10;
+            return {
+              fontSize: 7,
+              lineHeight,
+              paddingX,
+              paddingY,
+              lines,
+              overflowScaleY: Math.min(1, availableTextHeight / Math.max(lineHeight, lines.length * lineHeight)),
+            };
+          }
+
+          function drawDescriptionBox(y, height, fit) {
+            roundedRect(ctx, margin, y, contentWidth, height, 6);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.strokeStyle = colors.border;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = colors.dark;
+            ctx.font = `${fit.fontSize}px Georgia`;
+            ctx.textAlign = "left";
+
+            const textX = margin + fit.paddingX;
+            const textY = y + fit.paddingY;
+            const scaleY = fit.overflowScaleY || 1;
+
+            ctx.save();
+            roundedRect(ctx, margin + 2, y + 2, contentWidth - 4, height - 4, 4);
+            ctx.clip();
+            ctx.translate(0, textY);
+            ctx.scale(1, scaleY);
+
+            fit.lines.forEach((line, index) => {
+              ctx.fillText(line || " ", textX, index * fit.lineHeight);
+            });
+
+            ctx.restore();
+          }
+
+          function drawFooter() {
+            const y = pageHeight - 142;
+            ctx.strokeStyle = colors.border;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(margin, y);
+            ctx.lineTo(width - margin, y);
+            ctx.stroke();
+
+            ctx.textAlign = "center";
+            ctx.fillStyle = colors.gray;
+            ctx.font = "bold 18px Georgia";
+            ctx.fillText("Hospital São Rafael", width / 2, y + 24);
+            ctx.font = "18px Georgia";
+            ctx.fillText("Documento emitido eletronicamente - Sistema de Recibos Digitais", width / 2, y + 58);
+            ctx.fillStyle = colors.primary;
+            ctx.font = "italic 18px Georgia";
+            ctx.fillText("Este recibo comprova a prestação de serviços médicos e o respectivo recebimento.", width / 2, y + 96);
+            ctx.textAlign = "left";
+          }
+
+          drawPageBase();
+
+          let y = 318;
+          y = drawSectionTitle("RECIBO DE SERVIÇOS MÉDICOS", y);
+
+          // Área do valor reduzida para liberar mais espaço à descrição detalhada.
+          roundedRect(ctx, margin, y, contentWidth, 156, 14);
           ctx.fillStyle = colors.light;
           ctx.fill();
           ctx.strokeStyle = colors.primary;
@@ -619,129 +761,48 @@
 
           ctx.textAlign = "center";
           ctx.fillStyle = colors.gray;
-          ctx.font = "bold 20px Georgia";
-          ctx.fillText("VALOR TOTAL", width / 2, y + 62);
+          ctx.font = "bold 18px Georgia";
+          ctx.fillText("VALOR TOTAL", width / 2, y + 30);
           ctx.fillStyle = colors.primary;
-          ctx.font = "bold 46px Georgia";
-          ctx.fillText(`R$ ${data.valor}`, width / 2, y + 118);
+          ctx.font = fitTextToWidth(`R$ ${data.valor}`, contentWidth - 140, "bold 40px Georgia", 24);
+          ctx.fillText(`R$ ${data.valor}`, width / 2, y + 68);
           ctx.fillStyle = colors.dark;
-          ctx.font = "italic 21px Georgia";
-          ctx.fillText(data.valorExtenso, width / 2, y + 190);
+          ctx.font = fitTextToWidth(data.valorExtenso, contentWidth - 140, "italic 18px Georgia", 13);
+          ctx.fillText(data.valorExtenso, width / 2, y + 118);
           ctx.textAlign = "left";
-          y += 290;
+          y += 192;
 
           const colGap = 24;
           const colWidth = (contentWidth - colGap) / 2;
-          drawLabelValue(
-            ctx,
-            margin,
-            y,
-            colWidth,
-            "Referência:",
-            data.referencia,
-            { valueFont: "28px Georgia" },
-          );
-          drawLabelValue(
-            ctx,
-            margin + colWidth + colGap,
-            y,
-            colWidth,
-            "Forma de Pagamento:",
-            data.formaPagamento,
-            { valueFont: "28px Georgia" },
-          );
-          y += 130;
+          drawCompactLabelValue(margin, y, colWidth, "Referência:", data.referencia, { valueFont: "23px Georgia" });
+          drawCompactLabelValue(margin + colWidth + colGap, y, colWidth, "Forma de Pagamento:", data.formaPagamento, { valueFont: "23px Georgia" });
+          y += 96;
 
-          drawSectionTitle("DESCRIÇÃO DOS SERVIÇOS");
+          y = drawSectionTitle("DESCRIÇÃO DOS SERVIÇOS", y);
 
-          roundedRect(ctx, margin, y, contentWidth, descHeight, 6);
-          ctx.fillStyle = "#ffffff";
-          ctx.fill();
-          ctx.strokeStyle = colors.border;
-          ctx.lineWidth = 2;
-          ctx.stroke();
+          const finalSectionsHeight = 330;
+          const footerReserve = 180;
+          const descTop = y;
+          const descBottom = pageHeight - footerReserve - finalSectionsHeight;
+          const descHeight = Math.max(250, descBottom - descTop);
+          const descFit = calculateDescriptionFit(data.descricao, contentWidth, descHeight);
+          drawDescriptionBox(descTop, descHeight, descFit);
 
-          ctx.fillStyle = colors.dark;
-          ctx.font = descFont;
-          let lineY = y + 42;
-          descLines.forEach((line) => {
-            ctx.fillText(line || " ", margin + 40, lineY);
-            lineY += descLineHeight;
-          });
-          y += descHeight + 70;
+          y = descTop + descHeight + 36;
 
-          drawSectionTitle("PROFISSIONAL EMITENTE");
-          drawLabelValue(ctx, margin, y, colWidth, "Nome:", data.emitenteNome, {
-            valueFont: "32px Georgia",
-          });
-          drawLabelValue(
-            ctx,
-            margin + colWidth + colGap,
-            y,
-            colWidth,
-            "Registro:",
-            `CRM ${data.emitenteRegistro}`,
-            { valueFont: "28px Georgia" },
-          );
-          y += 130;
+          y = drawSectionTitle("PROFISSIONAL EMITENTE", y);
+          drawCompactLabelValue(margin, y, colWidth, "Nome:", data.emitenteNome, { valueFont: "25px Georgia" });
+          drawCompactLabelValue(margin + colWidth + colGap, y, colWidth, "Registro:", `CRM ${data.emitenteRegistro}`, { valueFont: "23px Georgia" });
+          y += 98;
 
-          drawSectionTitle("DADOS DO RECEBEDOR");
+          y = drawSectionTitle("DADOS DO RECEBEDOR", y);
           const colGap3 = 22;
           const colWidth3 = (contentWidth - colGap3 * 2) / 3;
-          drawLabelValue(
-            ctx,
-            margin,
-            y,
-            colWidth3,
-            "Nome:",
-            data.recebedorNome,
-            { valueFont: "28px Georgia" },
-          );
-          drawLabelValue(
-            ctx,
-            margin + colWidth3 + colGap3,
-            y,
-            colWidth3,
-            "Documento:",
-            data.documentoNumero,
-            { valueFont: "28px Georgia" },
-          );
-          drawLabelValue(
-            ctx,
-            margin + (colWidth3 + colGap3) * 2,
-            y,
-            colWidth3,
-            "Telefone:",
-            data.telefone,
-            { valueFont: "28px Georgia" },
-          );
-          y += 180;
+          drawCompactLabelValue(margin, y, colWidth3, "Nome:", data.recebedorNome, { valueFont: "22px Georgia" });
+          drawCompactLabelValue(margin + colWidth3 + colGap3, y, colWidth3, "Documento:", data.documentoNumero, { valueFont: "22px Georgia" });
+          drawCompactLabelValue(margin + (colWidth3 + colGap3) * 2, y, colWidth3, "Telefone:", data.telefone, { valueFont: "22px Georgia" });
 
-          ctx.strokeStyle = colors.border;
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(margin, y);
-          ctx.lineTo(width - margin, y);
-          ctx.stroke();
-
-          ctx.textAlign = "center";
-          ctx.fillStyle = colors.gray;
-          ctx.font = "bold 20px Georgia";
-          ctx.fillText("Hospital São Rafael", width / 2, y + 36);
-          ctx.font = "20px Georgia";
-          ctx.fillText(
-            "Documento emitido eletronicamente - Sistema de Recibos Digitais",
-            width / 2,
-            y + 74,
-          );
-          ctx.fillStyle = colors.primary;
-          ctx.font = "italic 20px Georgia";
-          ctx.fillText(
-            "Este recibo comprova a prestação de serviços médicos e o respectivo recebimento.",
-            width / 2,
-            y + 118,
-          );
-          ctx.textAlign = "left";
+          drawFooter();
 
           return { canvas, data };
         }
@@ -778,7 +839,7 @@
             return;
           }
 
-          if (!descricao) {
+          if (!descricao.trim()) {
             showNotification("Descreva os serviços prestados!", "error");
             return;
           }

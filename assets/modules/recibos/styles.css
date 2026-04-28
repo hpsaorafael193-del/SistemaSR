@@ -323,6 +323,10 @@
         font-size: 0.95rem;
         line-height: 1.6;
         color: var(--dark-color);
+        resize: vertical;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+        tab-size: 4;
       }
 
       .editable-area:focus {
@@ -897,6 +901,385 @@
         }
       }
 
+
+      /* AJUSTES DE RESPONSIVIDADE E ANTI-SOBREPOSIÇÃO */
+      html,
+      body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      img,
+      svg,
+      canvas {
+        max-width: 100%;
+        height: auto;
+      }
+
+      input,
+      select,
+      textarea,
+      button {
+        max-width: 100%;
+      }
+
+      .main-content {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .form-panel,
+      .preview-panel,
+      .form-section,
+      .form-grid,
+      .form-group,
+      .preview-header,
+      .preview-actions,
+      .recibo-preview-container {
+        min-width: 0;
+      }
+
+      .form-panel {
+        overflow-x: hidden;
+      }
+
+      .form-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+      }
+
+      .form-control {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .preview-panel {
+        overflow: hidden;
+      }
+
+      .preview-header,
+      .preview-actions,
+      .export-options {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .recibo-preview-container {
+        max-width: 100%;
+      }
+
+      @media (max-width: 1200px) {
+        .main-content {
+          grid-template-columns: 1fr;
+        }
+
+        .form-panel,
+        .preview-panel {
+          max-height: none;
+        }
+
+        .recibo-preview-container {
+          max-height: 75vh;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .app-header {
+          align-items: flex-start;
+          gap: 1rem;
+          flex-wrap: wrap;
+        }
+
+        .header-left,
+        .header-right {
+          width: 100%;
+          min-width: 0;
+        }
+
+        .header-right {
+          justify-content: space-between;
+          flex-wrap: wrap;
+        }
+
+        .hospital-logo {
+          min-width: 0;
+        }
+
+        .hospital-logo h1 {
+          font-size: clamp(1.1rem, 4vw, 1.5rem);
+          word-break: break-word;
+        }
+
+        .hospital-logo-img {
+          width: 52px;
+          height: 52px;
+          flex: 0 0 auto;
+        }
+
+        .hospital-logo-img img {
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: contain;
+        }
+
+        .preview-header,
+        .export-options {
+          align-items: flex-start;
+        }
+
+        .preview-actions,
+        .preview-actions .btn-preview-action {
+          width: 100%;
+        }
+
+        .preview-actions .btn-preview-action {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
+          padding: 1rem;
+          gap: 1rem;
+        }
+
+        .app-header {
+          padding: 1rem;
+          text-align: left;
+        }
+
+        .form-panel,
+        .form-section,
+        .preview-header,
+        .export-controls {
+          padding: 1rem;
+        }
+
+        .section-header {
+          gap: 0.75rem;
+          align-items: flex-start;
+          flex-wrap: wrap;
+        }
+
+        .section-header h2,
+        .preview-header h2 {
+          font-size: 1.05rem;
+          line-height: 1.35;
+          min-width: 0;
+        }
+
+        .status-badge {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .input-with-action {
+          align-items: stretch;
+        }
+
+        .input-with-action .form-control {
+          flex: 1 1 auto;
+        }
+
+        .btn-action {
+          flex: 0 0 44px;
+          padding: 0;
+        }
+
+        .professional-register-display {
+          align-items: stretch;
+        }
+
+        .register-type {
+          flex: 0 0 auto;
+        }
+
+        .editable-area {
+          min-height: 150px;
+        }
+
+        .preview-header {
+          flex-direction: column;
+        }
+
+        .recibo-preview-container {
+          padding: 0.75rem;
+          justify-content: flex-start;
+          max-height: 70vh;
+        }
+
+        .recibo-preview-container .recibo-preview {
+          width: 100%;
+          max-width: 210mm;
+          min-height: auto;
+          padding: clamp(14px, 4vw, 20mm);
+          transform: none;
+          font-size: clamp(10px, 2.8vw, 15px);
+          overflow-wrap: anywhere;
+        }
+
+        .recibo-logo {
+          gap: 0.75rem;
+          flex-wrap: wrap;
+        }
+
+        .recibo-logo-img {
+          width: clamp(46px, 14vw, 80px);
+          height: clamp(46px, 14vw, 80px);
+        }
+
+        .recibo-titulo h1 {
+          font-size: clamp(1.25em, 6vw, 1.8em);
+          line-height: 1.2;
+        }
+
+        .recibo-info-top,
+        .recibo-grid,
+        .export-options {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 0.75rem;
+        }
+
+        .info-item {
+          justify-content: space-between;
+          gap: 1rem;
+        }
+
+        .valor-container {
+          padding: 1rem;
+          margin: 1rem 0;
+        }
+
+        .valor-total {
+          font-size: clamp(1.5rem, 8vw, 2.2rem);
+          overflow-wrap: anywhere;
+        }
+
+        .descricao-container {
+          padding: 1rem;
+          min-height: 120px;
+          overflow-wrap: break-word;
+          word-break: normal;
+        }
+
+        .export-info {
+          text-align: left;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .main-content {
+          padding: 0.75rem;
+        }
+
+        .app-header,
+        .form-panel,
+        .form-section,
+        .preview-header,
+        .export-controls,
+        .modal-header,
+        .modal-body {
+          padding: 0.85rem;
+        }
+
+        .hospital-logo {
+          align-items: flex-start;
+          gap: 0.75rem;
+        }
+
+        .header-right,
+        .auto-save-status {
+          width: 100%;
+        }
+
+        .auto-save-status {
+          justify-content: center;
+        }
+
+        .btn-help {
+          flex: 0 0 40px;
+        }
+
+        .professional-register-display {
+          flex-direction: column;
+        }
+
+        .register-type {
+          width: 100%;
+        }
+
+        .input-with-action {
+          gap: 0.4rem;
+        }
+
+        .recibo-preview-container {
+          padding: 0.5rem;
+        }
+
+        .recibo-preview-container .recibo-preview {
+          padding: 12px;
+          border-radius: var(--border-radius-sm);
+        }
+
+        .recibo-section {
+          margin-bottom: 1.25rem;
+        }
+
+        .recibo-section-title {
+          font-size: 1em;
+          flex-wrap: wrap;
+        }
+
+        .field-value,
+        .valor-extenso,
+        .descricao-container {
+          font-size: 0.95em;
+        }
+
+        .modal-content {
+          width: calc(100% - 1.5rem);
+          max-height: 88vh;
+        }
+
+        .notification {
+          left: 0.75rem;
+          right: 0.75rem;
+          bottom: 0.75rem;
+          max-width: none;
+        }
+      }
+
+      @media (max-width: 360px) {
+        .main-content {
+          padding: 0.5rem;
+        }
+
+        .app-header,
+        .form-panel,
+        .form-section,
+        .preview-header,
+        .export-controls {
+          padding: 0.75rem;
+        }
+
+        .btn-preview-action,
+        .btn-export {
+          font-size: 0.9rem;
+          padding: 0.65rem;
+        }
+
+        .recibo-preview-container .recibo-preview {
+          font-size: 10px;
+        }
+      }
+
       /* IMPRESSÃO */
       @media print {
         .app-header,
@@ -926,5 +1309,116 @@
           min-height: auto !important;
           transform: none !important;
           page-break-after: always;
+        }
+      }
+
+      /* CONTROLE DE SCROLL GERAL
+         Mantém a página fixa e deixa apenas o formulário e a pré-visualização rolarem. */
+      html,
+      body {
+        height: 100%;
+        min-height: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        min-height: 100dvh;
+      }
+
+      .app-container {
+        height: 100dvh;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .app-header {
+        position: relative;
+        top: auto;
+        flex: 0 0 auto;
+      }
+
+      .main-content {
+        flex: 1 1 auto;
+        height: auto;
+        min-height: 0;
+        overflow: hidden;
+        align-items: stretch;
+      }
+
+      .form-panel,
+      .preview-panel {
+        height: 100%;
+        min-height: 0;
+        max-height: none;
+      }
+
+      .form-panel {
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .preview-panel {
+        overflow: hidden;
+      }
+
+      .recibo-preview-container {
+        flex: 1 1 auto;
+        min-height: 0;
+        max-height: none;
+        overflow: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      @media (max-width: 1200px) {
+        .main-content {
+          grid-template-columns: 1fr;
+          grid-template-rows: minmax(0, 0.95fr) minmax(0, 1.05fr);
+          height: auto;
+          min-height: 0;
+          overflow: hidden;
+        }
+
+        .form-panel,
+        .preview-panel {
+          max-height: none;
+          height: 100%;
+          min-height: 0;
+        }
+
+        .recibo-preview-container {
+          max-height: none;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .app-container {
+          height: 100dvh;
+        }
+
+        .app-header {
+          max-height: 28dvh;
+          overflow-y: auto;
+          overscroll-behavior: contain;
+        }
+
+        .main-content {
+          grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+        }
+      }
+
+      @media print {
+        html,
+        body,
+        .app-container,
+        .main-content,
+        .form-panel,
+        .preview-panel,
+        .recibo-preview-container {
+          height: auto !important;
+          min-height: 0 !important;
+          max-height: none !important;
+          overflow: visible !important;
         }
       }
