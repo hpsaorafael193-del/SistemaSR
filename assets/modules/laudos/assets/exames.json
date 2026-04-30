@@ -1,6 +1,117 @@
 {
   "exames": [
     {
+      "id": "hormonal_prolactina",
+      "nome": "Prolactina",
+      "descricao": "Dosagem sérica de prolactina para avaliação de distúrbios hipofisários, galactorreia e alterações do eixo reprodutivo.",
+      "categoria": "hormonal",
+      "icone": "fa-vial",
+      "campos": [
+        {
+          "id": "prolactina_valor",
+          "tipo": "number",
+          "label": "Prolactina",
+          "unidade": "ng/mL",
+          "referencia": "Homens: 2–18 | Mulheres não grávidas: 2–25 | Gestação: 10–200"
+        },
+        {
+          "id": "sexo_paciente",
+          "tipo": "select",
+          "label": "Sexo do paciente",
+          "opcoes": [
+            { "valor": "feminino", "label": "Feminino" },
+            { "valor": "masculino", "label": "Masculino" }
+          ],
+          "referencia": "Definição de referência"
+        },
+        {
+          "id": "contexto_clinico",
+          "tipo": "select",
+          "label": "Contexto clínico",
+          "opcoes": [
+            { "valor": "avaliacao_rotina", "label": "Avaliação de rotina" },
+            { "valor": "amenorreia", "label": "Amenorreia" },
+            { "valor": "galactorreia", "label": "Galactorreia" },
+            {
+              "valor": "Avaliação pré-inseminação",
+              "label": "Avaliação pré-inseminação"
+            },
+            {
+              "valor": "infertilidade",
+              "label": "Investigação de infertilidade"
+            },
+            {
+              "valor": "suspeita_prolactinoma",
+              "label": "Suspeita de prolactinoma"
+            },
+            {
+              "valor": "uso_medicacao",
+              "label": "Uso de medicação (ex: antipsicóticos)"
+            }
+          ],
+          "referencia": "Indicação do exame"
+        },
+        {
+          "id": "condicoes_coleta",
+          "tipo": "select",
+          "label": "Condições da coleta",
+          "opcoes": [
+            { "valor": "adequada", "label": "Coleta em condições adequadas" },
+            {
+              "valor": "estresse",
+              "label": "Possível interferência por estresse"
+            },
+            {
+              "valor": "pos_exercicio",
+              "label": "Coleta após exercício físico"
+            },
+            {
+              "valor": "jejum_inadequado",
+              "label": "Condição de jejum inadequada"
+            }
+          ],
+          "referencia": "Fatores interferentes"
+        },
+        {
+          "id": "impressao",
+          "tipo": "select",
+          "label": "Impressão",
+          "opcoes": [
+            {
+              "valor": "normal",
+              "label": "Níveis de prolactina dentro da normalidade"
+            },
+            {
+              "valor": "hiperprolactinemia_leve",
+              "label": "Hiperprolactinemia leve"
+            },
+            {
+              "valor": "hiperprolactinemia_moderada",
+              "label": "Hiperprolactinemia moderada"
+            },
+            {
+              "valor": "hiperprolactinemia_importante",
+              "label": "Hiperprolactinemia significativa (sugestiva de adenoma hipofisário)"
+            },
+            { "valor": "baixa", "label": "Níveis reduzidos de prolactina" }
+          ],
+          "referencia": "Classificação"
+        },
+        {
+          "id": "interpretacao",
+          "tipo": "textarea",
+          "label": "Interpretação",
+          "placeholder": ""
+        },
+        {
+          "id": "conclusao",
+          "tipo": "textarea",
+          "label": "Conclusão",
+          "placeholder": ""
+        }
+      ]
+    },
+    {
       "id": "lab_beta_hcg_completo",
       "nome": "β-hCG (Beta hCG)",
       "descricao": "Dosagem da gonadotrofina coriônica humana para diagnóstico e acompanhamento gestacional",
@@ -121,148 +232,6 @@
             }
           ],
           "referencia": "Negativo / Alterado"
-        },
-        {
-          "id": "interpretacao",
-          "tipo": "textarea",
-          "label": "Interpretação"
-        },
-        {
-          "id": "conclusao",
-          "tipo": "textarea",
-          "label": "Conclusão"
-        }
-      ]
-    },
-    {
-      "id": "lab_teste_dna",
-      "nome": "Teste de DNA",
-      "descricao": "Análise genética para identificação de vínculo biológico ou investigação genética",
-      "categoria": "laboratorio",
-      "icone": "fa-dna",
-      "campos": [
-        {
-          "id": "finalidade",
-          "tipo": "select",
-          "label": "Finalidade do Teste",
-          "opcoes": [
-            {
-              "valor": "paternidade",
-              "label": "Paternidade"
-            },
-            {
-              "valor": "maternidade",
-              "label": "Maternidade"
-            },
-            {
-              "valor": "parentesco",
-              "label": "Parentesco biológico"
-            },
-            {
-              "valor": "identificacao",
-              "label": "Identificação genética"
-            }
-          ],
-          "referencia": "Paternidade / Parentesco"
-        },
-        {
-          "id": "tipo_amostra",
-          "tipo": "select",
-          "label": "Tipo de Amostra",
-          "opcoes": [
-            {
-              "valor": "swab_bucal",
-              "label": "Swab bucal"
-            },
-            {
-              "valor": "sangue",
-              "label": "Sangue periférico"
-            },
-            {
-              "valor": "outro",
-              "label": "Outro"
-            }
-          ],
-          "referencia": "Swab bucal"
-        },
-        {
-          "id": "perfil_genetico",
-          "tipo": "select",
-          "label": "Perfil Genético",
-          "opcoes": [
-            {
-              "valor": "compativel",
-              "label": "Compatível"
-            },
-            {
-              "valor": "incompativel",
-              "label": "Incompatível"
-            }
-          ],
-          "referencia": "Compatível / Incompatível"
-        },
-        {
-          "id": "indice_probabilidade",
-          "tipo": "number",
-          "label": "Índice de Probabilidade",
-          "unidade": "%",
-          "referencia": "≥ 99.9"
-        },
-        {
-          "id": "conclusao_tecnica",
-          "tipo": "select",
-          "label": "Conclusão Técnica",
-          "opcoes": [
-            {
-              "valor": "confirmado",
-              "label": "Vínculo biológico confirmado"
-            },
-            {
-              "valor": "excluido",
-              "label": "Vínculo biológico excluído"
-            },
-            {
-              "valor": "inconclusivo",
-              "label": "Resultado inconclusivo"
-            }
-          ],
-          "referencia": "Confirmado / Excluído"
-        },
-        {
-          "id": "validade_legal",
-          "tipo": "select",
-          "label": "Validade Legal",
-          "opcoes": [
-            {
-              "valor": "sim",
-              "label": "Sim"
-            },
-            {
-              "valor": "nao",
-              "label": "Não"
-            }
-          ],
-          "referencia": "Sim / Não"
-        },
-        {
-          "id": "observacoes_tecnicas",
-          "tipo": "select",
-          "label": "Observações Técnicas",
-          "opcoes": [
-            {
-              "valor": "sem_intercorrencias",
-              "label": "Sem intercorrências"
-            },
-            {
-              "valor": "amostra_limitada",
-              "label": "Amostra limitada"
-            },
-            {
-              "valor": "necessita_recoleta",
-              "label": "Necessita recoleta"
-            }
-          ],
-          "referencia": "Sem intercorrências"
         },
         {
           "id": "interpretacao",
@@ -2663,150 +2632,6 @@
           "id": "conclusao",
           "tipo": "textarea",
           "label": "Conclusão"
-        }
-      ]
-    },
-    {
-      "id": "genetico_sexagem_fetal",
-      "nome": "Sexagem Fetal",
-      "descricao": "Exame molecular para determinação do sexo fetal por detecção de DNA fetal livre no sangue materno.",
-      "categoria": "genetico",
-      "icone": "fa-dna",
-      "campos": [
-        {
-          "id": "metodo",
-          "tipo": "select",
-          "label": "Método",
-          "opcoes": [
-            {
-              "valor": "dna_fetal_materno",
-              "label": "DNA fetal livre no sangue materno"
-            },
-            { "valor": "outro", "label": "Outro método" }
-          ],
-          "referencia": "Metodologia utilizada"
-        },
-        {
-          "id": "idade_gestacional",
-          "tipo": "text",
-          "label": "Idade gestacional",
-          "placeholder": "Ex: 8 semanas"
-        },
-        {
-          "id": "tipo_gestacao",
-          "tipo": "select",
-          "label": "Tipo de gestação",
-          "opcoes": [
-            { "valor": "unica", "label": "Gestação única" },
-            { "valor": "gemelar", "label": "Gestação gemelar" },
-            { "valor": "multipla", "label": "Gestação múltipla (≥3 fetos)" }
-          ],
-          "referencia": "Número de fetos"
-        },
-        {
-          "id": "corionicidade",
-          "tipo": "select",
-          "label": "Corionicidade / Zigosidade",
-          "opcoes": [
-            {
-              "valor": "nao_aplicavel",
-              "label": "Não aplicável (gestação única)"
-            },
-            { "valor": "univitelina", "label": "Univitelina (monozigótica)" },
-            { "valor": "bivitelina", "label": "Bivitelina (dizigótica)" },
-            { "valor": "indeterminado", "label": "Indeterminado" }
-          ],
-          "referencia": "Importante em gestações múltiplas"
-        },
-        {
-          "id": "vitalidade_fetal",
-          "tipo": "select",
-          "label": "Vitalidade fetal (USG)",
-          "opcoes": [
-            { "valor": "nao_avaliado", "label": "Não avaliado" },
-            { "valor": "presente", "label": "Vitalidade presente" },
-            { "valor": "ausente", "label": "Vitalidade ausente" },
-            { "valor": "indeterminado", "label": "Indeterminado" }
-          ],
-          "referencia": "Baseado em ultrassonografia"
-        },
-        {
-          "id": "resultado",
-          "tipo": "select",
-          "label": "Resultado",
-          "opcoes": [
-            {
-              "valor": "presenca_cromossomo_y",
-              "label": "Sexo fetal masculino"
-            },
-            {
-              "valor": "ausencia_cromossomo_y",
-              "label": "Sexo fetal feminino"
-            },
-            {
-              "valor": "presenca_y_gestacao_multipla",
-              "label": "Gestação múltipla, sexo fetais feminino e masculino"
-            },
-            {
-              "valor": "presenca_y_gestacao_multipla",
-              "label": "Gestação múltipla, sexo fetais masculino"
-            },
-            {
-              "valor": "ausencia_y_gestacao_multipla",
-              "label": "Gestação múltipla, sexo fetais feminino"
-            },
-            {
-              "valor": "inconclusivo",
-              "label": "Resultado inconclusivo devido a limitações técnicas ou baixa fração fetal"
-            }
-          ],
-          "referencia": "Detecção do cromossomo Y"
-        },
-        {
-          "id": "confiabilidade",
-          "tipo": "select",
-          "label": "Confiabilidade da amostra",
-          "opcoes": [
-            { "valor": "adequada", "label": "Amostra adequada" },
-            { "valor": "baixa_fracao_fetal", "label": "Baixa fração fetal" },
-            { "valor": "inadequada", "label": "Amostra inadequada" }
-          ],
-          "referencia": "Qualidade da amostra"
-        },
-        {
-          "id": "impressao",
-          "tipo": "select",
-          "label": "Impressão",
-          "opcoes": [
-            { "valor": "masculino", "label": "Sexo masculino identificado" },
-            { "valor": "feminino", "label": "Sexo feminino identificado" },
-            {
-              "valor": "masculino_feminino_gemelar",
-              "label": "Presença de ambos os sexos masculino e feminino"
-            },
-            {
-              "valor": "provavel_feminino_gemelar",
-              "label": "Provável gestação feminina (sem detecção de Y)"
-            },
-            {
-              "valor": "provavel_masculino_gemelar",
-              "label": "Provável gestação feminina (com detecção de Y)"
-            },
-            { "valor": "inconclusivo", "label": "Resultado inconclusivo" }
-          ],
-          "referencia": "Conclusão do exame"
-        },
-        {
-          "id": "interpretacao",
-          "tipo": "textarea",
-          "label": "Interpretação",
-          "placeholder": "Correlacionar com ultrassonografia. Em gestações múltiplas, não é possível definir sexo individual por este método."
-        },
-        {
-          "id": "conclusao",
-          "tipo": "textarea",
-          "label": "Conclusão",
-          "placeholder": "Síntese final com recomendação de seguimento."
         }
       ]
     },
@@ -6671,14 +6496,12 @@
         {
           "id": "interpretacao",
           "tipo": "textarea",
-          "label": "Interpretação",
-          "placeholder": "Correlacionar com beta-hCG, idade gestacional e evolução clínica."
+          "label": "Interpretação"
         },
         {
           "id": "conclusao",
           "tipo": "textarea",
-          "label": "Conclusão",
-          "placeholder": "Síntese diagnóstica e orientação de seguimento."
+          "label": "Conclusão"
         }
       ]
     },
@@ -7520,14 +7343,12 @@
         {
           "id": "interpretacao",
           "tipo": "textarea",
-          "label": "Interpretação",
-          "placeholder": "Correlacionar com uso de correção óptica, assimetria entre os olhos e sintomas visuais."
+          "label": "Interpretação"
         },
         {
           "id": "conclusao",
           "tipo": "textarea",
-          "label": "Conclusão",
-          "placeholder": "Síntese clínica e recomendação de avaliação oftalmológica."
+          "label": "Conclusão"
         }
       ]
     },
@@ -7991,14 +7812,12 @@
         {
           "id": "interpretacao",
           "tipo": "textarea",
-          "label": "Interpretação",
-          "placeholder": "Correlacionar com quadro clínico, desenvolvimento visual e história familiar."
+          "label": "Interpretação"
         },
         {
           "id": "conclusao",
           "tipo": "textarea",
-          "label": "Conclusão",
-          "placeholder": "Síntese diagnóstica e orientação para seguimento especializado."
+          "label": "Conclusão"
         }
       ]
     },
@@ -8645,14 +8464,12 @@
         {
           "id": "interpretacao",
           "tipo": "textarea",
-          "label": "Interpretação",
-          "placeholder": "Interpretação clínica dos achados"
+          "label": "Interpretação"
         },
         {
           "id": "conclusao",
           "tipo": "textarea",
-          "label": "Conclusão",
-          "placeholder": "Conclusão final do exame"
+          "label": "Conclusão"
         }
       ]
     },
@@ -8979,14 +8796,296 @@
         {
           "id": "interpretacao",
           "tipo": "textarea",
-          "label": "Interpretação",
-          "placeholder": "Interpretação clínica dos achados"
+          "label": "Interpretação"
         },
         {
           "id": "conclusao",
           "tipo": "textarea",
-          "label": "Conclusão",
-          "placeholder": "Conclusão final do exame"
+          "label": "Conclusão"
+        }
+      ]
+    },
+    {
+      "id": "genetico_sexagem_fetal",
+      "nome": "Sexagem Fetal",
+      "descricao": "Exame molecular para determinação do sexo fetal por detecção de DNA fetal livre no sangue materno.",
+      "categoria": "genetico",
+      "icone": "fa-dna",
+      "campos": [
+        {
+          "id": "metodo",
+          "tipo": "select",
+          "label": "Método",
+          "opcoes": [
+            {
+              "valor": "dna_fetal_materno",
+              "label": "DNA fetal livre no sangue materno"
+            },
+            { "valor": "outro", "label": "Outro método" }
+          ],
+          "referencia": "Metodologia utilizada"
+        },
+        {
+          "id": "idade_gestacional",
+          "tipo": "text",
+          "label": "Idade gestacional",
+          "placeholder": "Ex: 8 semanas"
+        },
+        {
+          "id": "tipo_gestacao",
+          "tipo": "select",
+          "label": "Tipo de gestação",
+          "opcoes": [
+            { "valor": "unica", "label": "Gestação única" },
+            { "valor": "gemelar", "label": "Gestação gemelar" },
+            { "valor": "multipla", "label": "Gestação múltipla (≥3 fetos)" }
+          ],
+          "referencia": "Número de fetos"
+        },
+        {
+          "id": "corionicidade",
+          "tipo": "select",
+          "label": "Corionicidade / Zigosidade",
+          "opcoes": [
+            {
+              "valor": "nao_aplicavel",
+              "label": "Não aplicável (gestação única)"
+            },
+            { "valor": "univitelina", "label": "Univitelina (monozigótica)" },
+            { "valor": "bivitelina", "label": "Bivitelina (dizigótica)" },
+            { "valor": "indeterminado", "label": "Indeterminado" }
+          ],
+          "referencia": "Importante em gestações múltiplas"
+        },
+        {
+          "id": "vitalidade_fetal",
+          "tipo": "select",
+          "label": "Vitalidade fetal (USG)",
+          "opcoes": [
+            { "valor": "nao_avaliado", "label": "Não avaliado" },
+            { "valor": "presente", "label": "Vitalidade presente" },
+            { "valor": "ausente", "label": "Vitalidade ausente" },
+            { "valor": "indeterminado", "label": "Indeterminado" }
+          ],
+          "referencia": "Baseado em ultrassonografia"
+        },
+        {
+          "id": "resultado",
+          "tipo": "select",
+          "label": "Resultado",
+          "opcoes": [
+            {
+              "valor": "presenca_cromossomo_y",
+              "label": "Sexo fetal masculino"
+            },
+            {
+              "valor": "ausencia_cromossomo_y",
+              "label": "Sexo fetal feminino"
+            },
+            {
+              "valor": "presenca_y_gestacao_multipla",
+              "label": "Gestação múltipla, sexo fetais feminino e masculino"
+            },
+            {
+              "valor": "presenca_y_gestacao_multipla",
+              "label": "Gestação múltipla, sexo fetais masculino"
+            },
+            {
+              "valor": "ausencia_y_gestacao_multipla",
+              "label": "Gestação múltipla, sexo fetais feminino"
+            },
+            {
+              "valor": "inconclusivo",
+              "label": "Resultado inconclusivo devido a limitações técnicas ou baixa fração fetal"
+            }
+          ],
+          "referencia": "Detecção do cromossomo Y"
+        },
+        {
+          "id": "confiabilidade",
+          "tipo": "select",
+          "label": "Confiabilidade da amostra",
+          "opcoes": [
+            { "valor": "adequada", "label": "Amostra adequada" },
+            { "valor": "baixa_fracao_fetal", "label": "Baixa fração fetal" },
+            { "valor": "inadequada", "label": "Amostra inadequada" }
+          ],
+          "referencia": "Qualidade da amostra"
+        },
+        {
+          "id": "impressao",
+          "tipo": "select",
+          "label": "Impressão",
+          "opcoes": [
+            { "valor": "masculino", "label": "Sexo masculino identificado" },
+            { "valor": "feminino", "label": "Sexo feminino identificado" },
+            {
+              "valor": "masculino_feminino_gemelar",
+              "label": "Presença de ambos os sexos masculino e feminino"
+            },
+            {
+              "valor": "provavel_feminino_gemelar",
+              "label": "Provável gestação feminina (sem detecção de Y)"
+            },
+            {
+              "valor": "provavel_masculino_gemelar",
+              "label": "Provável gestação feminina (com detecção de Y)"
+            },
+            { "valor": "inconclusivo", "label": "Resultado inconclusivo" }
+          ],
+          "referencia": "Conclusão do exame"
+        },
+        {
+          "id": "interpretacao",
+          "tipo": "textarea",
+          "label": "Interpretação"
+        },
+        {
+          "id": "conclusao",
+          "tipo": "textarea",
+          "label": "Conclusão"
+        }
+      ]
+    },
+    {
+      "id": "lab_teste_dna",
+      "nome": "Teste de DNA",
+      "descricao": "Análise genética para identificação de vínculo biológico ou investigação genética",
+      "categoria": "genetico",
+      "icone": "fa-dna",
+      "campos": [
+        {
+          "id": "finalidade",
+          "tipo": "select",
+          "label": "Finalidade do Teste",
+          "opcoes": [
+            {
+              "valor": "paternidade",
+              "label": "Paternidade"
+            },
+            {
+              "valor": "maternidade",
+              "label": "Maternidade"
+            },
+            {
+              "valor": "parentesco",
+              "label": "Parentesco biológico"
+            },
+            {
+              "valor": "identificacao",
+              "label": "Identificação genética"
+            }
+          ],
+          "referencia": "Paternidade / Parentesco"
+        },
+        {
+          "id": "tipo_amostra",
+          "tipo": "select",
+          "label": "Tipo de Amostra",
+          "opcoes": [
+            {
+              "valor": "swab_bucal",
+              "label": "Swab bucal"
+            },
+            {
+              "valor": "sangue",
+              "label": "Sangue periférico"
+            },
+            {
+              "valor": "outro",
+              "label": "Outro"
+            }
+          ],
+          "referencia": "Swab bucal"
+        },
+        {
+          "id": "perfil_genetico",
+          "tipo": "select",
+          "label": "Perfil Genético",
+          "opcoes": [
+            {
+              "valor": "compativel",
+              "label": "Compatível"
+            },
+            {
+              "valor": "incompativel",
+              "label": "Incompatível"
+            }
+          ],
+          "referencia": "Compatível / Incompatível"
+        },
+        {
+          "id": "indice_probabilidade",
+          "tipo": "number",
+          "label": "Índice de Probabilidade",
+          "unidade": "%",
+          "referencia": "≥ 99.9"
+        },
+        {
+          "id": "conclusao_tecnica",
+          "tipo": "select",
+          "label": "Conclusão Técnica",
+          "opcoes": [
+            {
+              "valor": "confirmado",
+              "label": "Vínculo biológico confirmado"
+            },
+            {
+              "valor": "excluido",
+              "label": "Vínculo biológico excluído"
+            },
+            {
+              "valor": "inconclusivo",
+              "label": "Resultado inconclusivo"
+            }
+          ],
+          "referencia": "Confirmado / Excluído"
+        },
+        {
+          "id": "validade_legal",
+          "tipo": "select",
+          "label": "Validade Legal",
+          "opcoes": [
+            {
+              "valor": "sim",
+              "label": "Sim"
+            },
+            {
+              "valor": "nao",
+              "label": "Não"
+            }
+          ],
+          "referencia": "Sim / Não"
+        },
+        {
+          "id": "observacoes_tecnicas",
+          "tipo": "select",
+          "label": "Observações Técnicas",
+          "opcoes": [
+            {
+              "valor": "sem_intercorrencias",
+              "label": "Sem intercorrências"
+            },
+            {
+              "valor": "amostra_limitada",
+              "label": "Amostra limitada"
+            },
+            {
+              "valor": "necessita_recoleta",
+              "label": "Necessita recoleta"
+            }
+          ],
+          "referencia": "Sem intercorrências"
+        },
+        {
+          "id": "interpretacao",
+          "tipo": "textarea",
+          "label": "Interpretação"
+        },
+        {
+          "id": "conclusao",
+          "tipo": "textarea",
+          "label": "Conclusão"
         }
       ]
     },
@@ -9044,14 +9143,12 @@
         {
           "id": "interpretacao",
           "tipo": "textarea",
-          "label": "Interpretação",
-          "placeholder": "Correlação clínica dos achados"
+          "label": "Interpretação"
         },
         {
           "id": "conclusao",
           "tipo": "textarea",
-          "label": "Conclusão",
-          "placeholder": "Conclusão final do exame"
+          "label": "Conclusão"
         }
       ]
     }
