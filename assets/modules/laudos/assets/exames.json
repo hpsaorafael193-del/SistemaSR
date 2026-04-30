@@ -1,117 +1,6 @@
 {
   "exames": [
     {
-      "id": "hormonal_prolactina",
-      "nome": "Prolactina",
-      "descricao": "Dosagem sérica de prolactina para avaliação de distúrbios hipofisários, galactorreia e alterações do eixo reprodutivo.",
-      "categoria": "hormonal",
-      "icone": "fa-vial",
-      "campos": [
-        {
-          "id": "prolactina_valor",
-          "tipo": "number",
-          "label": "Prolactina",
-          "unidade": "ng/mL",
-          "referencia": "Homens: 2–18 | Mulheres não grávidas: 2–25 | Gestação: 10–200"
-        },
-        {
-          "id": "sexo_paciente",
-          "tipo": "select",
-          "label": "Sexo do paciente",
-          "opcoes": [
-            { "valor": "feminino", "label": "Feminino" },
-            { "valor": "masculino", "label": "Masculino" }
-          ],
-          "referencia": "Definição de referência"
-        },
-        {
-          "id": "contexto_clinico",
-          "tipo": "select",
-          "label": "Contexto clínico",
-          "opcoes": [
-            { "valor": "avaliacao_rotina", "label": "Avaliação de rotina" },
-            { "valor": "amenorreia", "label": "Amenorreia" },
-            { "valor": "galactorreia", "label": "Galactorreia" },
-            {
-              "valor": "Avaliação pré-inseminação",
-              "label": "Avaliação pré-inseminação"
-            },
-            {
-              "valor": "infertilidade",
-              "label": "Investigação de infertilidade"
-            },
-            {
-              "valor": "suspeita_prolactinoma",
-              "label": "Suspeita de prolactinoma"
-            },
-            {
-              "valor": "uso_medicacao",
-              "label": "Uso de medicação (ex: antipsicóticos)"
-            }
-          ],
-          "referencia": "Indicação do exame"
-        },
-        {
-          "id": "condicoes_coleta",
-          "tipo": "select",
-          "label": "Condições da coleta",
-          "opcoes": [
-            { "valor": "adequada", "label": "Coleta em condições adequadas" },
-            {
-              "valor": "estresse",
-              "label": "Possível interferência por estresse"
-            },
-            {
-              "valor": "pos_exercicio",
-              "label": "Coleta após exercício físico"
-            },
-            {
-              "valor": "jejum_inadequado",
-              "label": "Condição de jejum inadequada"
-            }
-          ],
-          "referencia": "Fatores interferentes"
-        },
-        {
-          "id": "impressao",
-          "tipo": "select",
-          "label": "Impressão",
-          "opcoes": [
-            {
-              "valor": "normal",
-              "label": "Níveis de prolactina dentro da normalidade"
-            },
-            {
-              "valor": "hiperprolactinemia_leve",
-              "label": "Hiperprolactinemia leve"
-            },
-            {
-              "valor": "hiperprolactinemia_moderada",
-              "label": "Hiperprolactinemia moderada"
-            },
-            {
-              "valor": "hiperprolactinemia_importante",
-              "label": "Hiperprolactinemia significativa (sugestiva de adenoma hipofisário)"
-            },
-            { "valor": "baixa", "label": "Níveis reduzidos de prolactina" }
-          ],
-          "referencia": "Classificação"
-        },
-        {
-          "id": "interpretacao",
-          "tipo": "textarea",
-          "label": "Interpretação",
-          "placeholder": ""
-        },
-        {
-          "id": "conclusao",
-          "tipo": "textarea",
-          "label": "Conclusão",
-          "placeholder": ""
-        }
-      ]
-    },
-    {
       "id": "lab_beta_hcg_completo",
       "nome": "β-hCG (Beta hCG)",
       "descricao": "Dosagem da gonadotrofina coriônica humana para diagnóstico e acompanhamento gestacional",
@@ -8802,6 +8691,117 @@
           "id": "conclusao",
           "tipo": "textarea",
           "label": "Conclusão"
+        }
+      ]
+    },
+    {
+      "id": "hormonal_prolactina",
+      "nome": "Prolactina",
+      "descricao": "Dosagem sérica de prolactina para avaliação de distúrbios hipofisários, galactorreia e alterações do eixo reprodutivo.",
+      "categoria": "hormonal",
+      "icone": "fa-vial",
+      "campos": [
+        {
+          "id": "prolactina_valor",
+          "tipo": "number",
+          "label": "Prolactina",
+          "unidade": "ng/mL",
+          "referencia": "Homens: 2–18 | Mulheres não grávidas: 2–25 | Gestação: 10–200"
+        },
+        {
+          "id": "sexo_paciente",
+          "tipo": "select",
+          "label": "Sexo do paciente",
+          "opcoes": [
+            { "valor": "feminino", "label": "Feminino" },
+            { "valor": "masculino", "label": "Masculino" }
+          ],
+          "referencia": "Definição de referência"
+        },
+        {
+          "id": "contexto_clinico",
+          "tipo": "select",
+          "label": "Contexto clínico",
+          "opcoes": [
+            { "valor": "avaliacao_rotina", "label": "Avaliação de rotina" },
+            { "valor": "amenorreia", "label": "Amenorreia" },
+            { "valor": "galactorreia", "label": "Galactorreia" },
+            {
+              "valor": "Avaliação pré-inseminação",
+              "label": "Avaliação pré-inseminação"
+            },
+            {
+              "valor": "infertilidade",
+              "label": "Investigação de infertilidade"
+            },
+            {
+              "valor": "suspeita_prolactinoma",
+              "label": "Suspeita de prolactinoma"
+            },
+            {
+              "valor": "uso_medicacao",
+              "label": "Uso de medicação (ex: antipsicóticos)"
+            }
+          ],
+          "referencia": "Indicação do exame"
+        },
+        {
+          "id": "condicoes_coleta",
+          "tipo": "select",
+          "label": "Condições da coleta",
+          "opcoes": [
+            { "valor": "adequada", "label": "Coleta em condições adequadas" },
+            {
+              "valor": "estresse",
+              "label": "Possível interferência por estresse"
+            },
+            {
+              "valor": "pos_exercicio",
+              "label": "Coleta após exercício físico"
+            },
+            {
+              "valor": "jejum_inadequado",
+              "label": "Condição de jejum inadequada"
+            }
+          ],
+          "referencia": "Fatores interferentes"
+        },
+        {
+          "id": "impressao",
+          "tipo": "select",
+          "label": "Impressão",
+          "opcoes": [
+            {
+              "valor": "normal",
+              "label": "Níveis de prolactina dentro da normalidade"
+            },
+            {
+              "valor": "hiperprolactinemia_leve",
+              "label": "Hiperprolactinemia leve"
+            },
+            {
+              "valor": "hiperprolactinemia_moderada",
+              "label": "Hiperprolactinemia moderada"
+            },
+            {
+              "valor": "hiperprolactinemia_importante",
+              "label": "Hiperprolactinemia significativa (sugestiva de adenoma hipofisário)"
+            },
+            { "valor": "baixa", "label": "Níveis reduzidos de prolactina" }
+          ],
+          "referencia": "Classificação"
+        },
+        {
+          "id": "interpretacao",
+          "tipo": "textarea",
+          "label": "Interpretação",
+          "placeholder": ""
+        },
+        {
+          "id": "conclusao",
+          "tipo": "textarea",
+          "label": "Conclusão",
+          "placeholder": ""
         }
       ]
     },
