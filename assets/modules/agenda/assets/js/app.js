@@ -32,7 +32,7 @@ const modalDetails = document.getElementById("modal-details");
 // CONSTANTES / MAPAS
 const DOCTORS = {
   anny: "Dra. Anny D'Amato",
-  natalie: "Dra. Natalie Bianchi",
+  natalie: "Dra. Natalie Fiorelli",
   luidhy: "Dr. Luidhy Luddhiev",
   luan: "Dr. Luan D'Amato",
   alex: "Dr. Alex Gregory"
