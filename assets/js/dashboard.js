@@ -89,20 +89,22 @@ async function excluirPlanoExpirado(pacienteOuId) {
   if (delPac.error) throw new Error(delPac.error.message || "Falha ao excluir plano vencido.");
 }
 
-async function excluirSePlanoExpirado(paciente) {
-  if (!paciente?.id || !paciente?.criado_em) return false;
-
+function planoExpirou(paciente) {
+  if (!paciente?.criado_em) return false;
   const validade = calcularValidade(paciente.criado_em);
-  const expirou = validade < new Date();
-  if (!expirou) return false;
+  return validade < new Date();
+}
 
-  await excluirPlanoExpirado(paciente);
-  return true;
+async function excluirSePlanoExpirado(paciente) {
+  // Na consulta de planos, vencidos não devem aparecer.
+  // Eles NÃO são apagados do banco, para continuarem visíveis no Gerenciar.
+  return planoExpirou(paciente);
 }
 
 function getPlanoStatus(paciente, dias) {
   const statusBanco = String(paciente?.status || "").trim().toLowerCase();
   if (statusBanco === "encerrado") return "encerrado";
+  if (dias < 0) return "vencido";
   return statusPorValidade(dias);
 }
 

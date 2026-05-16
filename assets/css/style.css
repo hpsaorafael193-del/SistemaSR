@@ -229,6 +229,7 @@ button:hover { opacity:.9 }
 .status.ativo {background:var(--verde)}
 .status.pendente {background:var(--amarelo)}
 .status.encerrado {background:var(--vermelho)}
+.status.vencido {background:var(--vermelho)}
 
 /* ALERTAS */
 
@@ -1194,6 +1195,251 @@ footer {
   .login-card,
   .cadastro-card,
   .modal-content{
+    width: 100%;
+  }
+}
+/* Gerenciar planos - listagem selecionável */
+.gp-planos-toolbar{
+  display:grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items:center;
+  margin-bottom: 10px;
+}
+
+.gp-search{
+  padding-left: 14px;
+}
+
+.gp-planos-count{
+  min-width: 92px;
+  text-align:center;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(90,10,18,.18);
+  background: rgba(90,10,18,.08);
+  color: var(--vinho-escuro);
+  font-size: .82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.gp-planos-list{
+  display:flex;
+  flex-direction:column;
+  gap: 8px;
+  max-height: 310px;
+  overflow:auto;
+  padding: 4px 4px 8px;
+  margin-bottom: 10px;
+  scrollbar-width: thin;
+}
+
+.gp-plano-item{
+  width:100%;
+  display:grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items:center;
+  text-align:left;
+  border: 1px solid rgba(90,10,18,.14);
+  background: rgba(255,255,255,.56);
+  color: var(--vinho-escuro);
+  border-radius: 16px;
+  padding: 12px;
+  cursor:pointer;
+  transition: transform .08s ease, border-color .12s ease, box-shadow .12s ease, background .12s ease;
+}
+
+.gp-plano-item:hover{
+  transform: translateY(-1px);
+  border-color: rgba(90,10,18,.34);
+  box-shadow: 0 10px 22px rgba(0,0,0,.10);
+  background: rgba(255,255,255,.76);
+}
+
+.gp-plano-item.selected{
+  border-color: var(--vinho-escuro);
+  background: rgba(90,10,18,.10);
+  box-shadow: inset 0 0 0 1px rgba(90,10,18,.22);
+}
+
+.gp-plano-main,
+.gp-plano-info{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap: 4px;
+}
+
+.gp-plano-main strong{
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  font-size: .96rem;
+}
+
+.gp-plano-main small,
+.gp-plano-info small{
+  color: rgba(66,46,35,.78);
+  font-size: .78rem;
+}
+
+.gp-plano-info{
+  align-items:flex-end;
+  text-align:right;
+}
+
+.gp-mini-chip{
+  display:inline-flex;
+  justify-content:center;
+  min-width: 74px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: white;
+}
+
+.gp-mini-chip.ativo{ background: var(--verde); }
+.gp-mini-chip.pendente{ background: var(--amarelo); color:#4a3300; }
+.gp-mini-chip.vencido,
+.gp-mini-chip.encerrado{ background: var(--vermelho); }
+
+.gp-empty{
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(90,10,18,.08);
+  color: var(--vinho-escuro);
+  text-align:center;
+  font-weight: 700;
+}
+
+.gp-select-fallback{
+  display:none;
+}
+
+@media (max-width: 720px){
+  .gp-planos-toolbar{
+    grid-template-columns: 1fr;
+  }
+
+  .gp-planos-count{
+    width: fit-content;
+  }
+
+  .gp-plano-item{
+    grid-template-columns: 1fr;
+  }
+
+  .gp-plano-info{
+    align-items:flex-start;
+    text-align:left;
+  }
+}
+
+/* Correção da listagem de planos no Gerenciar: evita cards achatados pelo estilo global de button */
+.gp-planos-list{
+  gap: 10px;
+  max-height: 360px;
+  padding: 6px 8px 10px 4px;
+}
+
+.gp-plano-item{
+  height: auto !important;
+  min-height: 74px;
+  align-items: center;
+  justify-content: stretch;
+  padding: 12px 14px !important;
+  line-height: 1.25;
+  overflow: visible;
+}
+
+.gp-plano-item:hover{
+  opacity: 1;
+}
+
+.gp-plano-main,
+.gp-plano-info{
+  pointer-events: none;
+}
+
+.gp-plano-main strong{
+  display:block;
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+
+.gp-plano-main small,
+.gp-plano-info small{
+  display:block;
+  line-height: 1.25;
+}
+
+.gp-plano-info{
+  gap: 5px;
+  justify-self: end;
+  max-width: 220px;
+}
+
+.gp-mini-chip{
+  height: auto;
+  line-height: 1;
+  padding: 7px 13px;
+}
+
+@media (max-width: 720px){
+  .gp-plano-item{
+    min-height: 92px;
+    gap: 8px;
+  }
+
+  .gp-plano-info{
+    max-width: none;
+  }
+}
+
+/* Gerenciar: após selecionar, recolhe a busca/lista para não empurrar o formulário */
+.modal-gerenciar.gp-lista-compacta .gp-planos-toolbar,
+.modal-gerenciar.gp-lista-compacta .gp-planos-list{
+  display: none;
+}
+
+.modal-gerenciar.gp-lista-compacta .gp-resumo{
+  margin-top: 0;
+}
+
+.gp-resumo{
+  flex-wrap: wrap;
+}
+
+.gp-meta{
+  flex: 1 1 auto;
+}
+
+.gp-trocar-plano{
+  height: auto !important;
+  min-height: 34px;
+  padding: 8px 12px !important;
+  border-radius: 999px;
+  border: 1px solid rgba(235, 210, 170, .28);
+  background: rgba(0,0,0,.12);
+  color: #f6e7cf;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gp-trocar-plano:hover{
+  background: rgba(0,0,0,.22);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 560px){
+  .gp-resumo{
+    align-items: flex-start;
+  }
+  .gp-trocar-plano{
     width: 100%;
   }
 }

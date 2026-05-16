@@ -28,6 +28,14 @@ const modal = $("gerenciarModal");
 const closeX = $("fecharGerenciarModal");
 const selectPlano = $("gerenciarSelectPlano");
 const painel = $("gerenciarPainel");
+const buscaPlanoEl = $("gerenciarBuscaPlano");
+const listaPlanosEl = $("gerenciarListaPlanos");
+const planosCountEl = $("gerenciarPlanosCount");
+const gpResumoEl = $("gpResumo");
+const gpChipStatusEl = $("gpChipStatus");
+const gpResumoNomeEl = $("gpResumoNome");
+const gpResumoLinhaEl = $("gpResumoLinha");
+const gpTrocarPlanoBtn = $("gpTrocarPlanoBtn");
 
 const novaDataEl = $("gerenciarNovaData");
 const tipoPlanoEl = $("gerenciarTipoPlano");
@@ -44,6 +52,8 @@ const msgEl = $("gerenciarMsg");
 let pacienteAtual = null;
 let depsAtual = [];
 let depsOrigIds = new Set();
+let planosCache = [];
+let planoSelecionadoId = "";
 
 function isDiretor() {
   return localStorage.getItem("cargo") === "diretor";
@@ -63,6 +73,18 @@ function hidePainel() {
   if (painel) painel.style.display = "none";
 }
 
+function fecharListaPlanos() {
+  if (modal) modal.classList.add("gp-lista-compacta");
+}
+
+function abrirListaPlanos() {
+  if (modal) modal.classList.remove("gp-lista-compacta");
+  if (buscaPlanoEl) {
+    buscaPlanoEl.focus();
+    buscaPlanoEl.select?.();
+  }
+}
+
 function closeModal() {
   if (modal) modal.style.display = "none";
   setMsg("");
@@ -70,24 +92,202 @@ function closeModal() {
   depsAtual = [];
   depsOrigIds = new Set();
   hidePainel();
+  planoSelecionadoId = "";
   if (selectPlano) selectPlano.value = "";
+  if (buscaPlanoEl) buscaPlanoEl.value = "";
+  if (modal) modal.classList.remove("gp-lista-compacta");
+  atualizarResumoPlano(null);
+  renderListaPlanos();
 }
 
 function normalizarStatus(status) {
   return String(status || "").trim().toLowerCase();
 }
 
+function statusVisualPlano(plano) {
+  const statusBanco = normalizarStatus(plano?.status);
+  if (statusBanco === "encerrado") return "encerrado";
+  if (planoExpirou(plano)) return "vencido";
+  return statusBanco || "ativo";
+}
+
 function prioridadeStatus(status) {
   const s = normalizarStatus(status);
   if (s === "ativo") return 0;
   if (s === "pendente") return 1;
-  if (s === "encerrado") return 2;
-  return 3;
+  if (s === "vencido") return 2;
+  if (s === "encerrado") return 3;
+  return 4;
+}
+
+function classeStatus(status) {
+  const s = normalizarStatus(status);
+  if (s === "ativo") return "ok";
+  if (s === "pendente") return "warn";
+  return "bad";
+}
+
+function formatarDataBR(value) {
+  if (!value) return "—";
+  const dt = new Date(value);
+  if (Number.isNaN(dt.getTime())) return "—";
+  return dt.toLocaleDateString("pt-BR", { timeZone: "America/Bahia" });
+}
+
+function validadePlano(plano) {
+  if (!plano?.criado_em) return null;
+  return calcularValidade(plano.criado_em);
+}
+
+function diasParaVencer(plano) {
+  const validade = validadePlano(plano);
+  if (!validade) return null;
+  const hoje = new Date();
+  const msDia = 1000 * 60 * 60 * 24;
+  return Math.ceil((validade.getTime() - hoje.getTime()) / msDia);
+}
+
+function textoValidade(plano) {
+  const validade = validadePlano(plano);
+  if (!validade) return "Validade não informada";
+
+  const dias = diasParaVencer(plano);
+  const data = formatarDataBR(validade);
+  const status = statusVisualPlano(plano);
+
+  if (status === "vencido") return `Vencido em ${data}`;
+  if (dias === 0) return `Vence hoje (${data})`;
+  if (dias === 1) return `Vence amanhã (${data})`;
+  if (dias > 1) return `Vence em ${dias} dias (${data})`;
+  return `Vencido em ${data}`;
+}
+
+function textoDependentes(plano) {
+  const max = Number(plano?.max_dependentes ?? maxDependentesPorTipo(plano?.tipo_plano));
+  if (max <= 0) return "Sem dependentes";
+  return `Até ${max} dependente${max > 1 ? "s" : ""}`;
+}
+
+function planoParaBusca(plano) {
+  return [
+    plano?.nome,
+    plano?.passaporte,
+    asPassaporte(plano?.passaporte || ""),
+    plano?.tipo_plano,
+    statusVisualPlano(plano),
+    formatarDataBR(plano?.criado_em),
+    textoValidade(plano),
+  ].join(" ").toLowerCase();
+}
+
+function atualizarResumoPlano(plano) {
+  if (!gpResumoEl) return;
+
+  if (!plano) {
+    gpResumoEl.classList.add("hidden");
+    if (gpChipStatusEl) gpChipStatusEl.textContent = "—";
+    if (gpResumoNomeEl) gpResumoNomeEl.textContent = "—";
+    if (gpResumoLinhaEl) gpResumoLinhaEl.textContent = "—";
+    return;
+  }
+
+  const status = statusVisualPlano(plano);
+  gpResumoEl.classList.remove("hidden");
+
+  if (gpChipStatusEl) {
+    gpChipStatusEl.textContent = status.toUpperCase();
+    gpChipStatusEl.className = `gp-chip ${classeStatus(status)}`;
+  }
+
+  if (gpResumoNomeEl) gpResumoNomeEl.textContent = plano.nome || "Sem nome";
+  if (gpResumoLinhaEl) {
+    gpResumoLinhaEl.textContent = `${asPassaporte(plano.passaporte || "—")} • ${plano.tipo_plano || "tipo não informado"} • ${textoValidade(plano)}`;
+  }
+}
+
+function filtrarPlanos() {
+  const termo = String(buscaPlanoEl?.value || "").trim().toLowerCase();
+  if (!termo) return planosCache;
+
+  const partes = termo.split(/\s+/).filter(Boolean);
+  return planosCache.filter((plano) => {
+    const haystack = planoParaBusca(plano);
+    return partes.every((parte) => haystack.includes(parte));
+  });
+}
+
+function renderListaPlanos() {
+  if (!listaPlanosEl) return;
+
+  const filtrados = filtrarPlanos();
+  const total = planosCache.length;
+
+  if (planosCountEl) {
+    if (!total) planosCountEl.textContent = "Nenhum plano encontrado";
+    else if (filtrados.length === total) planosCountEl.textContent = `${total} plano${total > 1 ? "s" : ""}`;
+    else planosCountEl.textContent = `${filtrados.length} de ${total} plano${total > 1 ? "s" : ""}`;
+  }
+
+  if (!filtrados.length) {
+    listaPlanosEl.innerHTML = '<div class="gp-empty">Nenhum plano corresponde à busca.</div>';
+    return;
+  }
+
+  listaPlanosEl.innerHTML = filtrados
+    .map((plano) => {
+      const id = String(plano.id);
+      const status = statusVisualPlano(plano);
+      const selected = id === String(planoSelecionadoId);
+      const tipo = String(plano.tipo_plano || "Tipo não informado");
+      const pass = asPassaporte(plano.passaporte || "—");
+      const validade = textoValidade(plano);
+      const deps = textoDependentes(plano);
+
+      return `
+        <button type="button" class="gp-plano-item ${selected ? "selected" : ""}" data-plano-id="${escapeAttr(id)}">
+          <span class="gp-plano-main">
+            <strong>${escapeHTML(plano.nome || "Sem nome")}</strong>
+            <small>${escapeHTML(pass)} • ${escapeHTML(tipo)}</small>
+          </span>
+          <span class="gp-plano-info">
+            <span class="gp-mini-chip ${escapeAttr(status)}">${escapeHTML(status)}</span>
+            <small>${escapeHTML(validade)}</small>
+            <small>${escapeHTML(deps)}</small>
+          </span>
+        </button>
+      `;
+    })
+    .join("");
+
+  listaPlanosEl.querySelectorAll("[data-plano-id]").forEach((btn) => {
+    btn.addEventListener("click", () => selecionarPlano(btn.dataset.planoId));
+  });
+}
+
+function selecionarPlano(id) {
+  planoSelecionadoId = String(id || "");
+
+  if (selectPlano) selectPlano.value = planoSelecionadoId;
+
+  const plano = planosCache.find((p) => String(p.id) === planoSelecionadoId);
+  atualizarResumoPlano(plano);
+  renderListaPlanos();
+
+  if (!planoSelecionadoId) {
+    hidePainel();
+    pacienteAtual = null;
+    depsAtual = [];
+    depsOrigIds = new Set();
+    return;
+  }
+
+  fecharListaPlanos();
+  carregarPlano(planoSelecionadoId);
 }
 
 function compararPlanos(a, b) {
-  const pa = prioridadeStatus(a.status);
-  const pb = prioridadeStatus(b.status);
+  const pa = prioridadeStatus(statusVisualPlano(a));
+  const pb = prioridadeStatus(statusVisualPlano(b));
 
   if (pa !== pb) return pa - pb;
 
@@ -145,12 +345,11 @@ function planoExpirou(paciente) {
 }
 
 function resumirPlanoOption(p) {
-  const status = normalizarStatus(p.status);
+  const status = statusVisualPlano(p);
   const pass = asPassaporte(p.passaporte || "");
   const tipo = String(p.tipo_plano || "").trim();
 
-  const badgeAtivo = status === "ativo" ? "" : "";
-  return `${badgeAtivo}${p.nome} — ${pass} — ${tipo} — ${status || "-"}`;
+  return `${p.nome} — ${pass} — ${tipo} — ${status || "-"}`;
 }
 
 if (closeX) {
@@ -203,6 +402,31 @@ function maxDependentesPorTipo(tipoPlanoDbOuRaw) {
   return 0;
 }
 
+async function carregarTodosPlanos() {
+  const pageSize = 1000;
+  let from = 0;
+  let todos = [];
+
+  while (true) {
+    const to = from + pageSize - 1;
+    const { data, error } = await supabase
+      .from("pacientes")
+      .select("id,nome,passaporte,tipo_plano,status,criado_em")
+      .order("criado_em", { ascending: false })
+      .range(from, to);
+
+    if (error) throw error;
+
+    const lote = data || [];
+    todos = todos.concat(lote);
+
+    if (lote.length < pageSize) break;
+    from += pageSize;
+  }
+
+  return todos;
+}
+
 async function carregarListaPlanos() {
   if (!selectPlano) return;
 
@@ -210,48 +434,44 @@ async function carregarListaPlanos() {
   hidePainel();
   setMsg("");
 
-  const { data, error } = await supabase
-    .from("pacientes")
-    .select("id,nome,passaporte,tipo_plano,status,criado_em")
-    .limit(500);
+  let registros = [];
 
-  if (error) {
+  try {
+    registros = await carregarTodosPlanos();
+  } catch (error) {
     selectPlano.innerHTML = '<option value="">Erro ao carregar</option>';
     setMsg("Erro ao carregar planos: " + error.message, false);
     return;
   }
 
-  const registros = [...(data || [])];
-  const expirados = registros.filter(planoExpirou);
-
-  if (expirados.length) {
-    const exclusoes = await Promise.allSettled(
-      expirados.map((p) => excluirPlanoExpirado(p)),
-    );
-
-    const falha = exclusoes.find((r) => r.status === "rejected");
-    if (falha) {
-      selectPlano.innerHTML = '<option value="">Erro ao carregar</option>';
-      setMsg("Erro ao excluir planos vencidos: " + falha.reason.message, false);
-      return;
-    }
-  }
-
-  const planos = registros.filter((p) => !planoExpirou(p)).sort(compararPlanos);
+  // Não remove planos vencidos da listagem. Eles continuam visíveis para conferência,
+  // renovação ou encerramento manual pela diretoria.
+  const planos = registros.sort(compararPlanos);
+  planosCache = planos;
 
   const opts = ['<option value="">Selecione...</option>'].concat(
     planos.map((p) => {
       const pass = asPassaporte(p.passaporte || "");
+      const statusVisual = statusVisualPlano(p);
       const label = resumirPlanoOption({
         ...p,
         passaporte: pass,
       });
 
-      return `<option value="${escapeAttr(p.id)}" data-passaporte="${escapeAttr(pass)}" data-status="${escapeAttr(normalizarStatus(p.status))}">${escapeHTML(label)}</option>`;
+      return `<option value="${escapeAttr(p.id)}" data-passaporte="${escapeAttr(pass)}" data-status="${escapeAttr(statusVisual)}">${escapeHTML(label)}</option>`;
     }),
   );
 
   selectPlano.innerHTML = opts.join("");
+
+  if (planoSelecionadoId && planos.some((p) => String(p.id) === String(planoSelecionadoId))) {
+    selectPlano.value = String(planoSelecionadoId);
+  } else {
+    planoSelecionadoId = "";
+    atualizarResumoPlano(null);
+  }
+
+  renderListaPlanos();
 }
 
 function renderDeps() {
@@ -347,6 +567,13 @@ async function carregarPlano(pacienteId) {
   }
 
   pacienteAtual = paciente;
+  const cacheIdx = planosCache.findIndex((p) => String(p.id) === String(paciente.id));
+  if (cacheIdx >= 0) {
+    planosCache[cacheIdx] = { ...planosCache[cacheIdx], ...paciente };
+    atualizarResumoPlano(planosCache[cacheIdx]);
+    renderListaPlanos();
+  }
+
   depsAtual = (deps || []).map((d) => ({
     id: d.id,
     nome: String(d.nome || "").trim(),
@@ -601,9 +828,12 @@ async function salvarAlteracoes() {
     await carregarPlano(pacienteAtual.id);
     await carregarListaPlanos();
 
+    planoSelecionadoId = String(pacienteAtual.id);
     if (selectPlano) {
-      selectPlano.value = String(pacienteAtual.id);
+      selectPlano.value = planoSelecionadoId;
     }
+    atualizarResumoPlano(planosCache.find((p) => String(p.id) === planoSelecionadoId) || pacienteAtual);
+    renderListaPlanos();
 
     window.dispatchEvent(
       new CustomEvent("plano-atualizado", {
@@ -630,9 +860,12 @@ async function encerrarPlano() {
   await carregarPlano(pacienteAtual.id);
   await carregarListaPlanos();
 
+  planoSelecionadoId = String(pacienteAtual.id);
   if (selectPlano) {
-    selectPlano.value = String(pacienteAtual.id);
+    selectPlano.value = planoSelecionadoId;
   }
+  atualizarResumoPlano(planosCache.find((p) => String(p.id) === planoSelecionadoId) || pacienteAtual);
+  renderListaPlanos();
 
   window.dispatchEvent(
     new CustomEvent("plano-atualizado", {
@@ -649,17 +882,11 @@ window.addEventListener("abrir-gerenciar", () => {
 });
 
 if (selectPlano) {
-  selectPlano.addEventListener("change", () => {
-    const id = selectPlano.value;
-    if (!id) {
-      hidePainel();
-      pacienteAtual = null;
-      depsAtual = [];
-      depsOrigIds = new Set();
-      return;
-    }
-    carregarPlano(id);
-  });
+  selectPlano.addEventListener("change", () => selecionarPlano(selectPlano.value));
+}
+
+if (buscaPlanoEl) {
+  buscaPlanoEl.addEventListener("input", renderListaPlanos);
 }
 
 if (addDepBtn) {
@@ -700,3 +927,5 @@ salvarBtn?.addEventListener("click", salvarAlteracoes);
 encerrarBtn?.addEventListener("click", encerrarPlano);
 
 window.addEventListener("usuario-deslogado", closeModal);
+
+gpTrocarPlanoBtn?.addEventListener("click", abrirListaPlanos);
