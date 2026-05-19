@@ -151,4 +151,4 @@ Este projeto foi desenvolvido para uso interno no contexto do Hospital São Rafa
 
 ## Créditos
 
-Desenvolvimento e organização do sistema por **Luddhiev**.
+Desenvolvimento e organização do sistema por **Luidhy**.
