@@ -44,6 +44,24 @@ export function maxDeps(plano) {
   return 0;
 }
 
+
+export const VALORES_PLANOS = {
+  individual: "150 mil",
+  combo: "220 mil",
+  familia: "300 mil",
+};
+
+export function normalizarTipoPlano(plano) {
+  const p = String(plano || "").toLowerCase();
+  if (p.includes("comb")) return "combo";
+  if (p.includes("fam")) return "familia";
+  return "individual";
+}
+
+export function valorPlano(plano) {
+  return VALORES_PLANOS[normalizarTipoPlano(plano)] || "—";
+}
+
 export function statusPorValidade(dias) {
   if (dias < 0) return "encerrado";
   if (dias <= 7) return "pendente";

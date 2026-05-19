@@ -105,6 +105,12 @@
 
       <main class="core-main">
         <header class="core-topbar">
+          <div>
+            <h1 id="corePageTitle">Principal</h1>
+            <p id="corePageSubtitle">
+              Sistema clínico integrado do Hospital São Rafael
+            </p>
+          </div>
         </header>
 
         <section class="core-tab active" data-content="principal">
@@ -851,6 +857,7 @@
                   <p>Sem dependentes</p>
                   <p>20% de desconto</p>
                   <p>Validade: 30 dias</p>
+                  <div class="plano-preco"><span>Valor</span><strong>150 mil</strong></div>
                 </div>
                 <div class="card plano-card plano-destaque">
                   <span class="plano-tag">Mais usado</span>
@@ -862,6 +869,7 @@
                   <p>Até 2 dependentes</p>
                   <p>20% de desconto</p>
                   <p>Validade: 30 dias</p>
+                  <div class="plano-preco"><span>Valor</span><strong>220 mil</strong></div>
                 </div>
                 <div class="card plano-card">
                   <div class="plano-icon">
@@ -872,6 +880,7 @@
                   <p>Até 4 dependentes</p>
                   <p>20% de desconto</p>
                   <p>Validade: 30 dias</p>
+                  <div class="plano-preco"><span>Valor</span><strong>300 mil</strong></div>
                 </div>
               </div>
             </div>
@@ -946,8 +955,8 @@
       </div>
     </div>
 
-    <div id="cadastroModal" class="modal">
-      <div class="modal-content cadastro-card">
+    <div id="cadastroModal" class="modal modal-cadastro-plano">
+      <div class="modal-content cadastro-card cadastro-card-modern">
         <button
           class="cadastro-x"
           type="button"
@@ -956,60 +965,99 @@
         >
           ×
         </button>
-        <h2 class="cadastro-title">Novo Plano</h2>
-        <form id="cadastroForm" class="cadastro-form">
-          <div class="cadastro-field">
-            <label for="nome">Nome do titular</label>
-            <input id="nome" type="text" placeholder="Nome do titular" />
+
+        <div class="cadastro-modal-head">
+          <div class="cadastro-modal-icon">
+            <i class="fa-solid fa-id-card-clip"></i>
           </div>
-          <div class="cadastro-field">
-            <label for="passaporteCadastro">Passaporte</label>
-            <input
-              id="passaporteCadastro"
-              type="text"
-              placeholder="Passaporte"
-            />
+          <div>
+            <span class="cadastro-modal-eyebrow">Planos HPSR</span>
+            <h2 class="cadastro-title">Cadastrar novo plano</h2>
+            <p>Informe os dados do titular e escolha o tipo de cobertura.</p>
           </div>
-          <div class="cadastro-field">
-            <label for="dataAtivacao">Data de ativação</label>
-            <input id="dataAtivacao" type="date" />
-          </div>
-          <div class="cadastro-field">
-            <label for="tipoPlano">Plano</label>
-            <div class="cadastro-select-wrap">
-              <select id="tipoPlano">
-                <option value="">Selecione...</option>
-                <option value="individual">Individual</option>
-                <option value="combo">Combo</option>
-                <option value="familia">Família</option>
-              </select>
-              <span class="cadastro-select-icon">▾</span>
+        </div>
+
+        <form id="cadastroForm" class="cadastro-form cadastro-form-modern">
+          <div class="cadastro-grid">
+            <div class="cadastro-field">
+              <label for="nome">Nome do titular</label>
+              <div class="cadastro-input-wrap">
+                <i class="fa-solid fa-user"></i>
+                <input id="nome" type="text" placeholder="Nome completo" />
+              </div>
+            </div>
+            <div class="cadastro-field">
+              <label for="passaporteCadastro">Passaporte</label>
+              <div class="cadastro-input-wrap">
+                <i class="fa-solid fa-passport"></i>
+                <input
+                  id="passaporteCadastro"
+                  type="text"
+                  placeholder="Número do passaporte"
+                />
+              </div>
+            </div>
+            <div class="cadastro-field">
+              <label for="dataAtivacao">Data de ativação</label>
+              <div class="cadastro-input-wrap">
+                <i class="fa-solid fa-calendar-check"></i>
+                <input id="dataAtivacao" type="date" />
+              </div>
+            </div>
+            <div class="cadastro-field cadastro-field-plano">
+              <label for="tipoPlano">Plano</label>
+              <div class="cadastro-select-wrap">
+                <select id="tipoPlano">
+                  <option value="">Selecione o plano</option>
+                  <option value="individual">Individual — 150 mil</option>
+                  <option value="combo">Combo — 220 mil</option>
+                  <option value="familia">Família — 300 mil</option>
+                </select>
+                <span class="cadastro-select-icon"><i class="fa-solid fa-chevron-down"></i></span>
+              </div>
             </div>
           </div>
-          <div class="cadastro-deps">
+
+          <div class="cadastro-plano-preview" aria-label="Valores dos planos">
+            <span><strong>Individual</strong>150 mil</span>
+            <span><strong>Combo</strong>220 mil</span>
+            <span><strong>Família</strong>300 mil</span>
+          </div>
+
+          <div class="cadastro-deps cadastro-deps-modern">
             <div class="cadastro-deps-head">
-              <h3>Dependentes</h3>
+              <div>
+                <h3>Dependentes</h3>
+                <p>Adicione somente quando o plano permitir.</p>
+              </div>
               <button
                 id="addDependenteBtn"
                 type="button"
                 class="cadastro-btn cadastro-btn-ghost"
               >
-                + Adicionar
+                <i class="fa-solid fa-user-plus"></i> Adicionar
               </button>
             </div>
             <div id="dependentesContainer" class="cadastro-deps-list"></div>
           </div>
-          <button type="submit" class="cadastro-btn cadastro-btn-primary">
-            Salvar plano
+          <button type="submit" class="cadastro-btn cadastro-btn-primary cadastro-submit">
+            <i class="fa-solid fa-floppy-disk"></i> Salvar plano
           </button>
         </form>
       </div>
     </div>
 
     <div id="gerenciarModal" class="modal modal-gerenciar">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>Gerenciar Plano</h2>
+      <div class="modal-content gp-card-modern">
+        <div class="modal-header gp-modal-head">
+          <div class="gp-head-left">
+            <div class="gp-head-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+            <div>
+              <span class="gp-head-eyebrow">Central de planos</span>
+              <h2>Gerenciar plano</h2>
+              <p>Busque, renove, edite dependentes ou encerre um plano ativo.</p>
+            </div>
+          </div>
           <button
             id="fecharGerenciarModal"
             class="modal-close"
@@ -1019,8 +1067,8 @@
             ×
           </button>
         </div>
-        <div class="modal-body">
-          <div class="gp-field">
+        <div class="modal-body gp-modal-body">
+          <div class="gp-field gp-selection-card">
             <label class="gp-label" for="gerenciarSelectPlano"
               >Selecionar plano existente</label
             >
@@ -1058,7 +1106,7 @@
                 class="gp-trocar-plano"
                 type="button"
               >
-                Trocar plano
+                <i class="fa-solid fa-rotate"></i> Trocar plano
               </button>
             </div>
           </div>
@@ -1070,9 +1118,9 @@
                 >
                 <div class="gp-select-wrap">
                   <select id="gerenciarTipoPlano" class="gp-select">
-                    <option value="individual">Individual</option>
-                    <option value="combo">Combo</option>
-                    <option value="familia">Família</option>
+                    <option value="individual">Individual — 150 mil</option>
+                    <option value="combo">Combo — 220 mil</option>
+                    <option value="familia">Família — 300 mil</option>
                   </select>
                   <span class="gp-select-icon">▾</span>
                 </div>
@@ -1092,7 +1140,7 @@
                   id="gerenciarAddDepBtn"
                   class="gp-btn gp-btn-ghost"
                 >
-                  Adicionar
+                  <i class="fa-solid fa-user-plus"></i> Adicionar
                 </button>
               </div>
               <div id="gerenciarDepsList"></div>
@@ -1103,21 +1151,21 @@
                 id="gerenciarRenovarBtn"
                 class="gp-btn gp-btn-primary"
               >
-                Renovar +30 dias
+                <i class="fa-solid fa-calendar-plus"></i> Renovar +30 dias
               </button>
               <button
                 type="button"
                 id="gerenciarSalvarBtn"
                 class="gp-btn gp-btn-ghost"
               >
-                Salvar alterações
+                <i class="fa-solid fa-floppy-disk"></i> Salvar alterações
               </button>
               <button
                 type="button"
                 id="gerenciarEncerrarBtn"
                 class="gp-btn gp-btn-danger"
               >
-                Encerrar plano
+                <i class="fa-solid fa-ban"></i> Encerrar plano
               </button>
             </div>
             <div id="gerenciarMsg" class="gp-msg"></div>

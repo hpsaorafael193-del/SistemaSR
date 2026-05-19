@@ -5,6 +5,7 @@ import {
   calcularValidade,
   isoFromDateInput,
   maxDeps,
+  valorPlano,
 } from "./utils.js";
 
 function $(id) {
@@ -201,7 +202,7 @@ function atualizarResumoPlano(plano) {
 
   if (gpResumoNomeEl) gpResumoNomeEl.textContent = plano.nome || "Sem nome";
   if (gpResumoLinhaEl) {
-    gpResumoLinhaEl.textContent = `${asPassaporte(plano.passaporte || "—")} • ${plano.tipo_plano || "tipo não informado"} • ${textoValidade(plano)}`;
+    gpResumoLinhaEl.textContent = `${asPassaporte(plano.passaporte || "—")} • ${plano.tipo_plano || "tipo não informado"} • ${valorPlano(plano.tipo_plano)} • ${textoValidade(plano)}`;
   }
 }
 
@@ -242,12 +243,13 @@ function renderListaPlanos() {
       const pass = asPassaporte(plano.passaporte || "—");
       const validade = textoValidade(plano);
       const deps = textoDependentes(plano);
+      const valor = valorPlano(plano.tipo_plano);
 
       return `
         <button type="button" class="gp-plano-item ${selected ? "selected" : ""}" data-plano-id="${escapeAttr(id)}">
           <span class="gp-plano-main">
             <strong>${escapeHTML(plano.nome || "Sem nome")}</strong>
-            <small>${escapeHTML(pass)} • ${escapeHTML(tipo)}</small>
+            <small>${escapeHTML(pass)} • ${escapeHTML(tipo)} • ${escapeHTML(valor)}</small>
           </span>
           <span class="gp-plano-info">
             <span class="gp-mini-chip ${escapeAttr(status)}">${escapeHTML(status)}</span>

@@ -1,5 +1,5 @@
 import { supabase, getSessionLocked } from "./supabase.js";
-import { asPassaporte, calcularValidade, diasRestantes, formatarData, statusPorValidade, uiAlert } from "./utils.js";
+import { asPassaporte, calcularValidade, diasRestantes, formatarData, statusPorValidade, uiAlert, valorPlano } from "./utils.js";
 
 let pacienteAtual = null;
 let buscaEmAndamento = false;
@@ -315,6 +315,7 @@ function renderResultado(paciente, dependenteBuscado) {
   const nomePaciente = escapeHTML(paciente.nome);
   const passaportePaciente = escapeHTML(paciente.passaporte);
   const tipoPlanoPaciente = escapeHTML(paciente.tipo_plano);
+  const valorPlanoPaciente = escapeHTML(valorPlano(paciente.tipo_plano));
   const imagemURL = safeImageURL(paciente.imagem_url);
   const imagemHTML = imagemURL
     ? `<div style="margin-top:.9rem;">
@@ -328,6 +329,7 @@ function renderResultado(paciente, dependenteBuscado) {
 
       <p><strong>Passaporte:</strong> ${passaportePaciente}</p>
       <p><strong>Plano:</strong> ${tipoPlanoPaciente}${badgeVenceHoje}</p>
+      <p><strong>Valor:</strong> ${valorPlanoPaciente}</p>
       <p><strong>Ativação:</strong> ${formatarData(new Date(paciente.criado_em))}</p>
       <p><strong>Validade:</strong> ${formatarData(validade)}</p>
       <p><strong>Dias restantes:</strong> ${dias}</p>
