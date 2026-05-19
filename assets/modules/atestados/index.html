@@ -64,10 +64,10 @@
               <label for="notes">Observações</label>
               <textarea
                 id="notes"
-                maxlength="200"
+                maxlength="2000"
                 placeholder="Observações clínicas, restrições ou justificativas adicionais"
               ></textarea>
-              <span class="field-help">Máximo de 200 caracteres.</span>
+              <span class="field-help">Máximo de 2.000 caracteres.</span>
             </div>
           </div>
 
@@ -142,7 +142,7 @@
               >
               <h2>Atestado gerado</h2>
             </div>
-            <span class="paper-size">Cartão horizontal</span>
+            <span class="paper-size">A4 vertical</span>
           </div>
 
           <div class="paper-stage">
@@ -163,14 +163,42 @@
 
               <div class="document-line"></div>
 
+              <div class="document-title">
+                <span class="document-tag" id="tipoPreview">Atestado médico</span>
+                <h1>Atestado Médico</h1>
+                <p>Documento emitido para comprovação de atendimento e orientação médica.</p>
+              </div>
+
+              <div class="patient-summary">
+                <div>
+                  <span>Paciente</span>
+                  <strong id="patientPreview">[Nome do paciente]</strong>
+                </div>
+                <div>
+                  <span>Data do atendimento</span>
+                  <strong id="datePreview">--/--/----</strong>
+                </div>
+                <div id="periodSummary">
+                  <span>Período indicado</span>
+                  <strong id="periodPreview">0 dia(s)</strong>
+                </div>
+              </div>
+
               <div class="content">
+                <div class="content-label">Declaração médica</div>
                 <p id="textoAtestado"></p>
 
                 <div id="obsBox" class="obs-box" style="display: none">
-                  <strong>Observações:</strong>
+                  <strong>Observações e orientações complementares:</strong>
                   <p id="obsPreview"></p>
                 </div>
+
+                <div class="auth-note">
+                  Este documento foi elaborado com base nas informações prestadas durante o atendimento e na avaliação clínica realizada pelo profissional responsável.
+                </div>
               </div>
+
+              <div class="place-date" id="placeDatePreview"></div>
 
               <div class="footer">
                 <div class="doctor-info">
@@ -188,6 +216,19 @@
             </div>
           </div>
         </section>
+      </div>
+    </div>
+
+    <div id="appModal" class="app-modal" aria-hidden="true">
+      <div class="app-modal-card" role="dialog" aria-modal="true" aria-labelledby="appModalTitle">
+        <div class="app-modal-icon">
+          <i class="fa-solid fa-circle-exclamation"></i>
+        </div>
+        <div class="app-modal-content">
+          <h3 id="appModalTitle">Atenção</h3>
+          <p id="appModalMessage"></p>
+        </div>
+        <button id="appModalOk" class="app-modal-button" type="button">Entendi</button>
       </div>
     </div>
 
