@@ -1,127 +1,197 @@
 <!doctype html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Atestado Médico - Hospital São Rafael</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Atestado Médico - Hospital São Rafael</title>
+  <body>
+    <div class="module-page">
+      <div class="wrap">
+        <section class="panel form-panel">
+          <div class="panel-title">
+            <div class="title-icon">
+              <i class="fa-solid fa-clipboard-user"></i>
+            </div>
+            <div>
+              <h2>Dados do atestado</h2>
+              <p>
+                Informações do paciente, período e profissional responsável.
+              </p>
+            </div>
+          </div>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/style.css">
-</head>
+          <div class="form-section">
+            <div class="field full">
+              <label for="tipoAtestado">Tipo de atestado</label>
+              <select id="tipoAtestado">
+                <option value="comparecimento">Comparecimento</option>
+                <option value="afastamento" selected>Afastamento</option>
+                <option value="restricao">Restrição de atividade</option>
+                <option value="retorno">Retorno ao trabalho</option>
+                <option value="escolar">Escolar</option>
+              </select>
+            </div>
 
-<body>
+            <div class="field full">
+              <label for="patientName">Nome do paciente</label>
+              <input
+                id="patientName"
+                type="text"
+                placeholder="Digite o nome completo"
+              />
+            </div>
 
-  <div class="wrap">
+            <div class="form-row">
+              <div class="field">
+                <label for="issueDate">Data do atendimento</label>
+                <input id="issueDate" type="date" />
+              </div>
 
-    <!-- FORMULÁRIO -->
-    <div class="panel">
-      <h1>Atestado Médico</h1>
+              <div class="field" id="fieldDaysOff">
+                <label for="daysOff">Dias de afastamento</label>
+                <input id="daysOff" type="number" min="0" value="0" />
+              </div>
+            </div>
 
-      <label>Tipo de atestado</label>
-      <select id="tipoAtestado">
-        <option value="comparecimento">Comparecimento</option>
-        <option value="afastamento" selected>Afastamento</option>
-        <option value="restricao">Restrição de atividade</option>
-        <option value="retorno">Retorno ao trabalho</option>
-        <option value="escolar">Escolar</option>
-      </select>
+            <div class="field full">
+              <label for="notes">Observações</label>
+              <textarea
+                id="notes"
+                maxlength="200"
+                placeholder="Observações clínicas, restrições ou justificativas adicionais"
+              ></textarea>
+              <span class="field-help">Máximo de 200 caracteres.</span>
+            </div>
+          </div>
 
-      <label>Nome do paciente</label>
-      <input id="patientName" type="text">
+          <div class="form-divider"></div>
 
-      <label>Data do atendimento</label>
-      <input id="issueDate" type="date">
+          <div class="form-section">
+            <div class="section-label">
+              <i class="fa-solid fa-user-doctor"></i> Profissional responsável
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="doctorName">Nome do médico</label>
+                <input
+                  id="doctorName"
+                  type="text"
+                  placeholder="Nome completo"
+                />
+              </div>
 
-      <div id="fieldDaysOff">
-        <label>Dias de afastamento</label>
-        <input id="daysOff" type="number" min="0" value="0">
-      </div>
+              <div class="field">
+                <label for="crm">CRM</label>
+                <input id="crm" type="text" placeholder="Número do CRM" />
+              </div>
+            </div>
 
-      <label>Observações</label>
-      <textarea id="notes" maxlength="200" placeholder="Observações clínicas (máx. 200 caracteres)">
-    </textarea>
+            <div class="signature-box">
+              <div>
+                <label>Assinatura</label>
+                <p>Insira uma assinatura em PNG ou JPG com fundo claro.</p>
+              </div>
+              <div class="signature-actions">
+                <label for="signatureUpload" class="signature-button">
+                  <i class="fa-solid fa-upload"></i> Inserir assinatura
+                </label>
+                <input
+                  id="signatureUpload"
+                  type="file"
+                  accept="image/png,image/jpeg"
+                  hidden
+                />
+                <button
+                  type="button"
+                  id="removeSignatureBtn"
+                  class="remove-signature"
+                  style="display: none"
+                >
+                  Remover
+                </button>
+              </div>
+            </div>
+          </div>
 
-      <label>Nome do médico</label>
-      <input id="doctorName" type="text">
+          <div class="controls">
+            <button id="savePngBtn" class="primary-action" type="button">
+              <i class="fa-solid fa-download"></i> Salvar como PNG
+            </button>
+            <button
+              onclick="location.reload()"
+              class="secondary-action"
+              type="button"
+            >
+              <i class="fa-solid fa-eraser"></i> Limpar
+            </button>
+          </div>
+        </section>
 
-      <label for="crm">CRM</label>
-      <input id="crm" type="text">
+        <section class="panel preview-panel">
+          <div class="preview-head">
+            <div>
+              <span class="eyebrow small"
+                ><i class="fa-solid fa-eye"></i> Pré-visualização</span
+              >
+              <h2>Atestado gerado</h2>
+            </div>
+            <span class="paper-size">Cartão horizontal</span>
+          </div>
 
-      <label>Assinatura</label>
+          <div class="paper-stage">
+            <div id="paper" class="paper">
+              <img
+                src="assets/logo/fundo.png"
+                class="watermark"
+                alt="Marca d'água"
+              />
 
-      <label for="signatureUpload" class="signature-button">
-        Inserir assinatura
-      </label>
+              <div class="header">
+                <div class="hospital-mark">
+                  <strong>Hospital São Rafael</strong>
+                  <div class="meta">Sandy Shores</div>
+                </div>
+                <div class="meta" id="documentDate"></div>
+              </div>
 
-      <input id="signatureUpload" type="file" accept="image/png,image/jpeg" hidden>
+              <div class="document-line"></div>
 
-      <div class="signature-hint">
-        PNG ou JPG • fundo claro
-      </div>
+              <div class="content">
+                <p id="textoAtestado"></p>
 
+                <div id="obsBox" class="obs-box" style="display: none">
+                  <strong>Observações:</strong>
+                  <p id="obsPreview"></p>
+                </div>
+              </div>
 
-      <button type="button" id="removeSignatureBtn" class="remove-signature" style="display:none;">
-        Remover assinatura
-      </button>
-
-      <div class="controls">
-        <button id="savePngBtn">Salvar como PNG</button>
-        <button onclick="location.reload()">Limpar</button>
+              <div class="footer">
+                <div class="doctor-info">
+                  <div id="doctorPreview"></div>
+                  <div class="meta" id="crmPreview"></div>
+                </div>
+                <div class="sig">
+                  <img
+                    id="signaturePreview"
+                    style="display: none"
+                    alt="Assinatura do médico"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
 
-    <!-- PREVIEW -->
-    <div class="panel preview">
-      <div id="paper" class="paper">
-
-        <!-- Marca d'água -->
-        <img src="assets/logo/fundo.png" class="watermark" alt="Marca d'água">
-
-        <!-- Cabeçalho -->
-        <div class="header">
-          <div>
-            <strong>Hospital São Rafael</strong>
-            <div class="meta">Sandy Shores</div>
-          </div>
-          <div class="meta" id="documentDate"></div>
-        </div>
-
-        <hr>
-
-        <!-- Conteúdo do atestado -->
-        <div class="content">
-          <p id="textoAtestado"></p>
-
-          <!-- Observações separadas -->
-          <div id="obsBox" class="obs-box" style="display:none;">
-            <strong>Observações:</strong>
-            <p id="obsPreview"></p>
-          </div>
-        </div>
-
-        <!-- Rodapé fixo -->
-        <div class="footer">
-          <div class="doctor-info">
-            <div id="doctorPreview"></div>
-            <div class="meta" id="crmPreview"></div>
-          </div>
-          <div class="sig">
-            <img id="signaturePreview" style="display:none">
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Biblioteca -->
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-
-  <!-- JS -->
-  <script src="assets/js/script.js"></script>
-
-</body>
-
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="assets/js/script.js"></script>
+  </body>
 </html>

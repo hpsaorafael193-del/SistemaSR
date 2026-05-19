@@ -17,6 +17,14 @@ const previewCarimbo = document.getElementById("preview-carimbo");
 
 const medicamentosTextarea = document.getElementById("medicamentos-texto");
 
+const camposModoGuiado = [
+  "med-nome",
+  "med-dose",
+  "med-intervalo",
+  "med-via",
+  "med-duracao",
+].map((id) => document.getElementById(id));
+
 const LIMITE_LINHAS_MEDICAMENTO = 12;
 
 /* =======================
@@ -108,6 +116,13 @@ function salvarRascunho() {
       data: data.value,
       observacoes: observacoes.value,
       medicamentos: medicamentosTextarea.value,
+      modoGuiado: {
+        nome: document.getElementById("med-nome").value,
+        dose: document.getElementById("med-dose").value,
+        intervalo: document.getElementById("med-intervalo").value,
+        via: document.getElementById("med-via").value,
+        duracao: document.getElementById("med-duracao").value,
+      },
       numero: document.body.dataset.receitaNumero,
     }),
   );
@@ -127,6 +142,14 @@ function carregarRascunho() {
   observacoes.value = d.observacoes || "";
   medicamentosTextarea.value = d.medicamentos || "";
 
+  if (d.modoGuiado) {
+    document.getElementById("med-nome").value = d.modoGuiado.nome || "";
+    document.getElementById("med-dose").value = d.modoGuiado.dose || "";
+    document.getElementById("med-intervalo").value = d.modoGuiado.intervalo || "";
+    document.getElementById("med-via").value = d.modoGuiado.via || "";
+    document.getElementById("med-duracao").value = d.modoGuiado.duracao || "";
+  }
+
   if (d.numero) {
     document.body.dataset.receitaNumero = d.numero;
     previewNumero.textContent = d.numero;
@@ -144,6 +167,7 @@ function carregarRascunho() {
   data,
   observacoes,
   medicamentosTextarea,
+  ...camposModoGuiado,
 ].forEach((el) => {
   el.addEventListener("input", () => {
     salvarRascunho();
@@ -180,9 +204,7 @@ document.getElementById("btn-add-medicamento").addEventListener("click", () => {
     ? medicamentosTextarea.value + "\n" + linha
     : linha;
 
-  ["med-nome", "med-dose", "med-intervalo", "med-via", "med-duracao"].forEach(
-    (id) => (document.getElementById(id).value = ""),
-  );
+  camposModoGuiado.forEach((campo) => (campo.value = ""));
 
   salvarRascunho();
   atualizarPreview();

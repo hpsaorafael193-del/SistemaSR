@@ -94,6 +94,18 @@ const convenioOptions = document.querySelectorAll(".convenio-option");
 let carrinho = {};
 let convenioAtual = "sem";
 
+function atualizarEstadoCard(id) {
+  const input = document.getElementById(`quantidade-${id}`);
+  const card = input ? input.closest(".produto-card") : null;
+  if (!card) return;
+  const quantidade = carrinho[id] || 0;
+  card.classList.toggle("com-quantidade", quantidade > 0);
+}
+
+function atualizarTodosEstadosCards() {
+  Object.keys(carrinho).forEach(atualizarEstadoCard);
+}
+
 // Inicializar carrinho para todos os produtos
 [...medicamentos, ...farmacia, ...procedimentos, ...ursosHP].forEach((produto) => {
   carrinho[produto.id] = 0;
@@ -188,6 +200,7 @@ function adicionarEventListeners() {
         let valor = parseInt(e.target.value) || 0;
         if (valor < 0) valor = 0;
         carrinho[id] = valor;
+        atualizarEstadoCard(id);
         calcularTotal();
       }
     });
@@ -198,6 +211,7 @@ function adicionarEventListeners() {
         let valor = parseInt(e.target.value) || 0;
         if (valor < 0) valor = 0;
         carrinho[id] = valor;
+        atualizarEstadoCard(id);
         calcularTotal();
       }
     });
@@ -209,6 +223,7 @@ function atualizarQuantidade(id) {
   if (input) {
     input.value = carrinho[id];
   }
+  atualizarEstadoCard(id);
 }
 
 // Função para aplicar combo (SEM ALERTA)
@@ -286,6 +301,7 @@ function calcularTotal() {
   // Atualizar display
   valorTotalElement.textContent = `R$ ${formatarPreco(totalComDesconto)}`;
   convenioAplicadoElement.textContent = textoConvenio;
+  atualizarTodosEstadosCards();
 }
 
 function formatarPreco(preco) {

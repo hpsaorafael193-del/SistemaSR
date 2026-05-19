@@ -14,8 +14,9 @@
 <body>
     <div class="container">
         <div class="content">
-            <div class="section">
-                <h2><i class="fas fa-handshake"></i> Convênio do Cliente:</h2>
+            <div class="calc-top-grid">
+            <div class="section convenio-section">
+                <h2><i class="fas fa-handshake"></i> Convênio do Cliente</h2>
                 <div class="convenio-options">
                     <div class="convenio-option active" data-convenio="sem">
                         <i class="fas fa-times-circle"></i>
@@ -52,18 +53,19 @@
             </div>
 
             <div class="zerar-section">
-                <h3><i class="fas fa-percentage"></i> Zerar Juros</h3>
+                <h3><i class="fas fa-receipt"></i> Resumo da Compra</h3>
                 <button class="btn-zerar-tudo" id="btn-zerar-tudo">
-                    <i class="fas fa-broom"></i> Zerar Tudo
+                    <i class="fas fa-broom"></i> Limpar seleção
                 </button>
                 <div class="valor-info">
-                    <div>Valor total da compra</div>
-                    <div>Convênio Aplicado:</div>
+                    <div>Total calculado</div>
+                    <div>Convênio aplicado</div>
                 </div>
-                <div class="valor-info">
+                <div class="valor-info valor-final-row">
                     <div class="valor-total">R$ 0,00</div>
                     <div class="convenio-aplicado">Sem Convênio</div>
                 </div>
+            </div>
             </div>
 
             <div class="abas-container">
@@ -112,9 +114,6 @@
             </div>
         </div>
 
-        <div class="footer">
-            <p>Sistema HPSR &copy; 2025 - Todos os direitos reservados</p>
-        </div>
     </div>
 
     <script src="assets/js/app.js"></script>

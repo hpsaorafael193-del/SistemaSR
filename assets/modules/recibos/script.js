@@ -3,7 +3,7 @@
         // Elementos DOM
         const btnHelp = document.getElementById("btn-help-recibo");
         const helpModal = document.getElementById("help-modal-recibo");
-        const modalClose = helpModal.querySelector(".modal-close");
+        const modalClose = helpModal ? helpModal.querySelector(".modal-close") : null;
         const btnAtualizarPreview = document.getElementById(
           "atualizar-preview-recibo",
         );
@@ -348,19 +348,25 @@
         }
 
         // Event Listeners
-        btnHelp.addEventListener("click", () => {
-          helpModal.classList.add("show");
-        });
+        if (btnHelp && helpModal) {
+          btnHelp.addEventListener("click", () => {
+            helpModal.classList.add("show");
+          });
+        }
 
-        modalClose.addEventListener("click", () => {
-          helpModal.classList.remove("show");
-        });
-
-        helpModal.addEventListener("click", (e) => {
-          if (e.target === helpModal) {
+        if (modalClose && helpModal) {
+          modalClose.addEventListener("click", () => {
             helpModal.classList.remove("show");
-          }
-        });
+          });
+        }
+
+        if (helpModal) {
+          helpModal.addEventListener("click", (e) => {
+            if (e.target === helpModal) {
+              helpModal.classList.remove("show");
+            }
+          });
+        }
 
         btnAtualizarPreview.addEventListener("click", updatePreview);
 

@@ -123,7 +123,7 @@
     flex: 1;
     max-width: 100%;
     overflow: hidden;
-    min-height: calc(100vh - 120px);
+    min-height: calc(100vh - 4rem);
 }
 
 /* Painéis */
@@ -133,7 +133,7 @@
     box-shadow: var(--shadow);
     padding: 0.5rem;
     overflow-y: auto;
-    max-height: calc(100vh - 120px);
+    max-height: calc(100vh - 4rem);
 }
 
 .preview-panel {
@@ -468,3 +468,153 @@
 .form-group select {
     width: 100%;
 }
+
+
+/* ===============================
+   Atualização visual - Laudos
+   Hospital São Rafael
+================================ */
+body {
+    background:
+        radial-gradient(circle at top left, rgba(248,225,179,.55), transparent 34%),
+        linear-gradient(135deg, #fbf7ef 0%, #ead8c5 100%);
+}
+.app-container { background: transparent; }
+.main-content {
+    grid-template-columns: minmax(420px, .92fr) minmax(560px, 1.08fr);
+    gap: 1.35rem;
+    padding: 1.25rem;
+    min-height: 100vh;
+    overflow: visible;
+}
+.form-panel,
+.preview-panel {
+    border-radius: 22px;
+    border: 1px solid rgba(64,15,0,.18);
+    background: rgba(255, 251, 244, .92);
+    box-shadow: 0 18px 48px rgba(64,15,0,.14);
+}
+.form-panel {
+    padding: .9rem;
+    max-height: calc(100vh - 2.5rem);
+}
+.preview-panel {
+    max-height: calc(100vh - 2.5rem);
+    overflow: hidden;
+}
+.form-section {
+    background: linear-gradient(180deg, #fffaf1 0%, #f8ead6 100%);
+    border: 1px solid rgba(64,15,0,.16);
+    border-radius: 18px;
+    padding: 1.15rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 10px 25px rgba(64,15,0,.07);
+}
+.form-section:hover {
+    border-color: rgba(64,15,0,.34);
+    box-shadow: 0 14px 30px rgba(64,15,0,.1);
+}
+.section-header {
+    gap: .75rem;
+    margin-bottom: 1rem;
+    padding-bottom: .85rem;
+    border-bottom: 1px solid rgba(64,15,0,.18);
+}
+.section-header i {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #400f00;
+    color: #fff2d8;
+    font-size: 1rem;
+    box-shadow: 0 8px 18px rgba(64,15,0,.18);
+}
+.section-header h2 { font-size: 1.05rem; font-weight: 800; letter-spacing: -.01em; }
+.form-control,
+select,
+textarea,
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="number"] {
+    border-radius: 12px !important;
+    border: 1px solid rgba(64,15,0,.26) !important;
+    background: rgba(255,255,255,.92) !important;
+    min-height: 44px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.85);
+}
+.form-control:focus,
+select:focus,
+textarea:focus,
+input:focus {
+    border-color: #400f00 !important;
+    box-shadow: 0 0 0 4px rgba(64,15,0,.10) !important;
+    outline: none;
+}
+.input-with-action,
+.documento-inputs,
+.professional-register-display,
+.idade-input { gap: .5rem; }
+.btn-action,
+.btn-select-images,
+.btn-preview-action,
+.btn-export,
+.btn-close-exame,
+.btn-primary,
+.btn-secondary,
+.categoria-tab,
+.exame-card,
+button {
+    border-radius: 12px !important;
+}
+.btn-preview-action,
+.btn-export,
+.btn-select-images {
+    border: 0;
+    background: linear-gradient(135deg, #400f00, #6a2b12);
+    color: #fff4db;
+    box-shadow: 0 10px 22px rgba(64,15,0,.18);
+}
+.preview-header {
+    padding: .9rem 1rem;
+    background: linear-gradient(135deg, #fff9ef, #f3dfc5);
+    border-bottom: 1px solid rgba(64,15,0,.16);
+}
+.preview-header h2 { font-size: 1.05rem; font-weight: 800; }
+.laudo-preview-container {
+    padding: 1rem;
+    overflow: auto;
+    background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(248,234,214,.5));
+}
+.export-controls {
+    border-top: 1px solid rgba(64,15,0,.15);
+    background: #fff8ec;
+    padding: .85rem 1rem;
+}
+.upload-area,
+.simple-upload-area,
+.anexos-container,
+.paginacao-controls {
+    border-radius: 16px !important;
+    border-color: rgba(64,15,0,.22) !important;
+    background: rgba(255,255,255,.55) !important;
+}
+.exames-grid { grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); }
+.exame-card {
+    background: #fffaf1 !important;
+    border: 1px solid rgba(64,15,0,.16) !important;
+    box-shadow: 0 8px 18px rgba(64,15,0,.07);
+}
+@media (max-width: 1180px) {
+    .main-content { grid-template-columns: 1fr; overflow: visible; }
+    .form-panel, .preview-panel { max-height: none; }
+}
+@media (max-width: 680px) {
+    .main-content { padding: .75rem; gap: .9rem; }
+    .form-section { padding: .95rem; }
+    .preview-header, .preview-actions { flex-direction: column; align-items: stretch; }
+}
+

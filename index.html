@@ -49,7 +49,7 @@
             <span class="label">Planos</span>
           </button>
           <button class="core-nav-item" data-tab="medicamentos">
-            <i class="fas fa-handshake"></i>
+            <i class="fas fa-pills"></i>
             <span class="label">Medicamentos</span>
           </button>
 
@@ -114,53 +114,159 @@
         </header>
 
         <section class="core-tab active" data-content="principal">
-          <section class="home-cover">
+          <section class="dashboard-hero">
             <img
               src="assets/img/capa.png"
               alt="Capa Hospital São Rafael"
-              class="home-cover-img"
+              class="dashboard-hero-img"
             />
-            <div class="home-cover-overlay"></div>
+            <div class="dashboard-hero-overlay"></div>
 
-            <div class="home-cover-content">
+            <div class="dashboard-hero-content">
+              <span class="dashboard-kicker">Painel Clínico Integrado</span>
               <h2>Hospital São Rafael</h2>
               <p>
-                Centro clínico de referência em Sandy Shores, com foco em
-                atendimento humanizado, integração entre setores e padronização
-                de processos médicos.
+                Acesse rapidamente os módulos médicos, organize processos
+                internos e mantenha o padrão visual institucional em um único
+                ambiente.
               </p>
+
+              <div class="dashboard-hero-actions">
+                <button
+                  class="dashboard-primary-action"
+                  data-target-tab="laudos"
+                  type="button"
+                >
+                  <i class="fas fa-file-medical"></i> Emitir laudo
+                </button>
+                <button
+                  class="dashboard-secondary-action"
+                  data-target-tab="agenda"
+                  type="button"
+                >
+                  <i class="fas fa-calendar-check"></i> Abrir agenda
+                </button>
+              </div>
             </div>
           </section>
 
-          <div class="core-grid two">
-            <article class="core-panel">
-              <h3>Sobre o hospital</h3>
+          <div class="dashboard-stats">
+            <article class="dashboard-stat-card">
+              <div class="dashboard-stat-icon">
+                <i class="fas fa-user-doctor"></i>
+              </div>
+              <div>
+                <span>Atendimento</span>
+                <strong>Humanizado</strong>
+                <small>Fluxo clínico com foco no paciente</small>
+              </div>
+            </article>
+            <article class="dashboard-stat-card">
+              <div class="dashboard-stat-icon">
+                <i class="fas fa-shield-heart"></i>
+              </div>
+              <div>
+                <span>Processos</span>
+                <strong>Padronizados</strong>
+                <small>Documentos com identidade do hospital</small>
+              </div>
+            </article>
+            <article class="dashboard-stat-card">
+              <div class="dashboard-stat-icon">
+                <i class="fas fa-layer-group"></i>
+              </div>
+              <div>
+                <span>Sistema</span>
+                <strong>Integrado</strong>
+                <small>Ferramentas principais em um painel</small>
+              </div>
+            </article>
+          </div>
 
-              <p style="margin-top: 10px; line-height: 1.55">
-                O Hospital São Rafael (HPSR) prioriza um atendimento
-                <strong>humanizado</strong>, <strong>ágil</strong> e
-                <strong>seguro</strong>, mantendo o paciente no centro de cada
-                decisão. Desde a chegada até a finalização, cada pessoa é
-                acolhida com <strong>respeito</strong>,
-                <strong>empatia</strong> e <strong>escuta ativa</strong>.
-              </p>
-
-              <div class="core-badges" style="margin: 10px 0 12px">
-                <span class="core-badge">Atendimento humanizado</span>
-                <span class="core-badge">Processos padronizados</span>
-                <span class="core-badge">Integração entre setores</span>
-                <span class="core-badge">Foco no paciente</span>
-                <span class="core-badge">Ambiente seguro e acolhedor</span>
+          <div class="dashboard-layout">
+            <article class="dashboard-panel dashboard-panel-main">
+              <div class="dashboard-panel-head">
+                <div>
+                  <span class="dashboard-section-label">Atalhos rápidos</span>
+                  <h3>Módulos do sistema</h3>
+                </div>
+                <i class="fas fa-hospital-user"></i>
               </div>
 
-              <p style="margin: 0; line-height: 1.55">
-                Nossa equipe atua com clareza nas orientações, cuidado
-                individualizado e compromisso com o bem-estar, garantindo que o
-                paciente se sinta <strong>amparado</strong>,
-                <strong>informado</strong> e tratado com
-                <strong>dignidade</strong> em todas as etapas.
-              </p>
+              <div class="dashboard-shortcuts">
+                <button
+                  class="dashboard-shortcut"
+                  data-target-tab="agenda"
+                  type="button"
+                >
+                  <i class="fas fa-calendar-alt"></i>
+                  <strong>Agenda</strong>
+                  <span>Controle de atendimentos</span>
+                </button>
+                <button
+                  class="dashboard-shortcut"
+                  data-target-tab="planos"
+                  type="button"
+                >
+                  <i class="fas fa-clipboard-list"></i>
+                  <strong>Planos</strong>
+                  <span>Buscar e gerenciar convênios</span>
+                </button>
+                <button
+                  class="dashboard-shortcut"
+                  data-target-tab="calculadora"
+                  type="button"
+                >
+                  <i class="fas fa-calculator"></i>
+                  <strong>Calculadora</strong>
+                  <span>Apoio de valores e procedimentos</span>
+                </button>
+                <button
+                  class="dashboard-shortcut"
+                  data-target-tab="laudos"
+                  type="button"
+                >
+                  <i class="fas fa-file-medical"></i>
+                  <strong>Laudos</strong>
+                  <span>Emissão de exames clínicos</span>
+                </button>
+                <button
+                  class="dashboard-shortcut"
+                  data-target-tab="receitas"
+                  type="button"
+                >
+                  <i class="fas fa-file-prescription"></i>
+                  <strong>Receitas</strong>
+                  <span>Prescrições padronizadas</span>
+                </button>
+                <button
+                  class="dashboard-shortcut"
+                  data-target-tab="recibos"
+                  type="button"
+                >
+                  <i class="fas fa-file-invoice-dollar"></i>
+                  <strong>Recibos</strong>
+                  <span>Comprovantes e pagamentos</span>
+                </button>
+              </div>
             </article>
+
+            <aside class="dashboard-panel dashboard-side-panel">
+              <span class="dashboard-section-label">Institucional</span>
+              <h3>São Rafael</h3>
+              <p>
+                Atendimento com clareza, organização e responsabilidade. Cada
+                módulo foi pensado para reduzir etapas e manter os documentos
+                alinhados ao padrão do hospital.
+              </p>
+
+              <div class="dashboard-badges">
+                <span>Atendimento humanizado</span>
+                <span>Ambiente seguro</span>
+                <span>Equipe integrada</span>
+                <span>Documentação padronizada</span>
+              </div>
+            </aside>
           </div>
         </section>
 
@@ -177,315 +283,332 @@
           data-content="medicamentos"
           id="tab-medicamentos"
         >
-          <div class="page-container">
-            <div class="card page-card">
-              <h2>Guia Básico de Medicamentos</h2>
-
-              <p class="page-lead">
-                Guia de apoio para médicos e estagiários contendo medicamentos
-                utilizados no servidor com nomenclatura adaptada para Eldorado
-                Pharma.
-              </p>
-
-              <div class="partner-stack">
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-syringe"></i> Eldorado Pharma - GlicoVida
-                  </h4>
-                  <p><b>Medicamento real:</b> Insulina</p>
-                  <p>
-                    <b>Uso Clínico:</b> Controle da glicemia em pacientes
-                    diabéticos, usado em hiperglicemia e descompensação
-                    metabólica.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-vial"></i> Eldorado Pharma - OrgaBloq
-                  </h4>
-                  <p><b>Medicamento real:</b> Orgalutran</p>
-                  <p>
-                    <b>Uso Clínico:</b> Bloqueio hormonal em protocolos de
-                    fertilidade para evitar ovulação precoce durante indução
-                    ovariana.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-baby"></i> Eldorado Pharma - FertiPlus
-                  </h4>
-                  <p><b>Medicamento real:</b> Puregon</p>
-                  <p>
-                    <b>Uso Clínico:</b> Estimulação ovariana em tratamentos de
-                    fertilidade, favorecendo maturação folicular e indução
-                    reprodutiva.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-heart"></i> Eldorado Pharma - GestaVida
-                  </h4>
-                  <p><b>Medicamento real:</b> Ogestan</p>
-                  <p>
-                    <b>Uso Clínico:</b> Suporte vitamínico e gestacional durante
-                    tentativa de gravidez e acompanhamento inicial da gestação.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-bone"></i> Eldorado Pharma - CalciFort
-                  </h4>
-                  <p><b>Medicamento real:</b> Caltrate</p>
-                  <p>
-                    <b>Uso Clínico:</b> Reposição de cálcio em deficiência,
-                    fragilidade óssea, osteopenia e necessidade de suplementação
-                    mineral.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-capsules"></i> Eldorado Pharma - MaterPlus
-                  </h4>
-                  <p><b>Medicamento real:</b> Materna</p>
-                  <p>
-                    <b>Uso Clínico:</b> Suplementação pré-natal com vitaminas e
-                    minerais para gestantes ou pacientes em planejamento
-                    gestacional.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-syringe"></i> Eldorado Pharma - DorMax
-                  </h4>
-                  <p><b>Medicamento real:</b> Morfina</p>
-                  <p>
-                    <b>Uso Clínico:</b> Analgesia de dor intensa aguda, trauma
-                    relevante, pós-operatório e situações de sofrimento
-                    importante.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-head-side-virus"></i> Eldorado Pharma -
-                    Cefaliv
-                  </h4>
-                  <p><b>Medicamento real:</b> Neosaldina</p>
-                  <p>
-                    <b>Uso Clínico:</b> Alívio sintomático de cefaleia, enxaqueca
-                    leve e dor de cabeça associada a tensão ou indisposição.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-hand"></i> Eldorado Pharma - Musculiv
-                  </h4>
-                  <p><b>Medicamento real:</b> Dorflex</p>
-                  <p>
-                    <b>Uso Clínico:</b> Alívio de dor muscular, contratura,
-                    tensão cervical e desconforto osteomuscular leve a moderado.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-tablets"></i> Eldorado Pharma - Analgex
-                  </h4>
-                  <p><b>Medicamento real:</b> Dipirona</p>
-                  <p>
-                    <b>Uso Clínico:</b> Controle de febre e alívio de dor leve a
-                    moderada, como cefaleia, mialgia e mal-estar.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-pills"></i> Eldorado Pharma - Parador
-                  </h4>
-                  <p><b>Medicamento real:</b> Paracetamol</p>
-                  <p>
-                    <b>Uso Clínico:</b> Controle de febre e alívio de dor leve a
-                    moderada, como cefaleia, mialgia e mal-estar.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-moon"></i> Eldorado Pharma - Calmivita
-                  </h4>
-                  <p><b>Medicamento real:</b> Rivotril</p>
-                  <p>
-                    <b>Uso Clínico:</b> Redução de ansiedade, crise de agitação,
-                    insônia e necessidade de efeito calmante controlado.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-wind"></i> Eldorado Pharma - Alergicor
-                  </h4>
-                  <p><b>Medicamento real:</b> Desloratadina</p>
-                  <p>
-                    <b>Uso Clínico:</b> Controle de sintomas alérgicos como
-                    coriza, espirros, prurido, urticária e rinite alérgica.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-wind"></i> Eldorado Pharma - Alergix
-                  </h4>
-                  <p><b>Medicamento real:</b> Loratadina</p>
-                  <p>
-                    <b>Uso Clínico:</b> Controle de sintomas alérgicos como
-                    coriza, espirros, prurido, urticária e rinite alérgica.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-lungs"></i> Eldorado Pharma - Respimax
-                  </h4>
-                  <p><b>Medicamento real:</b> Salbutamol</p>
-                  <p>
-                    <b>Uso Clínico:</b> Broncodilatação em crise asmática,
-                    chiado, falta de ar e broncoespasmo agudo.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-head-side-mask"></i> Eldorado Pharma -
-                    Gripex
-                  </h4>
-                  <p><b>Medicamento real:</b> Benegripe</p>
-                  <p>
-                    <b>Uso Clínico:</b> Alívio de sintomas gripais e resfriado,
-                    incluindo congestão, mal-estar, febre e coriza.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-capsules"></i> Eldorado Pharma - Bactrimed
-                  </h4>
-                  <p><b>Medicamento real:</b> Azitromicina</p>
-                  <p>
-                    <b>Uso Clínico:</b> Tratamento de infecções bacterianas
-                    conforme avaliação clínica, como vias aéreas, garganta e
-                    pele.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-capsules"></i> Eldorado Pharma - Bacteron
-                  </h4>
-                  <p><b>Medicamento real:</b> Amoxicilina</p>
-                  <p>
-                    <b>Uso Clínico:</b> Tratamento de infecções bacterianas
-                    conforme avaliação clínica, como vias aéreas, garganta e
-                    pele.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-fire"></i> Eldorado Pharma - Inflamol
-                  </h4>
-                  <p><b>Medicamento real:</b> Nimesulida</p>
-                  <p>
-                    <b>Uso Clínico:</b> Controle de inflamação, dor e edema em
-                    quadros musculares, articulares e traumáticos leves.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-fire"></i> Eldorado Pharma - Inflamax
-                  </h4>
-                  <p><b>Medicamento real:</b> Ibuprofeno</p>
-                  <p>
-                    <b>Uso Clínico:</b> Controle de inflamação, dor e edema em
-                    quadros musculares, articulares e traumáticos leves.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-stomach"></i> Eldorado Pharma - Gastrix
-                  </h4>
-                  <p><b>Medicamento real:</b> Omeprazol</p>
-                  <p>
-                    <b>Uso Clínico:</b> Redução da acidez gástrica em refluxo,
-                    gastrite, azia e desconforto epigástrico.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-cloud"></i> Eldorado Pharma - Gasiliv
-                  </h4>
-                  <p><b>Medicamento real:</b> Luftal</p>
-                  <p>
-                    <b>Uso Clínico:</b> Alívio de distensão abdominal, excesso
-                    de gases, desconforto intestinal e empachamento.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-leaf"></i> Eldorado Pharma - HepaVida
-                  </h4>
-                  <p><b>Medicamento real:</b> Eparema</p>
-                  <p>
-                    <b>Uso Clínico:</b> Auxílio digestivo em má digestão,
-                    desconforto hepático, estômago pesado e lentidão digestiva.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-face-dizzy"></i> Eldorado Pharma -
-                    NáuseaZero
-                  </h4>
-                  <p><b>Medicamento real:</b> Dramin</p>
-                  <p>
-                    <b>Uso Clínico:</b> Controle de náusea, enjoo, tontura
-                    labiríntica e desconforto vestibular ou gastrointestinal.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-person-circle-exclamation"></i> Eldorado
-                    Pharma - CólicaCalm
-                  </h4>
-                  <p><b>Medicamento real:</b> Buscopam</p>
-                  <p>
-                    <b>Uso Clínico:</b> Alívio de cólicas abdominais, espasmos
-                    gastrointestinais e dor visceral tipo cólica.
-                  </p>
-                </div>
-
-                <div class="partner-box">
-                  <h4 class="partner-box__title">
-                    <i class="fas fa-glass-water"></i> Eldorado Pharma - Ressak
-                  </h4>
-                  <p><b>Medicamento real:</b> Engov</p>
-                  <p>
-                    <b>Uso Clínico:</b> Alívio de sintomas de ressaca,
-                    mal-estar, dor de cabeça, náusea e indisposição pós-álcool.
-                  </p>
-                </div>
+          <div class="medicamentos-shell">
+            <div class="medicamentos-hero">
+              <div>
+                <span class="medicamentos-kicker"
+                  ><i class="fas fa-prescription-bottle-medical"></i> Farmácia
+                  Hospitalar</span
+                >
+                <h2>Guia Básico de Medicamentos</h2>
+                <p>
+                  Consulta rápida dos medicamentos da Eldorado Pharma, com nome
+                  real, indicação clínica e organização por finalidade de uso.
+                </p>
               </div>
+              <div class="medicamentos-hero-card">
+                <strong>26</strong>
+                <span>medicamentos catalogados</span>
+                <small>Base de apoio para médicos e estagiários</small>
+              </div>
+            </div>
+
+            <div class="medicamentos-toolbar">
+              <label class="medicamentos-search">
+                <i class="fas fa-search"></i>
+                <input
+                  type="search"
+                  placeholder="Buscar medicamento, nome real ou uso clínico..."
+                  oninput="filtrarMedicamentos(this.value)"
+                />
+              </label>
+              <div
+                class="medicamentos-chips"
+                aria-label="Categorias de medicamentos"
+              >
+                <span>Analgésicos</span>
+                <span>Respiratórios</span>
+                <span>Digestivos</span>
+                <span>Fertilidade</span>
+                <span>Antibióticos</span>
+              </div>
+            </div>
+
+            <div class="medicamentos-grid">
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-syringe"></i><span>Endócrino</span>
+                </div>
+                <h3>GlicoVida</h3>
+                <p><b>Medicamento real:</b> Insulina</p>
+                <p>
+                  Controle da glicemia em pacientes diabéticos, hiperglicemia e
+                  descompensação metabólica.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-vial"></i><span>Fertilidade</span>
+                </div>
+                <h3>OrgaBloq</h3>
+                <p><b>Medicamento real:</b> Orgalutran</p>
+                <p>
+                  Bloqueio hormonal em protocolos de fertilidade para evitar
+                  ovulação precoce.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-baby"></i><span>Fertilidade</span>
+                </div>
+                <h3>FertiPlus</h3>
+                <p><b>Medicamento real:</b> Puregon</p>
+                <p>
+                  Estimulação ovariana, maturação folicular e indução
+                  reprodutiva.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-heart"></i><span>Gestacional</span>
+                </div>
+                <h3>GestaVida</h3>
+                <p><b>Medicamento real:</b> Ogestan</p>
+                <p>
+                  Suporte vitamínico e gestacional durante tentativa de gravidez
+                  e início da gestação.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-bone"></i><span>Suplementação</span>
+                </div>
+                <h3>CalciFort</h3>
+                <p><b>Medicamento real:</b> Caltrate</p>
+                <p>
+                  Reposição de cálcio, fragilidade óssea, osteopenia e
+                  suplementação mineral.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-capsules"></i><span>Pré-natal</span>
+                </div>
+                <h3>MaterPlus</h3>
+                <p><b>Medicamento real:</b> Materna</p>
+                <p>Suplementação pré-natal com vitaminas e minerais.</p>
+              </article>
+
+              <article class="med-card med-card-alert" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-syringe"></i><span>Dor intensa</span>
+                </div>
+                <h3>DorMax</h3>
+                <p><b>Medicamento real:</b> Morfina</p>
+                <p>
+                  Analgesia em dor intensa aguda, trauma relevante e
+                  pós-operatório.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-head-side-virus"></i><span>Cefaleia</span>
+                </div>
+                <h3>Cefaliv</h3>
+                <p><b>Medicamento real:</b> Neosaldina</p>
+                <p>
+                  Alívio de cefaleia, enxaqueca leve e dor de cabeça por tensão.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-hand"></i><span>Muscular</span>
+                </div>
+                <h3>Musculiv</h3>
+                <p><b>Medicamento real:</b> Dorflex</p>
+                <p>
+                  Dor muscular, contratura, tensão cervical e desconforto
+                  osteomuscular.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-tablets"></i><span>Analgésico</span>
+                </div>
+                <h3>Analgex</h3>
+                <p><b>Medicamento real:</b> Dipirona</p>
+                <p>Controle de febre e dor leve a moderada.</p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-pills"></i><span>Analgésico</span>
+                </div>
+                <h3>Parador</h3>
+                <p><b>Medicamento real:</b> Paracetamol</p>
+                <p>Febre, cefaleia, mialgia e mal-estar.</p>
+              </article>
+
+              <article class="med-card med-card-soft" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-moon"></i><span>Controle</span>
+                </div>
+                <h3>Calmivita</h3>
+                <p><b>Medicamento real:</b> Rivotril</p>
+                <p>
+                  Ansiedade, crise de agitação, insônia e efeito calmante
+                  controlado.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-wind"></i><span>Alergia</span>
+                </div>
+                <h3>Alergicor</h3>
+                <p><b>Medicamento real:</b> Desloratadina</p>
+                <p>
+                  Sintomas alérgicos como coriza, espirros, prurido, urticária e
+                  rinite.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-wind"></i><span>Alergia</span>
+                </div>
+                <h3>Alergix</h3>
+                <p><b>Medicamento real:</b> Loratadina</p>
+                <p>
+                  Controle de coriza, espirros, prurido, urticária e rinite
+                  alérgica.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-lungs"></i><span>Respiratório</span>
+                </div>
+                <h3>Respimax</h3>
+                <p><b>Medicamento real:</b> Salbutamol</p>
+                <p>
+                  Broncodilatação em crise asmática, chiado, falta de ar e
+                  broncoespasmo.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-head-side-mask"></i><span>Gripal</span>
+                </div>
+                <h3>Gripex</h3>
+                <p><b>Medicamento real:</b> Benegripe</p>
+                <p>Sintomas gripais, congestão, mal-estar, febre e coriza.</p>
+              </article>
+
+              <article class="med-card med-card-alert" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-capsules"></i><span>Antibiótico</span>
+                </div>
+                <h3>Bactrimed</h3>
+                <p><b>Medicamento real:</b> Azitromicina</p>
+                <p>Infecções bacterianas conforme avaliação clínica.</p>
+              </article>
+
+              <article class="med-card med-card-alert" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-capsules"></i><span>Antibiótico</span>
+                </div>
+                <h3>Bacteron</h3>
+                <p><b>Medicamento real:</b> Amoxicilina</p>
+                <p>Infecções bacterianas de vias aéreas, garganta e pele.</p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-fire"></i><span>Anti-inflamatório</span>
+                </div>
+                <h3>Inflamol</h3>
+                <p><b>Medicamento real:</b> Nimesulida</p>
+                <p>
+                  Inflamação, dor e edema em quadros musculares, articulares e
+                  traumáticos.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-fire"></i><span>Anti-inflamatório</span>
+                </div>
+                <h3>Inflamax</h3>
+                <p><b>Medicamento real:</b> Ibuprofeno</p>
+                <p>Controle de inflamação, dor e edema leves a moderados.</p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-stomach"></i><span>Digestivo</span>
+                </div>
+                <h3>Gastrix</h3>
+                <p><b>Medicamento real:</b> Omeprazol</p>
+                <p>Refluxo, gastrite, azia e desconforto epigástrico.</p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-cloud"></i><span>Digestivo</span>
+                </div>
+                <h3>Gasiliv</h3>
+                <p><b>Medicamento real:</b> Luftal</p>
+                <p>
+                  Distensão abdominal, excesso de gases e desconforto
+                  intestinal.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-leaf"></i><span>Digestivo</span>
+                </div>
+                <h3>HepaVida</h3>
+                <p><b>Medicamento real:</b> Eparema</p>
+                <p>
+                  Má digestão, desconforto hepático, estômago pesado e lentidão
+                  digestiva.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-face-dizzy"></i><span>Náusea</span>
+                </div>
+                <h3>NáuseaZero</h3>
+                <p><b>Medicamento real:</b> Dramin</p>
+                <p>
+                  Náusea, enjoo, tontura labiríntica e desconforto vestibular.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-person-circle-exclamation"></i
+                  ><span>Cólica</span>
+                </div>
+                <h3>CólicaCalm</h3>
+                <p><b>Medicamento real:</b> Buscopam</p>
+                <p>
+                  Cólicas abdominais, espasmos gastrointestinais e dor visceral.
+                </p>
+              </article>
+
+              <article class="med-card" data-med-card>
+                <div class="med-card-top">
+                  <i class="fas fa-glass-water"></i><span>Suporte</span>
+                </div>
+                <h3>Ressak</h3>
+                <p><b>Medicamento real:</b> Engov</p>
+                <p>
+                  Mal-estar, dor de cabeça, náusea e indisposição pós-álcool.
+                </p>
+              </article>
             </div>
           </div>
         </section>
@@ -531,94 +654,215 @@
         </section>
 
         <section class="core-tab" data-content="perfil">
-          <div class="module-shell">
-            <div class="module-header">
-              <h2>Perfil do Usuário</h2>
-              <p>
-                Confira informações medicas <strong>nome</strong> e
-                <strong>crm</strong> <strong></strong>.
-              </p>
+          <div class="module-shell perfil-shell">
+            <div class="perfil-hero-card">
+              <div class="perfil-avatar" id="perfilAvatar">SR</div>
+              <div class="perfil-hero-info">
+                <span class="module-kicker"
+                  ><i class="fa-solid fa-user-doctor"></i> Área do usuário</span
+                >
+                <h2 id="perfilNomeHero">Perfil do Usuário</h2>
+                <p>
+                  Dados de acesso e identificação profissional vinculados ao
+                  sistema do Hospital São Rafael.
+                </p>
+                <div class="perfil-tags">
+                  <span id="perfilCargoBadge"
+                    ><i class="fa-solid fa-id-badge"></i> Usuário</span
+                  >
+                  <span id="perfilStatusBadge"
+                    ><i class="fa-solid fa-circle-check"></i> Sessão ativa</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="perfil-summary-grid">
+              <article class="perfil-summary-card">
+                <i class="fa-solid fa-signature"></i>
+                <span>Nome profissional</span>
+                <strong id="perfilNome">—</strong>
+              </article>
+              <article class="perfil-summary-card">
+                <i class="fa-solid fa-stethoscope"></i>
+                <span>Registro médico</span>
+                <strong id="perfilCrm">—</strong>
+              </article>
+              <article class="perfil-summary-card">
+                <i class="fa-solid fa-user-shield"></i>
+                <span>Cargo</span>
+                <strong id="perfilCargo">—</strong>
+              </article>
             </div>
 
             <div class="core-grid two perfil-grid-db">
-              <article class="core-panel">
-                <h3>Dados do banco</h3>
+              <article class="core-panel perfil-panel-modern">
+                <div class="perfil-panel-head">
+                  <div>
+                    <span class="module-kicker">Identificação</span>
+                    <h3>Dados médicos</h3>
+                  </div>
+                  <i class="fa-solid fa-hospital-user"></i>
+                </div>
                 <div class="perfil-readonly-list">
                   <div class="perfil-row">
-                    <span class="perfil-label">nome</span>
-                    <strong id="perfilNome">—</strong>
+                    <span class="perfil-label">Nome</span>
+                    <strong id="perfilNomeDb">—</strong>
                   </div>
                   <div class="perfil-row">
-                    <span class="perfil-label">crm</span>
-                    <strong id="perfilCrm">—</strong>
+                    <span class="perfil-label">CRM</span>
+                    <strong id="perfilCrmDb">—</strong>
+                  </div>
+                  <div class="perfil-row">
+                    <span class="perfil-label">Permissão</span>
+                    <strong id="perfilCargoDb">—</strong>
                   </div>
                 </div>
               </article>
 
-              <article class="core-panel">
-                <h3>Conta (auth)</h3>
+              <article class="core-panel perfil-panel-modern">
+                <div class="perfil-panel-head">
+                  <div>
+                    <span class="module-kicker">Autenticação</span>
+                    <h3>Conta de acesso</h3>
+                  </div>
+                  <i class="fa-solid fa-lock"></i>
+                </div>
                 <div class="perfil-readonly-list">
                   <div class="perfil-row">
-                    <span class="perfil-label">usuario</span>
+                    <span class="perfil-label">Usuário</span>
                     <strong id="perfilUsername">—</strong>
                   </div>
                   <div class="perfil-row">
-                    <span class="perfil-label">email</span>
+                    <span class="perfil-label">E-mail</span>
                     <strong id="perfilEmail">—</strong>
+                  </div>
+                  <div class="perfil-row">
+                    <span class="perfil-label">Último acesso</span>
+                    <strong id="perfilUltimoAcesso">—</strong>
                   </div>
                 </div>
               </article>
             </div>
 
-            <article class="core-panel" style="margin-top: 14px">
-              <h3>Observação</h3>
-              <p>Em casos de dúvida, entre em contato com a diretoria.</p>
+            <article class="core-panel perfil-note-card">
+              <i class="fa-solid fa-circle-info"></i>
+              <div>
+                <h3>Atualização de dados</h3>
+                <p>
+                  Nome, CRM e cargo são carregados pelo banco de usuários. Para
+                  corrigir alguma informação, solicite a alteração à diretoria
+                  responsável.
+                </p>
+              </div>
             </article>
           </div>
         </section>
 
         <section class="core-tab" data-content="planos">
-          <div class="module-shell">
-            <div class="module-header">
-              <h2>Planos Médicos</h2>
+          <div class="module-shell planos-shell">
+            <div class="module-header planos-page-header">
+              <div>
+                <span class="module-kicker">Convênios e benefícios</span>
+                <h2>Planos Médicos</h2>
+                <p>
+                  Consulte, cadastre e gerencie os planos ativos dos pacientes.
+                </p>
+              </div>
+              <div class="planos-header-badge">
+                <i class="fa-solid fa-shield-heart"></i>
+                <span>SR Planos</span>
+              </div>
             </div>
 
-            <div class="container planos-container">
-              <div class="top-bar">
-                <input id="passaporte" placeholder="Passaporte do paciente" />
-                <button id="buscarBtn">Buscar</button>
+            <div class="container planos-container planos-panel">
+              <div class="planos-hero">
+                <div class="planos-hero-text">
+                  <span class="planos-pill"
+                    ><i class="fa-solid fa-heart-pulse"></i> Atendimento com
+                    desconto</span
+                  >
+                  <h3>Localize o plano do paciente</h3>
+                  <p>
+                    Digite o passaporte para verificar status, validade,
+                    dependentes e ações disponíveis.
+                  </p>
+                </div>
+
+                <div class="top-bar planos-search-card">
+                  <label for="passaporte">Passaporte do paciente</label>
+                  <div class="planos-search-row">
+                    <input id="passaporte" placeholder="Ex.: 4190" />
+                    <button id="buscarBtn">
+                      <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div class="card resumo">
-                <strong>Status Atual</strong>
-                <div id="statusBadge"></div>
+              <div class="planos-status-grid">
+                <div class="card resumo planos-status-card">
+                  <span>Status Atual</span>
+                  <strong>Consulta do plano</strong>
+                  <div id="statusBadge"></div>
+                </div>
+
+                <div class="planos-mini-card">
+                  <i class="fa-solid fa-calendar-check"></i>
+                  <div>
+                    <strong>Validade padrão</strong>
+                    <span>30 dias por plano</span>
+                  </div>
+                </div>
+
+                <div class="planos-mini-card">
+                  <i class="fa-solid fa-percent"></i>
+                  <div>
+                    <strong>Benefício</strong>
+                    <span>20% de desconto</span>
+                  </div>
+                </div>
               </div>
 
               <div id="alertaPlano"></div>
 
-              <div class="acoes-topo">
-                <button id="cadastroBtn">Cadastrar plano</button>
+              <div class="acoes-topo planos-actions">
+                <button id="cadastroBtn">
+                  <i class="fa-solid fa-plus"></i> Cadastrar plano
+                </button>
                 <button
                   id="gerenciarBtn"
                   class="btn-outline"
                   style="display: none"
                 >
-                  Gerenciar
+                  <i class="fa-solid fa-gear"></i> Gerenciar
                 </button>
                 <div id="fecharResultadoSlot"></div>
               </div>
 
               <div id="resultadoPaciente"></div>
 
-              <div id="cardsPlanos" class="cards-planos">
+              <div class="planos-section-title">
+                <div>
+                  <span>Tipos disponíveis</span>
+                  <h3>Escolha o plano ideal</h3>
+                </div>
+              </div>
+
+              <div id="cardsPlanos" class="cards-planos planos-cards-modern">
                 <div class="card plano-card">
+                  <div class="plano-icon"><i class="fa-solid fa-user"></i></div>
                   <h3>Plano Individual</h3>
                   <p>1 titular</p>
                   <p>Sem dependentes</p>
                   <p>20% de desconto</p>
                   <p>Validade: 30 dias</p>
                 </div>
-                <div class="card plano-card">
+                <div class="card plano-card plano-destaque">
+                  <span class="plano-tag">Mais usado</span>
+                  <div class="plano-icon">
+                    <i class="fa-solid fa-user-group"></i>
+                  </div>
                   <h3>Plano Combo</h3>
                   <p>1 titular</p>
                   <p>Até 2 dependentes</p>
@@ -626,6 +870,9 @@
                   <p>Validade: 30 dias</p>
                 </div>
                 <div class="card plano-card">
+                  <div class="plano-icon">
+                    <i class="fa-solid fa-people-roof"></i>
+                  </div>
                   <h3>Plano Família</h3>
                   <p>1 titular</p>
                   <p>Até 4 dependentes</p>
@@ -639,8 +886,8 @@
       </main>
     </div>
 
-    <div id="loginModal" class="modal">
-      <div class="modal-content login-card">
+    <div id="loginModal" class="modal login-modal-modern">
+      <div class="modal-content login-card login-card-modern">
         <button
           id="loginClose"
           class="login-x"
@@ -649,28 +896,58 @@
         >
           ×
         </button>
-        <h2 class="login-title">Área de Acesso</h2>
-        <form id="loginForm" class="login-form">
+        <div class="login-brand-panel">
+          <img src="assets/img/logo.png" alt="Hospital São Rafael" />
+          <span>Acesso restrito</span>
+          <h2>Hospital São Rafael</h2>
+          <p>Entre com seu usuário interno para acessar os módulos clínicos.</p>
+        </div>
+        <form id="loginForm" class="login-form login-form-modern">
+          <div class="login-form-head">
+            <span class="module-kicker"
+              ><i class="fa-solid fa-shield-heart"></i> Sistema Clínico</span
+            >
+            <h3>Área de Acesso</h3>
+          </div>
           <div class="login-field">
             <label for="usuario">Usuário</label>
-            <input
-              id="usuario"
-              type="text"
-              placeholder="Usuário"
-              autocomplete="username"
-            />
+            <div class="login-input-wrap">
+              <i class="fa-solid fa-user-doctor"></i>
+              <input
+                id="usuario"
+                type="text"
+                placeholder="Ex.: dr.luidhy"
+                autocomplete="username"
+              />
+            </div>
           </div>
           <div class="login-field">
             <label for="password">Senha</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Senha"
-              autocomplete="current-password"
-            />
+            <div class="login-input-wrap">
+              <i class="fa-solid fa-key"></i>
+              <input
+                id="password"
+                type="password"
+                placeholder="Digite sua senha"
+                autocomplete="current-password"
+              />
+              <button
+                id="togglePassword"
+                class="login-eye"
+                type="button"
+                aria-label="Mostrar senha"
+              >
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
           </div>
           <div id="error" class="login-error hidden"></div>
-          <button type="submit" class="login-btn">Entrar</button>
+          <button type="submit" class="login-btn login-btn-modern">
+            Entrar no sistema <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <p class="login-help">
+            Use apenas o usuário interno, sem domínio de e-mail.
+          </p>
         </form>
       </div>
     </div>
@@ -753,7 +1030,24 @@
             <label class="gp-label" for="gerenciarSelectPlano"
               >Selecionar plano existente</label
             >
-            <div class="gp-select-wrap">
+            <div class="gp-planos-toolbar">
+              <input
+                id="gerenciarBuscaPlano"
+                type="search"
+                class="gp-input gp-search"
+                placeholder="Buscar por nome, passaporte, tipo ou status"
+                autocomplete="off"
+              />
+              <div id="gerenciarPlanosCount" class="gp-planos-count">
+                Carregando...
+              </div>
+            </div>
+            <div
+              id="gerenciarListaPlanos"
+              class="gp-planos-list"
+              aria-live="polite"
+            ></div>
+            <div class="gp-select-wrap gp-select-fallback">
               <select id="gerenciarSelectPlano" class="gp-select">
                 <option value="">Carregando...</option>
               </select>
@@ -765,6 +1059,13 @@
                 <div class="gp-meta-title" id="gpResumoNome">—</div>
                 <div class="gp-meta-sub" id="gpResumoLinha">—</div>
               </div>
+              <button
+                id="gpTrocarPlanoBtn"
+                class="gp-trocar-plano"
+                type="button"
+              >
+                Trocar plano
+              </button>
             </div>
           </div>
           <div id="gerenciarPainel" style="display: none">
@@ -877,6 +1178,22 @@
       });
 
       apply();
+    </script>
+
+    <script>
+      function filtrarMedicamentos(valor) {
+        const termo = (valor || "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+        document.querySelectorAll("[data-med-card]").forEach((card) => {
+          const texto = card.textContent
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+          card.style.display = texto.includes(termo) ? "" : "none";
+        });
+      }
     </script>
 
     <script type="module" src="assets/js/core.js"></script>

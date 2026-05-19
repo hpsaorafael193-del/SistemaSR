@@ -1039,3 +1039,359 @@ h1 {
 .mb-3 {
     margin-bottom: 12px;
 }
+
+/* ===== Atualização visual da Agenda - HPSR ===== */
+:root {
+    --agenda-bg: #f4eadb;
+    --agenda-card: #fffaf1;
+    --agenda-card-2: #fff4e4;
+    --agenda-line: rgba(73, 17, 0, 0.14);
+    --agenda-muted: rgba(73, 17, 0, 0.68);
+}
+
+body {
+    padding: 18px;
+    background:
+        radial-gradient(circle at 8% 8%, rgba(255,255,255,.8) 0 0, transparent 320px),
+        linear-gradient(135deg, #f6ead8 0%, #ead8bf 100%);
+}
+
+.container {
+    max-width: none;
+    background: rgba(255, 250, 241, 0.58);
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,.58);
+    box-shadow: 0 18px 42px rgba(73,17,0,.10);
+    padding: 18px;
+    overflow: visible;
+}
+
+.agenda-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    border-radius: 22px;
+    background:
+        linear-gradient(135deg, rgba(255,255,255,.82), rgba(255,246,229,.92)),
+        var(--agenda-card);
+    border: 1px solid rgba(232, 213, 181, 0.9);
+    box-shadow: 0 10px 24px rgba(73,17,0,.08);
+}
+
+.agenda-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary);
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.agenda-topbar h1 {
+    color: var(--text);
+    font-size: clamp(1.65rem, 2.4vw, 2.2rem);
+    line-height: 1;
+    margin: 0 0 8px 0;
+    text-shadow: none;
+}
+
+.agenda-topbar p {
+    color: var(--agenda-muted);
+    margin: 0;
+    font-size: .98rem;
+}
+
+.agenda-quick-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+    min-width: 260px;
+}
+
+.agenda-quick-info span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 14px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--primary), #7b2a12);
+    color: #fff7ec;
+    font-weight: 800;
+    box-shadow: 0 8px 18px rgba(73,17,0,.16);
+    white-space: nowrap;
+}
+
+.content {
+    padding: 0;
+    grid-template-columns: minmax(330px, 390px) minmax(620px, 1fr);
+    gap: 18px;
+}
+
+.form-section,
+.agenda-section {
+    background: linear-gradient(180deg, rgba(255,255,255,.72) 0%, rgba(255,246,229,.96) 100%);
+    border: 1px solid rgba(232,213,181,.96);
+    border-top: 0;
+    border-radius: 22px;
+    box-shadow: 0 12px 26px rgba(73,17,0,.09);
+}
+
+.form-section {
+    position: sticky;
+    top: 14px;
+    padding: 22px;
+}
+
+.agenda-section {
+    padding: 22px;
+}
+
+.form-section::after,
+.agenda-section::after {
+    display: none;
+}
+
+.section-title-block {
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--agenda-line);
+}
+
+.section-kicker {
+    display: inline-flex;
+    color: var(--agenda-muted);
+    font-size: .75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 5px;
+}
+
+.form-section h2 {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 1.35rem;
+}
+
+.form-label i,
+.form-section h2 i,
+.agenda-eyebrow i {
+    color: #7b2a12;
+}
+
+.form-input,
+.form-select {
+    background: #fffdf8;
+    border: 1px solid rgba(73,17,0,.24);
+    min-height: 46px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+.doctors-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.doctor-option {
+    min-height: 86px;
+    padding: 12px;
+    border-radius: 16px;
+    flex-direction: row;
+    text-align: left;
+    justify-content: flex-start;
+    background: linear-gradient(180deg, #fffdf8 0%, #fff1dc 100%);
+}
+
+.doctor-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    background: rgba(73,17,0,.09);
+    flex: 0 0 auto;
+}
+
+.doctor-option.selected .doctor-icon {
+    background: rgba(255,255,255,.17);
+}
+
+.doctor-name {
+    font-size: .92rem;
+}
+
+.btn-agendar {
+    border-radius: 16px;
+    min-height: 50px;
+    letter-spacing: .01em;
+}
+
+.agenda-header {
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.calendar-controls {
+    background: #fffdf8;
+    border-color: rgba(73,17,0,.16);
+    border-radius: 18px;
+    padding: 8px;
+}
+
+.current-month {
+    min-width: 190px;
+    font-size: 1.18rem;
+}
+
+.legend {
+    justify-content: flex-end;
+    max-width: 620px;
+}
+
+.legend-item {
+    background: rgba(255,255,255,.72);
+    border-color: rgba(73,17,0,.12);
+    color: rgba(73,17,0,.78);
+    font-weight: 700;
+    padding: 7px 10px;
+}
+
+.calendar {
+    border-radius: 20px;
+    border-color: rgba(73,17,0,.14);
+    background: rgba(73,17,0,.12);
+    overflow: hidden;
+}
+
+.calendar-header {
+    background: linear-gradient(135deg, #5b1603 0%, #7f2b12 100%);
+}
+
+.calendar-header-cell {
+    padding: 13px 8px;
+    font-size: .88rem;
+}
+
+.calendar-body {
+    gap: 1px;
+    background: rgba(73,17,0,.12);
+}
+
+.calendar-day {
+    min-height: 128px;
+    max-height: 168px;
+    padding: 9px;
+    background: linear-gradient(180deg, #fffdf8 0%, #fff5e7 100%);
+}
+
+.day-number {
+    margin-bottom: 6px;
+    min-width: 28px;
+    min-height: 28px;
+}
+
+.day-today {
+    background: linear-gradient(180deg, #fff2d7 0%, #ffe2aa 100%);
+    box-shadow: inset 0 0 0 2px rgba(73,17,0,.13);
+}
+
+.appointment {
+    border-radius: 9px;
+    padding: 7px 8px;
+    font-size: .74rem;
+    box-shadow: 0 5px 12px rgba(73,17,0,.12);
+}
+
+.appointment-time {
+    font-size: .72rem;
+}
+
+.modal-content {
+    border-radius: 22px;
+    background: linear-gradient(180deg, #fffdf8 0%, #fff3df 100%);
+}
+
+.alert {
+    border-radius: 14px;
+    box-shadow: 0 8px 18px rgba(73,17,0,.08);
+}
+
+@media (max-width: 1180px) {
+    .content {
+        grid-template-columns: 1fr;
+    }
+    .form-section {
+        position: relative;
+        top: auto;
+    }
+    .legend {
+        justify-content: flex-start;
+        max-width: none;
+    }
+}
+
+@media (max-width: 760px) {
+    body {
+        padding: 10px;
+    }
+    .container {
+        padding: 10px;
+        border-radius: 18px;
+    }
+    .agenda-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px;
+    }
+    .agenda-quick-info {
+        min-width: 0;
+        justify-content: flex-start;
+    }
+    .agenda-quick-info span {
+        font-size: .82rem;
+        padding: 9px 11px;
+    }
+    .form-section,
+    .agenda-section {
+        padding: 16px;
+        border-radius: 18px;
+    }
+    .doctors-container {
+        grid-template-columns: 1fr;
+    }
+    .agenda-header {
+        gap: 12px;
+    }
+    .calendar-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .current-month {
+        min-width: 0;
+        font-size: 1rem;
+    }
+    .legend {
+        gap: 7px;
+    }
+    .legend-item {
+        font-size: .78rem;
+        padding: 6px 8px;
+    }
+    .calendar {
+        overflow-x: auto;
+    }
+    .calendar-header,
+    .calendar-body {
+        min-width: 720px;
+    }
+}

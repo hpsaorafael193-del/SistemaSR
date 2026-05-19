@@ -5510,8 +5510,158 @@
       ]
     },
     {
+      "id": "gineco_usg_monitorizacao_folicular",
+      "nome": "Transvaginal com Monitorização Folicular",
+      "descricao": "Avaliação ultrassonográfica seriada para acompanhamento do desenvolvimento folicular, espessura endometrial e monitorização da ovulação.",
+      "categoria": "ginecologia",
+      "icone": "fa-wave-square",
+      "campos": [
+        {
+          "id": "dia_ciclo",
+          "tipo": "text",
+          "label": "Dia do ciclo menstrual",
+          "placeholder": "Ex: D10, D12, D14"
+        },
+        {
+          "id": "utero",
+          "tipo": "select",
+          "label": "Útero",
+          "opcoes": [
+            {
+              "valor": "aspecto_normal",
+              "label": "Aspecto ultrassonográfico preservado"
+            },
+            { "valor": "miomatose", "label": "Presença de miomatose uterina" },
+            {
+              "valor": "adenomiose",
+              "label": "Aspecto sugestivo de adenomiose"
+            },
+            { "valor": "alterado", "label": "Outras alterações uterinas" }
+          ],
+          "referencia": "Morfologia uterina"
+        },
+        {
+          "id": "endometrio",
+          "tipo": "select",
+          "label": "Padrão endometrial",
+          "opcoes": [
+            { "valor": "trilaminar", "label": "Padrão trilaminar" },
+            { "valor": "secretor", "label": "Padrão secretor" },
+            { "valor": "homogeneo", "label": "Aspecto homogêneo" },
+            { "valor": "heterogeneo", "label": "Aspecto heterogêneo" }
+          ],
+          "referencia": "Aspecto endometrial"
+        },
+        {
+          "id": "espessura_endometrial",
+          "tipo": "number",
+          "label": "Espessura endometrial",
+          "unidade": "mm",
+          "referencia": "Compatível com fase do ciclo"
+        },
+        {
+          "id": "ovario_direito",
+          "tipo": "text",
+          "label": "Ovário direito",
+          "placeholder": "Ex: Folículo dominante medindo 18 mm"
+        },
+        {
+          "id": "foliculos_od",
+          "tipo": "text",
+          "label": "Folículos – Ovário direito",
+          "placeholder": "Ex: 12 mm, 14 mm, 18 mm"
+        },
+        {
+          "id": "ovario_esquerdo",
+          "tipo": "text",
+          "label": "Ovário esquerdo",
+          "placeholder": "Ex: Ovário com múltiplos folículos antrais"
+        },
+        {
+          "id": "foliculos_oe",
+          "tipo": "text",
+          "label": "Folículos – Ovário esquerdo",
+          "placeholder": "Ex: 10 mm, 11 mm, 13 mm"
+        },
+        {
+          "id": "foliculo_dominante",
+          "tipo": "select",
+          "label": "Folículo dominante",
+          "opcoes": [
+            { "valor": "ausente", "label": "Ausente" },
+            { "valor": "od", "label": "Presente em ovário direito" },
+            { "valor": "oe", "label": "Presente em ovário esquerdo" },
+            { "valor": "bilateral", "label": "Presente bilateralmente" }
+          ],
+          "referencia": "Dominância folicular"
+        },
+        {
+          "id": "sinais_ovulacao",
+          "tipo": "select",
+          "label": "Sinais ultrassonográficos de ovulação",
+          "opcoes": [
+            { "valor": "ausentes", "label": "Ausentes" },
+            { "valor": "presentes", "label": "Presentes" },
+            { "valor": "indeterminados", "label": "Indeterminados" }
+          ],
+          "referencia": "Ruptura folicular / líquido livre"
+        },
+        {
+          "id": "liquido_fundo_saco",
+          "tipo": "select",
+          "label": "Líquido livre em fundo de saco",
+          "opcoes": [
+            { "valor": "ausente", "label": "Ausente" },
+            { "valor": "discreto", "label": "Discreto" },
+            { "valor": "moderado", "label": "Moderado" }
+          ],
+          "referencia": "Avaliação pós-ovulatória"
+        },
+        {
+          "id": "impressao",
+          "tipo": "select",
+          "label": "Impressão ultrassonográfica",
+          "opcoes": [
+            {
+              "valor": "crescimento_folicular_adequado",
+              "label": "Crescimento folicular adequado"
+            },
+            {
+              "valor": "foliculo_pre_ovulatorio",
+              "label": "Folículo em fase pré-ovulatória"
+            },
+            {
+              "valor": "sinais_ovulacao",
+              "label": "Achados sugestivos de ovulação recente"
+            },
+            {
+              "valor": "anovulacao",
+              "label": "Ausência de sinais ovulatórios"
+            },
+            {
+              "valor": "padrao_sop",
+              "label": "Morfologia sugestiva de síndrome dos ovários policísticos"
+            }
+          ],
+          "referencia": "Síntese do exame"
+        },
+        {
+          "id": "interpretacao",
+          "tipo": "textarea",
+          "label": "Interpretação",
+          "placeholder": "Correlacionar com fase do ciclo, dosagens hormonais e protocolo de indução ovulatória."
+        },
+        {
+          "id": "conclusao",
+          "tipo": "textarea",
+          "label": "Conclusão",
+          "placeholder": "Síntese evolutiva da monitorização folicular."
+        }
+      ]
+    },
+    {
       "id": "obst_us_rotina_completo",
-      "nome": "Ultrassonografia Obstétrica (Rotina)",
+      "nome": "Ultrassonografia Obstétrica",
       "descricao": "Avaliação do desenvolvimento fetal, placenta e líquido amniótico",
       "categoria": "obstetricia",
       "icone": "fa-baby",
@@ -9086,6 +9236,146 @@
           "id": "conclusao",
           "tipo": "textarea",
           "label": "Conclusão"
+        }
+      ]
+    },
+    {
+      "id": "psiquiatria_psicotecnico",
+      "nome": "Avaliação Psicotécnica",
+      "descricao": "Avaliação psicológica destinada à análise de aptidão emocional, comportamental e atencional.",
+      "categoria": "geral",
+      "icone": "fa-brain",
+      "campos": [
+        {
+          "id": "estado_mental",
+          "tipo": "select",
+          "label": "Estado mental geral",
+          "opcoes": [
+            { "valor": "preservado", "label": "Estado mental preservado" },
+            {
+              "valor": "leve_alteracao",
+              "label": "Leve alteração emocional/comportamental"
+            },
+            { "valor": "moderada_alteracao", "label": "Alteração moderada" },
+            { "valor": "importante_alteracao", "label": "Alteração importante" }
+          ],
+          "referencia": "Avaliação clínica"
+        },
+        {
+          "id": "nivel_atencao",
+          "tipo": "select",
+          "label": "Nível de atenção e concentração",
+          "opcoes": [
+            { "valor": "adequado", "label": "Adequado" },
+            { "valor": "levemente_reduzido", "label": "Levemente reduzido" },
+            { "valor": "reduzido", "label": "Reduzido" },
+            {
+              "valor": "prejudicado",
+              "label": "Significativamente prejudicado"
+            }
+          ],
+          "referencia": "Desempenho atencional"
+        },
+        {
+          "id": "tempo_reacao",
+          "tipo": "select",
+          "label": "Tempo de reação",
+          "opcoes": [
+            { "valor": "normal", "label": "Dentro da normalidade" },
+            { "valor": "lentificado", "label": "Lentificado" },
+            { "valor": "inconsistente", "label": "Inconsistente" }
+          ],
+          "referencia": "Resposta psicomotora"
+        },
+        {
+          "id": "controle_emocional",
+          "tipo": "select",
+          "label": "Controle emocional",
+          "opcoes": [
+            { "valor": "adequado", "label": "Adequado" },
+            {
+              "valor": "instabilidade_leve",
+              "label": "Leve instabilidade emocional"
+            },
+            {
+              "valor": "instabilidade_moderada",
+              "label": "Instabilidade emocional moderada"
+            },
+            {
+              "valor": "instabilidade_importante",
+              "label": "Instabilidade emocional importante"
+            }
+          ],
+          "referencia": "Regulação emocional"
+        },
+        {
+          "id": "impulsividade",
+          "tipo": "select",
+          "label": "Impulsividade",
+          "opcoes": [
+            { "valor": "ausente", "label": "Sem impulsividade relevante" },
+            { "valor": "leve", "label": "Impulsividade leve" },
+            { "valor": "moderada", "label": "Impulsividade moderada" },
+            { "valor": "elevada", "label": "Impulsividade elevada" }
+          ],
+          "referencia": "Controle comportamental"
+        },
+        {
+          "id": "capacidade_decisao",
+          "tipo": "select",
+          "label": "Capacidade de julgamento e tomada de decisão",
+          "opcoes": [
+            { "valor": "preservada", "label": "Preservada" },
+            {
+              "valor": "levemente_comprometida",
+              "label": "Levemente comprometida"
+            },
+            { "valor": "comprometida", "label": "Comprometida" }
+          ],
+          "referencia": "Função executiva"
+        },
+        {
+          "id": "perfil_comportamental",
+          "tipo": "select",
+          "label": "Perfil comportamental observado",
+          "opcoes": [
+            { "valor": "cooperativo", "label": "Cooperativo e estável" },
+            { "valor": "ansioso", "label": "Ansioso" },
+            { "valor": "agitado", "label": "Agitado/hipervigilante" },
+            { "valor": "apatetico", "label": "Apatia/desmotivação" },
+            { "valor": "hostil", "label": "Hostilidade/resistência" }
+          ],
+          "referencia": "Observação clínica"
+        },
+        {
+          "id": "aptidao",
+          "tipo": "select",
+          "label": "Resultado psicotécnico",
+          "opcoes": [
+            { "valor": "apto", "label": "Apto" },
+            { "valor": "apto_restricao", "label": "Apto com restrições" },
+            { "valor": "inapto_temporario", "label": "Inapto temporariamente" },
+            { "valor": "inapto", "label": "Inapto" }
+          ],
+          "referencia": "Conclusão pericial"
+        },
+        {
+          "id": "impressao",
+          "tipo": "textarea",
+          "label": "Impressão Psicológica",
+          "placeholder": "Descrever comportamento observado, estabilidade emocional e desempenho cognitivo."
+        },
+        {
+          "id": "interpretacao",
+          "tipo": "textarea",
+          "label": "Interpretação",
+          "placeholder": "Correlacionar desempenho psicotécnico com a atividade pretendida."
+        },
+        {
+          "id": "conclusao",
+          "tipo": "textarea",
+          "label": "Conclusão",
+          "placeholder": "Síntese final da avaliação psicotécnica."
         }
       ]
     },

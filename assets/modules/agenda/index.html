@@ -13,10 +13,25 @@
 
   <body>
     <div class="container">
+      <div class="agenda-topbar">
+        <div>
+          <span class="agenda-eyebrow"><i class="fas fa-calendar-check"></i> Controle de atendimentos</span>
+          <h1>Agenda</h1>
+          <p>Organize consultas, retornos e procedimentos por médico, data e especialidade.</p>
+        </div>
+        <div class="agenda-quick-info">
+          <span><i class="fas fa-clock"></i> Intervalo: 1h</span>
+          <span><i class="fas fa-procedures"></i> Procedimento: 4h</span>
+        </div>
+      </div>
+
       <div class="content">
         <!-- Formulário de Agendamento -->
         <div class="form-section">
-          <h2><i class="fas fa-plus-circle"></i> Novo Agendamento</h2>
+          <div class="section-title-block">
+            <span class="section-kicker">Novo registro</span>
+            <h2><i class="fas fa-plus-circle"></i> Agendamento</h2>
+          </div>
 
           <div id="alert-container"></div>
 
@@ -80,7 +95,7 @@
             <select class="form-select" id="specialty">
               <option value="clinica">Clínica Geral</option>
               <option value="pediatria">Pediatria</option>
-              <option value="obstetricia">Obstetricia</option>
+              <option value="obstetricia">Obstetrícia</option>
               <option value="ginecologia">Ginecologia</option>
               <option value="psicologia">Psicologia</option>
               <option value="psiquiatria">Psiquiatria</option>
@@ -173,19 +188,7 @@
                     );
                   "
                 ></div>
-                <span>Dra. Alex Gregory</span>
-              </div>
-              <div class="legend-item">
-                <div
-                  class="legend-color"
-                  style="
-                    background: linear-gradient(
-                      135deg,
-                      #faf8f5 0%,
-                      #caa79b 100%
-                    );
-                  "
-                ></div>
+                <span>Dr. Alex Gregory</span>
               </div>
               <div class="legend-item">
                 <div

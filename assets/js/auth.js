@@ -58,24 +58,50 @@ function calcularTempoContrato(valor) {
   return partes.join(" e ");
 }
 
+function titleCaseCargo(valor) {
+  const cargo = String(valor || "usuario").trim();
+  return cargo.charAt(0).toUpperCase() + cargo.slice(1);
+}
+
+function obterIniciais(nome, username) {
+  const base = String(nome || username || "SR").trim();
+  const partes = base.split(/[\s._-]+/).filter(Boolean);
+  return (partes[0]?.[0] || "S").concat(partes[1]?.[0] || "R").toUpperCase();
+}
+
 function preencherPerfilUI(profile, authUser) {
   const username = authUser?.email?.split("@")[0] || "—";
   const email = authUser?.email || "—";
 
   const nome = (profile?.nome || username || "—").trim();
   const crm = profile?.crm ?? null;
+  const crmFormatado = crm == null || crm === "" ? "—" : `CRM ${crm}`;
+  const cargoFormatado = titleCaseCargo(profile?.cargo || "usuario");
+  const ultimoAcesso = formatarDataHoraBr(authUser?.last_sign_in_at);
 
   const mapa = {
     perfilNome: nome,
-    perfilCrm: crm == null || crm === "" ? "—" : `CRM ${crm}`,
+    perfilNomeDb: nome,
+    perfilNomeHero: nome,
+    perfilCrm: crmFormatado,
+    perfilCrmDb: crmFormatado,
+    perfilCargo: cargoFormatado,
+    perfilCargoDb: cargoFormatado,
     perfilUsername: username,
     perfilEmail: email,
+    perfilUltimoAcesso: ultimoAcesso,
   };
 
   Object.entries(mapa).forEach(([id, valor]) => {
     const el = document.getElementById(id);
     if (el) el.textContent = String(valor ?? "—");
   });
+
+  const avatar = document.getElementById("perfilAvatar");
+  if (avatar) avatar.textContent = obterIniciais(nome, username);
+
+  const cargoBadge = document.getElementById("perfilCargoBadge");
+  if (cargoBadge) cargoBadge.innerHTML = `<i class="fa-solid fa-id-badge"></i> ${cargoFormatado}`;
 }
 
 
@@ -182,6 +208,17 @@ const loginClose = document.getElementById("loginClose");
 loginClose?.addEventListener("click", () => {
   hideError();
   loginModal.style.display = "none";
+});
+
+const togglePassword = document.getElementById("togglePassword");
+togglePassword?.addEventListener("click", () => {
+  const input = document.getElementById("password");
+  if (!input) return;
+  const mostrar = input.type === "password";
+  input.type = mostrar ? "text" : "password";
+  togglePassword.setAttribute("aria-label", mostrar ? "Ocultar senha" : "Mostrar senha");
+  const icon = togglePassword.querySelector("i");
+  if (icon) icon.className = mostrar ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
 });
 
 supabase.auth.onAuthStateChange((event, session) => {

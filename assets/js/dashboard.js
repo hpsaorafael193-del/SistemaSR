@@ -506,8 +506,10 @@ if (diretoriaBtn) {
 
 if (logoutBtn) {
   logoutBtn.addEventListener("click", async () => {
+    hide(loginModal);
     await supabase.auth.signOut();
-    show(loginModal);
+    hide(loginModal);
+    if (typeof window.coreActivateTab === "function") window.coreActivateTab("principal");
   });
 }
 

@@ -9,12 +9,14 @@ const subtitles = {
   principal: 'Sistema clínico interno do Hospital São Rafael',
   agenda: 'Agenda médica e controle de atendimentos',
   planos: 'Gerenciamento de planos de saúde e convênios',
+  medicamentos: 'Guia básico de medicamentos e nomenclaturas clínicas',
   parceiros: 'Parcerias e integrações',
   calculadora: 'Ferramenta de apoio clínico',
   laudos: 'Emissão e padronização de laudos',
   receitas: 'Emissão de receitas médicas',
   recibos: 'Gestão de comprovantes e recibos',
-  atestados: 'Emissão de atestados médicos'
+  atestados: 'Emissão de atestados médicos',
+  perfil: 'Informações do usuário e dados de acesso'
 };
 
 function activateTab(tab){
@@ -27,14 +29,60 @@ function activateTab(tab){
 
 window.coreActivateTab = activateTab;
 
-navButtons.forEach(btn => btn.addEventListener('click', () => activateTab(btn.dataset.tab)));
+
+function isCompactScreen(){
+  return window.matchMedia('(max-width: 980px)').matches;
+}
+
+function updateSidebarState(){
+  const collapsed = sidebar?.classList.contains('collapsed');
+  const app = document.querySelector('.core-app');
+  app?.classList.toggle('sidebar-collapsed', !!collapsed);
+  if (toggleBtn) {
+    toggleBtn.setAttribute('aria-expanded', String(!collapsed));
+    toggleBtn.setAttribute('aria-label', collapsed ? 'Abrir menu' : 'Recolher menu');
+  }
+}
+
+function autoCollapseOnSmallScreens(){
+  if (!sidebar) return;
+  if (isCompactScreen()) {
+    sidebar.classList.add('collapsed');
+  }
+  updateSidebarState();
+}
+
+navButtons.forEach(btn => btn.addEventListener('click', () => {
+  activateTab(btn.dataset.tab);
+  if (isCompactScreen()) {
+    sidebar?.classList.add('collapsed');
+    updateSidebarState();
+  }
+}));
+
+const shortcutButtons = [...document.querySelectorAll('[data-target-tab]')];
+shortcutButtons.forEach(btn => btn.addEventListener('click', () => {
+  const target = btn.dataset.targetTab;
+  if (target) activateTab(target);
+}));
+
 
 toggleBtn?.addEventListener('click', () => {
   sidebar?.classList.toggle('collapsed');
+  updateSidebarState();
 });
 
+window.addEventListener('resize', () => {
+  if (isCompactScreen()) {
+    sidebar?.classList.add('collapsed');
+  }
+  updateSidebarState();
+});
+
+autoCollapseOnSmallScreens();
+
 const hash = (location.hash || '').replace('#/','').trim();
-const initial = navButtons.some(b => b.dataset.tab === hash) ? hash : 'principal';
+const initial = tabs.some(section => section.dataset.content === hash) ? hash : 'principal';
 activateTab(initial);
 
 window.addEventListener('usuario-logado', () => {

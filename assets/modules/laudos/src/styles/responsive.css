@@ -153,3 +153,478 @@
     width: 100%;
   }
 }
+/* =========================================================
+   ATUALIZAÇÃO VISUAL HP SÃO RAFAEL - BASE 18/05/2026
+   Ajustes apenas de CSS para aproximar do layout de referência
+   sem alterar a estrutura, JS, logo ou lógica de exportação.
+========================================================= */
+:root {
+  --primary-color: #4b1200;
+  --primary-dark: #3a0d00;
+  --primary-light: #9b7a67;
+  --secondary-color: #5a321f;
+  --danger-color: #5a1602;
+  --warning-color: #f5e7cc;
+  --light-color: #fbf0d9;
+  --dark-color: #2d160d;
+  --gray-color: #877a70;
+  --gray-light: #f1f3f5;
+  --border-color: rgba(75, 18, 0, 0.48);
+  --panel-bg: #fffaf2;
+  --page-bg: #efe6d9;
+  --input-border: #8f837a;
+  --shadow: 0 8px 24px rgba(50, 24, 10, 0.10);
+  --shadow-lg: 0 14px 40px rgba(50, 24, 10, 0.16);
+  --border-radius: 8px;
+  --border-radius-sm: 5px;
+}
+
+html,
+body {
+  background: linear-gradient(135deg, #f5f1ea 0%, #e5d7c8 100%);
+  color: var(--dark-color);
+}
+
+body {
+  min-width: 1180px;
+}
+
+.app-container {
+  background: transparent;
+}
+
+.main-content {
+  grid-template-columns: minmax(520px, 1fr) minmax(620px, 1fr);
+  gap: 2rem;
+  padding: 1.8rem 2rem 1rem;
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.form-panel,
+.preview-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(75, 18, 0, 0.08);
+  border-radius: 9px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.form-panel {
+  padding: 0.55rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 2.8rem);
+}
+
+.form-section {
+  background: linear-gradient(180deg, #fff4df 0%, #faecd1 100%);
+  border: 1px solid rgba(75, 18, 0, 0.45);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  padding: 1.55rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.form-section:hover {
+  border-color: rgba(75, 18, 0, 0.62);
+  box-shadow: 0 8px 18px rgba(75, 18, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.section-header {
+  gap: 0.8rem;
+  margin-bottom: 1.55rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.section-header h2 {
+  color: var(--dark-color);
+  font-size: 1.34rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.form-grid {
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  gap: 1.05rem 1rem;
+  align-items: end;
+}
+
+#dados-administrativos .form-grid {
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+#dados-administrativos .documento-composto {
+  grid-column: auto;
+}
+
+.form-group label {
+  color: #2f180e;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.55rem;
+}
+
+.form-control,
+.search-box input {
+  background: #fff;
+  color: #080808;
+  border: 2px solid var(--input-border);
+  border-radius: 5px;
+  min-height: 45px;
+  font-size: 0.96rem;
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.03);
+}
+
+.form-control:focus,
+.search-box input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(75, 18, 0, 0.12);
+}
+
+.form-control:read-only,
+.documento-inputs .documento-tipo {
+  background: #eef1f5;
+  color: #2d160d;
+}
+
+.input-with-action {
+  gap: 0.48rem;
+}
+
+.btn-action,
+.register-type,
+.btn-export,
+.btn-paginacao,
+.pagina-numero.ativa,
+.tab-btn.active,
+.btn-select-images {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.btn-action,
+.register-type {
+  min-height: 44px;
+  border-radius: 5px;
+}
+
+.professional-register-display {
+  gap: 0.55rem;
+}
+
+.documento-inputs .documento-tipo {
+  max-width: 140px;
+  border-radius: 5px 0 0 5px;
+}
+
+.documento-inputs .documento-numero {
+  border-radius: 0 5px 5px 0;
+}
+
+.idade-label {
+  color: #6e5d53;
+  margin-left: 0.2rem;
+}
+
+.preview-panel {
+  min-width: 0;
+  max-height: calc(100vh - 2.8rem);
+}
+
+.preview-header {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(75, 18, 0, 0.42);
+  padding: 0.48rem 0.65rem;
+  min-height: 51px;
+}
+
+.preview-header h2 {
+  color: var(--dark-color);
+  font-size: 1.32rem;
+  font-weight: 700;
+  gap: 0.65rem;
+}
+
+.preview-header h2 i,
+.export-option i {
+  color: var(--primary-color);
+}
+
+.preview-actions {
+  gap: 0.55rem;
+}
+
+.btn-preview-action {
+  min-height: 34px;
+  padding: 0.43rem 0.85rem;
+  border-color: rgba(75, 18, 0, 0.45);
+  border-radius: 4px;
+  background: #fff;
+  color: #2d160d;
+  font-weight: 500;
+}
+
+.btn-preview-action:hover {
+  background: #fbf0d9;
+  border-color: var(--primary-color);
+}
+
+.laudo-preview-container {
+  background: #f6f7f8;
+  padding: 1.45rem;
+  max-height: none;
+  flex: 1;
+  border-bottom: 1px solid rgba(75, 18, 0, 0.28);
+}
+
+.laudo-preview {
+  max-width: 100%;
+}
+
+.laudo-pagina {
+  padding: 8mm 7mm;
+  box-shadow: 0 8px 28px rgba(39, 22, 14, 0.08);
+  border-radius: 2px;
+}
+
+.laudo-header {
+  margin-bottom: 1.8rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 3px double var(--primary-color);
+}
+
+.laudo-logo {
+  gap: 1.4rem;
+  margin-bottom: 0.95rem;
+}
+
+.hospital-logo-img {
+  width: 78px;
+  height: 78px;
+}
+
+.laudo-titulo h1 {
+  color: var(--primary-color);
+  font-size: 1.88em;
+  letter-spacing: 1.5px;
+  font-weight: 800;
+}
+
+.laudo-subtitulo {
+  color: #826b5d;
+  font-size: 0.92em;
+}
+
+.laudo-section-title {
+  color: var(--primary-color);
+  border-bottom: 1px solid rgba(75, 18, 0, 0.48);
+  font-size: 1.08em;
+  font-weight: 800;
+}
+
+.field-label {
+  color: #76685f;
+}
+
+.field-value {
+  color: #20100a;
+  border-bottom: 1px dotted rgba(75, 18, 0, 0.48);
+}
+
+.export-controls {
+  background: rgba(255, 255, 255, 0.96);
+  padding: 0.65rem 1rem 1rem;
+  border-top: 1px solid rgba(75, 18, 0, 0.30);
+}
+
+.export-option {
+  color: #594236;
+}
+
+.export-info {
+  color: #91857c;
+}
+
+.paginacao-controls {
+  background: #fafbfc;
+  border: 1px solid rgba(75, 18, 0, 0.38);
+  border-radius: 4px;
+  padding: 0.55rem;
+}
+
+.paginacao-info {
+  color: #8a7b72;
+}
+
+.btn-paginacao {
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.pagina-numero {
+  border-color: rgba(75, 18, 0, 0.45);
+  color: var(--dark-color);
+}
+
+.btn-export {
+  min-height: 42px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  border-radius: 4px;
+  font-weight: 800;
+}
+
+.search-box input {
+  min-height: 38px;
+  border-width: 1px;
+}
+
+.tab-btn,
+.exame-card,
+.anexo-item,
+.upload-area,
+.simple-upload-area,
+.simple-preview {
+  border-color: rgba(75, 18, 0, 0.42);
+}
+
+.tab-btn:hover,
+.exame-card:hover,
+.upload-area:hover,
+.simple-upload-area:hover {
+  border-color: var(--primary-color);
+  background: rgba(75, 18, 0, 0.045);
+}
+
+.exame-card.selected {
+  background: rgba(75, 18, 0, 0.08);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(75, 18, 0, 0.10);
+}
+
+/* Scrollbar no mesmo padrão visual da referência */
+.form-panel::-webkit-scrollbar,
+.laudo-preview-container::-webkit-scrollbar,
+.preview-panel::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+.form-panel::-webkit-scrollbar-track,
+.laudo-preview-container::-webkit-scrollbar-track,
+.preview-panel::-webkit-scrollbar-track {
+  background: rgba(75, 18, 0, 0.06);
+  border-radius: 999px;
+}
+
+.form-panel::-webkit-scrollbar-thumb,
+.laudo-preview-container::-webkit-scrollbar-thumb,
+.preview-panel::-webkit-scrollbar-thumb {
+  background: rgba(75, 18, 0, 0.46);
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+}
+
+.form-panel::-webkit-scrollbar-thumb:hover,
+.laudo-preview-container::-webkit-scrollbar-thumb:hover,
+.preview-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(75, 18, 0, 0.62);
+}
+
+@media (max-width: 1400px) {
+  body {
+    min-width: 0;
+  }
+
+  .main-content {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
+  }
+
+  .form-panel,
+  .preview-panel {
+    max-height: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 0.75rem;
+  }
+
+  .form-grid,
+  #dados-administrativos .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-header,
+  .export-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .preview-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .btn-preview-action {
+    flex: 1 1 150px;
+    justify-content: center;
+  }
+
+  .laudo-preview-container {
+    padding: 0.75rem;
+  }
+}
+
+/* =========================================================
+   CORREÇÃO DA PRÉ-VISUALIZAÇÃO EM LAUDOS
+   Evita que a página A4 fique cortada quando a dashboard
+   está com a barra lateral expandida.
+========================================================= */
+@media screen and (min-width: 1401px) {
+  body {
+    min-width: 0;
+  }
+
+  .main-content {
+    grid-template-columns: minmax(500px, 0.9fr) minmax(680px, 1.1fr);
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .preview-panel {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .laudo-preview-container {
+    overflow: auto;
+    padding: 0.85rem;
+  }
+
+  .laudo-preview {
+    max-width: none;
+    transform-origin: top center;
+  }
+}
+
+@media screen and (min-width: 1401px) and (max-width: 1700px) {
+  .laudo-preview {
+    zoom: clamp(0.82, calc((100vw - 220px) / 1588), 0.96);
+  }
+}
+
+@media screen and (min-width: 1701px) {
+  .laudo-preview {
+    zoom: 1;
+  }
+}
