@@ -8929,7 +8929,7 @@
             },
             {
               "valor": "provavel_masculino_gemelar",
-              "label": "Provável gestação feminina (com detecção de Y)"
+              "label": "Provável gestação masculina (com detecção de Y)"
             },
             { "valor": "inconclusivo", "label": "Resultado inconclusivo" }
           ],
