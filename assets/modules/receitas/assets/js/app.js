@@ -204,7 +204,8 @@ document.getElementById("btn-add-medicamento").addEventListener("click", () => {
     ? medicamentosTextarea.value + "\n" + linha
     : linha;
 
-  camposModoGuiado.forEach((campo) => (campo.value = ""));
+  // Mantém os dados preenchidos no modo guiado após adicionar o medicamento.
+  // Assim fica mais rápido adicionar variações sem redigitar tudo.
 
   salvarRascunho();
   atualizarPreview();
