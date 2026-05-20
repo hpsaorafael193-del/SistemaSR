@@ -35,7 +35,8 @@ const DOCTORS = {
   natalie: "Dra. Natalie Fiorelli",
   luidhy: "Dr. Luidhy Luddhiev",
   luan: "Dr. Luan D'Amato",
-  alex: "Dr. Alex Gregory"
+  alex: "Dr. Alex Gregory",
+  cassandra: "Dra. Cassandra Mokovith"
 };
 
 const SPECIALTIES = {
@@ -62,6 +63,7 @@ function normalizeDoctor(raw) {
   if (v.includes("luidhy")) return "luidhy";
   if (v.includes("luan")) return "luan";
   if (v.includes("alex")) return "alex";
+  if (v.includes("cassandra")) return "cassandra";
 
   return v.replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 }
