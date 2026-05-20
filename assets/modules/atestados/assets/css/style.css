@@ -418,7 +418,7 @@ button:hover {
 }
 
 .obs-box {
-  margin-top: 12px;
+  margin-top: 250px;
   padding: 9px 10px;
   border-left: 3px solid var(--accent);
   border-radius: 10px;
