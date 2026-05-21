@@ -5381,7 +5381,7 @@
     },
     {
       "id": "gineco_us_transvaginal_completo",
-      "nome": "Ultrassonografia Transvaginal (Ginecológica)",
+      "nome": "Ultrassonografia Transvaginal",
       "descricao": "Avaliação detalhada do útero, endométrio, ovários e anexos",
       "categoria": "ginecologia",
       "icone": "fa-wave-square",
@@ -5648,14 +5648,12 @@
         {
           "id": "interpretacao",
           "tipo": "textarea",
-          "label": "Interpretação",
-          "placeholder": "Correlacionar com fase do ciclo, dosagens hormonais e protocolo de indução ovulatória."
+          "label": "Interpretação"
         },
         {
           "id": "conclusao",
           "tipo": "textarea",
-          "label": "Conclusão",
-          "placeholder": "Síntese evolutiva da monitorização folicular."
+          "label": "Conclusão"
         }
       ]
     },
