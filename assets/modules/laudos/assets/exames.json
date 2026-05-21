@@ -5517,12 +5517,6 @@
       "icone": "fa-wave-square",
       "campos": [
         {
-          "id": "dia_ciclo",
-          "tipo": "text",
-          "label": "Dia do ciclo menstrual",
-          "placeholder": "Ex: D10, D12, D14"
-        },
-        {
           "id": "utero",
           "tipo": "select",
           "label": "Útero",
