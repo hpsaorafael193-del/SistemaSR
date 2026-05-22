@@ -32,7 +32,6 @@ const modalDetails = document.getElementById("modal-details");
 // CONSTANTES / MAPAS
 const DOCTORS = {
   anny: "Dra. Anny D'Amato",
-  natalie: "Dra. Natalie Fiorelli",
   luidhy: "Dr. Luidhy Luddhiev",
   luan: "Dr. Luan D'Amato",
   alex: "Dr. Alex Gregory",
@@ -59,7 +58,6 @@ function normalizeDoctor(raw) {
   if (DOCTORS[v]) return v;
 
   if (v.includes("anny")) return "anny";
-  if (v.includes("natalie")) return "natalie";
   if (v.includes("luidhy")) return "luidhy";
   if (v.includes("luan")) return "luan";
   if (v.includes("alex")) return "alex";
