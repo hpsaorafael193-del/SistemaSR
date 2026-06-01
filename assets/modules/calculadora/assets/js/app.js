@@ -1,60 +1,259 @@
 // Dados dos produtos organizados por categoria (valores em centavos)
 const medicamentos = [
-            { id: 'm0', nome: "KIT MÉDICO", preco: 230000, imagem: "Icones/produtos/Kit medico.png" },
-            { id: 'm1', nome: "BANDAGEM", preco: 30000, imagem: "Icones/produtos/Bandagem.png" },
-            { id: 'm2', nome: "ATADURA", preco: 25000, imagem: "Icones/produtos/Atadura.png" },
-            { id: 'm3', nome: "ADRENALINA", preco: 780000, imagem: "Icones/produtos/Adrenalina.png" },
-            { id: 'm4', nome: "SINKALMY", preco: 80000, imagem: "Icones/produtos/Sinkalmy.png" },
-            { id: 'm5', nome: "RITMONEARY", preco: 55000, imagem: "Icones/produtos/Ritmoneary.png" },
-            { id: 'm6', nome: "ANALGÉSICO", preco: 55000, imagem: "Icones/produtos/Analgesico.png" },
-        ];
+  {
+    id: "m0",
+    nome: "KIT MÉDICO",
+    descricao: "Kit completo para primeiros socorros.",
+    preco: 230000,
+    imagem: "Icones/produtos/Kit medico.png",
+  },
+  {
+    id: "m1",
+    nome: "BANDAGEM",
+    descricao: "Utilizada para curativos rápidos.",
+    preco: 30000,
+    imagem: "Icones/produtos/Bandagem.png",
+  },
+  {
+    id: "m2",
+    nome: "ATADURA",
+    descricao: "Faixa de suporte e imobilização.",
+    preco: 25000,
+    imagem: "Icones/produtos/Atadura.png",
+  },
+  {
+    id: "m3",
+    nome: "ADRENALINA",
+    descricao: "Medicamento para emergências graves.",
+    preco: 780000,
+    imagem: "Icones/produtos/Adrenalina.png",
+  },
+  {
+    id: "m4",
+    nome: "SINKALMY",
+    descricao: "Alivio rapido ao estresse.",
+    preco: 80000,
+    imagem: "Icones/produtos/Sinkalmy.png",
+  },
+  {
+    id: "m5",
+    nome: "RITMONEARY",
+    descricao: "Alivio levemente rapido ao estresse.",
+    preco: 55000,
+    imagem: "Icones/produtos/Ritmoneary.png",
+  },
+  {
+    id: "m6",
+    nome: "ANALGÉSICO",
+    descricao: "Alívio rápido da dor.",
+    preco: 55000,
+    imagem: "Icones/produtos/Analgesico.png",
+  },
+];
 
 const procedimentos = [
-            { id: 'p0', nome: "TRATAMENTO", preco: 180000, imagem: "Icones/procedimentos/Tratamento.png" },
-            { id: 'p1', nome: "QUEIMADURAS/GESSO", preco: 250000, imagem: "Icones/procedimentos/Gesso.png" },
-            { id: 'p2', nome: "CONSULTAS", preco: 20000000, imagem: "Icones/procedimentos/Consultas.png" },
-            { id: 'p3', nome: "EXAMES BASICOS", preco: 250000, imagem: "Icones/procedimentos/Exames_basicos.png" },
-            { id: 'p4', nome: "EXAMES DE IMAGEM", preco: 300000, imagem: "Icones/procedimentos/Exames_imagem.png" },
-            { id: 'p5', nome: "PROCEDIMENTOS", preco: 25000000, imagem: "Icones/procedimentos/Procedimentos.png" },
-            { id: 'p6', nome: "FERT IN VITRO", preco: 40000000, imagem: "Icones/procedimentos/Fiv.png" },
-            { id: 'p7', nome: "PARTO NORMAL", preco: 40000000, imagem: "Icones/procedimentos/Partos.png" },
-            { id: 'p8', nome: "PARTO HUMANIZADO", preco: 80000000, imagem: "Icones/procedimentos/Partos_H.png" },
-        ];
+  {
+    id: "p0",
+    nome: "TRATAMENTO",
+    descricao: "Atendimento clínico geral.",
+    preco: 180000,
+    imagem: "Icones/procedimentos/Tratamento.png",
+  },
+  {
+    id: "p1",
+    nome: "QUEIMADURAS/GESSO",
+    descricao: "Cuidados ortopédicos e queimaduras.",
+    preco: 250000,
+    imagem: "Icones/procedimentos/Gesso.png",
+  },
+  {
+    id: "p2",
+    nome: "CONSULTAS",
+    descricao: "Avaliação médica especializada (exeto obstetrica).",
+    preco: 10000000,
+    imagem: "Icones/procedimentos/Consultas.png",
+  },
+  {
+    id: "p3",
+    nome: "EXAMES BASICOS",
+    descricao: "Exames clínicos essenciais.",
+    preco: 250000,
+    imagem: "Icones/procedimentos/Exames_basicos.png",
+  },
+  {
+    id: "p4",
+    nome: "EXAMES DE IMAGEM",
+    descricao: "Ultrassom, raio-x e similares.",
+    preco: 300000,
+    imagem: "Icones/procedimentos/Exames_imagem.png",
+  },
+  {
+    id: "p5",
+    nome: "PROCEDIMENTOS",
+    descricao: "Procedimentos médicos diversos.",
+    preco: 25000000,
+    imagem: "Icones/procedimentos/Procedimentos.png",
+  },
+  {
+    id: "p6",
+    nome: "FERT IN VITRO",
+    descricao: "Tratamento de fertilização assistida.",
+    preco: 40000000,
+    imagem: "Icones/procedimentos/Fiv.png",
+  },
+  {
+    id: "p7",
+    nome: "PARTO NORMAL",
+    descricao: "Acompanhamento completo do parto.",
+    preco: 40000000,
+    imagem: "Icones/procedimentos/Partos.png",
+  },
+  {
+    id: "p8",
+    nome: "PARTO HUMANIZADO",
+    descricao: "Experiência acolhedora e personalizada.",
+    preco: 80000000,
+    imagem: "Icones/procedimentos/Partos_H.png",
+  },
+];
 
 const farmacia = [
-            { id: 'f0', nome: 'GlicoVida', preco: 72000, imagem: 'Icones/farmacia/GlicoVida.png' },
-            { id: 'f1', nome: 'OrgaBloq', preco: 72000, imagem: 'Icones/farmacia/OrgaBloq.png'},
-            { id: 'f2', nome: 'FertiPlus', preco: 72000, imagem: 'Icones/farmacia/FertiPlus.png' },
-            { id: 'f3', nome: 'GestaVida', preco: 72000, imagem: 'Icones/farmacia/GestaVida.png' },
-            { id: 'f4', nome: 'CalciFort', preco: 184000, imagem: 'Icones/farmacia/CalciFort.png' },
-            { id: 'f5', nome: 'MaterPlus', preco: 80000, imagem: 'Icones/farmacia/MaterPlus.png' },
-            { id: 'f6', nome: 'DorMax', preco: 40000, imagem: 'Icones/farmacia/DorMax.png' },
-            { id: 'f7', nome: 'Cefaliv', preco: 40000, imagem: 'Icones/farmacia/Cefaliv.png' },
-            { id: 'f8', nome: 'Musculiv', preco: 100000, imagem: 'Icones/farmacia/Musculiv.png' },
-            { id: 'f9', nome: 'Analgex', preco: 100000, imagem: 'Icones/farmacia/Analgex.png' },
-            { id: 'f10', nome: 'Parador', preco: 100000, imagem: 'Icones/farmacia/Parador.png' },
-            { id: 'f11', nome: 'Calmivita', preco: 100000, imagem: 'Icones/farmacia/Calmivita.png' },
-            { id: 'f12', nome: 'Alergicor', preco: 104000, imagem: 'Icones/farmacia/Alergicor.png' },
-            { id: 'f13', nome: 'Alergix', preco: 100000, imagem: 'Icones/farmacia/Alergix.png' },
-            { id: 'f14', nome: 'Respimax', preco: 100000, imagem: 'Icones/farmacia/Respimax.png' },
-            { id: 'f15', nome: 'Gripex', preco: 100000, imagem: 'Icones/farmacia/Gripex.png' },
-            { id: 'f16', nome: 'Bactrimed', preco: 100000, imagem: 'Icones/farmacia/Bactrimed.png' },
-            { id: 'f17', nome: 'Bacteron', preco: 104000, imagem: 'Icones/farmacia/Bacteron.png' },
-            { id: 'f18', nome: 'Inflamol', preco: 100000, imagem: 'Icones/farmacia/Inflamol.png' },
-            { id: 'f19', nome: 'Inflamax', preco: 104000, imagem: 'Icones/farmacia/Inflamax.png' },
-            { id: 'f20', nome: 'Gastrix', preco: 100000, imagem: 'Icones/farmacia/Gastrix.png' },
-            { id: 'f21', nome: 'Gasiliv', preco: 100000, imagem: 'Icones/farmacia/Gasiliv.png' },
-            { id: 'f22', nome: 'HepaVida', preco: 100000, imagem: 'Icones/farmacia/HepaVida.png' },
-            { id: 'f23', nome: 'NáuseaZero', preco: 100000, imagem: 'Icones/farmacia/NauseaZero.png' },
-            { id: 'f24', nome: 'CólicaCalm', preco: 40000, imagem: 'Icones/farmacia/ColicaCalm.png' },
-            { id: 'f25', nome: 'Ressak', preco: 100000, imagem: 'Icones/farmacia/Ressak.png' },
-        ];
+  {
+    id: "f12",
+    nome: "Alergicor",
+    descricao: "Crises alérgicas.",
+    preco: 104000,
+    imagem: "Icones/farmacia/Alergicor.png",
+  },
+
+  {
+    id: "f13",
+    nome: "Alergix",
+    descricao: "Sintomas alérgicos.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Alergix.png",
+  },
+
+  {
+    id: "f14",
+    nome: "Respimax",
+    descricao: "Congestão nasal.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Respimax.png",
+  },
+
+  {
+    id: "f15",
+    nome: "Gripex",
+    descricao: "Gripe e resfriado.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Gripex.png",
+  },
+
+  {
+    id: "f16",
+    nome: "Bactrimed",
+    descricao: "Infecções leves.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Bactrimed.png",
+  },
+
+  {
+    id: "f17",
+    nome: "Bacteron",
+    descricao: "Infecções bacterianas.",
+    preco: 104000,
+    imagem: "Icones/farmacia/Bacteron.png",
+  },
+
+  {
+    id: "f18",
+    nome: "Inflamol",
+    descricao: "Inflamações.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Inflamol.png",
+  },
+
+  {
+    id: "f19",
+    nome: "Inflamax",
+    descricao: "Dores intensas.",
+    preco: 104000,
+    imagem: "Icones/farmacia/Inflamax.png",
+  },
+
+  {
+    id: "f20",
+    nome: "Gastrix",
+    descricao: "Azia e gastrite.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Gastrix.png",
+  },
+
+  {
+    id: "f21",
+    nome: "Gasiliv",
+    descricao: "Gases.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Gasiliv.png",
+  },
+
+  {
+    id: "f22",
+    nome: "HepaVida",
+    descricao: "Suporte hepático.",
+    preco: 100000,
+    imagem: "Icones/farmacia/HepaVida.png",
+  },
+
+  {
+    id: "f23",
+    nome: "NáuseaZero",
+    descricao: "Enjoos e náuseas.",
+    preco: 100000,
+    imagem: "Icones/farmacia/NauseaZero.png",
+  },
+
+  {
+    id: "f24",
+    nome: "CólicaCalm",
+    descricao: "Cólicas.",
+    preco: 40000,
+    imagem: "Icones/farmacia/ColicaCalm.png",
+  },
+
+  {
+    id: "f25",
+    nome: "Ressak",
+    descricao: "Ressaca.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Ressak.png",
+  },
+];
 
 const ursosHP = [
-            { id: 'u0', nome: "CATZINHA", preco: 3000000, imagem: "Icones/ursos/CatZinha.png" },
-            { id: 'u1', nome: "CAPIZINHA", preco: 3000000, imagem: "Icones/ursos/CapZinha.png" },
-            { id: 'u2', nome: "PANDINHO", preco: 3000000, imagem: "Icones/ursos/PanDinho.png" },
-        ];
+  {
+    id: "u0",
+    nome: "CATZINHA",
+    descricao: "Urso colecionável hospitalar.",
+    preco: 3000000,
+    imagem: "Icones/ursos/CatZinha.png",
+  },
+  {
+    id: "u1",
+    nome: "CAPIZINHA",
+    descricao: "Companheiro temático hospitalar.",
+    preco: 3000000,
+    imagem: "Icones/ursos/CapZinha.png",
+  },
+  {
+    id: "u2",
+    nome: "PANDINHO",
+    descricao: "Pelúcia especial HP.",
+    preco: 3000000,
+    imagem: "Icones/ursos/PanDinho.png",
+  },
+];
 
 const combos = {
   Simples: {
@@ -107,9 +306,11 @@ function atualizarTodosEstadosCards() {
 }
 
 // Inicializar carrinho para todos os produtos
-[...medicamentos, ...farmacia, ...procedimentos, ...ursosHP].forEach((produto) => {
-  carrinho[produto.id] = 0;
-});
+[...medicamentos, ...farmacia, ...procedimentos, ...ursosHP].forEach(
+  (produto) => {
+    carrinho[produto.id] = 0;
+  },
+);
 
 // Renderizar produtos por categoria
 function renderizarProdutos() {
@@ -136,6 +337,11 @@ function renderizarCategoria(tipo, produtos) {
                         <img src="${produto.imagem}" alt="${produto.nome}" class="produto-imagem" onerror="this.src='https://via.placeholder.com/150x150/f9e2b5/491100?text=${encodeURIComponent(produto.nome)}'">
                     </div>
                     <div class="produto-nome">${produto.nome}</div>
+
+                    <div class="produto-descricao">
+                        ${produto.descricao || ""}
+                    </div>
+                    
                     ${camposEditaveis}
                     <div class="produto-controles">
                         <div class="quantidade">
@@ -151,9 +357,7 @@ function renderizarCategoria(tipo, produtos) {
 
     container.appendChild(produtoCard);
   });
-
 }
-
 
 function adicionarEventListeners() {
   // Botões de aumentar
@@ -315,10 +519,12 @@ function formatarPreco(preco) {
 
 function zerarTudo() {
   // Zerar todas as quantidades
-  [...medicamentos, ...farmacia, ...procedimentos, ...ursosHP].forEach((produto) => {
-    carrinho[produto.id] = 0;
-    atualizarQuantidade(produto.id);
-  });
+  [...medicamentos, ...farmacia, ...procedimentos, ...ursosHP].forEach(
+    (produto) => {
+      carrinho[produto.id] = 0;
+      atualizarQuantidade(produto.id);
+    },
+  );
 
   // Resetar convênio para "Sem Convênio"
   convenioOptions.forEach((opt) => opt.classList.remove("active"));
@@ -387,5 +593,3 @@ if (btnComboCompleto) {
 
 // Event listener para zerar tudo
 btnZerarTudo.addEventListener("click", zerarTudo);
-
-

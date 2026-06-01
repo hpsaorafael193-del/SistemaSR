@@ -597,3 +597,13 @@ h2 i::before,
     height: 1em;
     line-height: 1;
 }
+
+
+.produto-descricao {
+    font-size: 12px;
+    color: #3b1408;
+    text-align: center;
+    margin: 6px 0 10px;
+    line-height: 1.4;
+    min-height: 32px;
+}
