@@ -119,6 +119,102 @@ const procedimentos = [
 
 const farmacia = [
   {
+    id: "f0",
+    nome: "GlicoVida",
+    descricao: "Controle glicêmico.",
+    preco: 100000,
+    imagem: "Icones/farmacia/GlicoVida.png",
+  },
+
+  {
+    id: "f1",
+    nome: "OrgaBloq",
+    descricao: "Bloqueio hormonal.",
+    preco: 104000,
+    imagem: "Icones/farmacia/OrgaBloq.png",
+  },
+
+  {
+    id: "f2",
+    nome: "FertiPlus",
+    descricao: "Estimulação ovariana.",
+    preco: 100000,
+    imagem: "Icones/farmacia/FertiPlus.png",
+  },
+
+  {
+    id: "f3",
+    nome: "GestaVida",
+    descricao: "Suporte gestacional.",
+    preco: 100000,
+    imagem: "Icones/farmacia/GestaVida.png",
+  },
+
+  {
+    id: "f4",
+    nome: "CalciFort",
+    descricao: "Reposição de cálcio.",
+    preco: 100000,
+    imagem: "Icones/farmacia/CalciFort.png",
+  },
+
+  {
+    id: "f5",
+    nome: "MaterPlus",
+    descricao: "Vitaminas gestacionais.",
+    preco: 100000,
+    imagem: "Icones/farmacia/MaterPlus.png",
+  },
+
+  {
+    id: "f6",
+    nome: "DorMax",
+    descricao: "Alívio da dor.",
+    preco: 100000,
+    imagem: "Icones/farmacia/DorMax.png",
+  },
+
+  {
+    id: "f7",
+    nome: "Cefaliv",
+    descricao: "Dor de cabeça.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Cefaliv.png",
+  },
+
+  {
+    id: "f8",
+    nome: "Musculiv",
+    descricao: "Relaxante muscular.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Musculiv.png",
+  },
+
+  {
+    id: "f9",
+    nome: "Analgex",
+    descricao: "Controle da dor.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Analgex.png",
+  },
+
+  {
+    id: "f10",
+    nome: "Parador",
+    descricao: "Febre e dor.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Parador.png",
+  },
+
+  {
+    id: "f11",
+    nome: "Calmivita",
+    descricao: "Ansiedade leve.",
+    preco: 100000,
+    imagem: "Icones/farmacia/Calmivita.png",
+  },
+
+  {
     id: "f12",
     nome: "Alergicor",
     descricao: "Crises alérgicas.",
