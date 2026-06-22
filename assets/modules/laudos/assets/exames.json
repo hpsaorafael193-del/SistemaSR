@@ -8327,6 +8327,138 @@
       ]
     },
     {
+      "id": "hormonal_painel_hormonal_completo",
+      "nome": "Painel Hormonal Completo",
+      "descricao": "Avaliação integrada dos hormônios gonadotróficos, ovarianos e tireoidianos para investigação da função reprodutiva, fertilidade e equilíbrio endócrino.",
+      "categoria": "hormonal",
+      "icone": "fa-vial",
+      "campos": [
+        {
+          "id": "fase_ciclo",
+          "tipo": "select",
+          "label": "Fase do ciclo menstrual",
+          "opcoes": [
+            {
+              "valor": "folicular",
+              "label": "Fase folicular"
+            },
+            {
+              "valor": "ovulatoria",
+              "label": "Fase ovulatória"
+            },
+            {
+              "valor": "lutea",
+              "label": "Fase lútea"
+            },
+            {
+              "valor": "gestacao",
+              "label": "Gestação"
+            },
+            {
+              "valor": "pos_menopausa",
+              "label": "Pós-menopausa"
+            }
+          ],
+          "referencia": "Contexto fisiológico"
+        },
+        {
+          "id": "fsh",
+          "tipo": "number",
+          "label": "FSH",
+          "unidade": "mUI/mL",
+          "referencia": "Fase folicular: 3,5–12,5"
+        },
+        {
+          "id": "lh",
+          "tipo": "number",
+          "label": "LH",
+          "unidade": "mUI/mL",
+          "referencia": "Fase folicular: 2,4–12,6"
+        },
+        {
+          "id": "estradiol",
+          "tipo": "number",
+          "label": "Estradiol (E2)",
+          "unidade": "pg/mL",
+          "referencia": "Fase folicular: 20–350"
+        },
+        {
+          "id": "progesterona",
+          "tipo": "number",
+          "label": "Progesterona",
+          "unidade": "ng/mL",
+          "referencia": "Fase lútea: 1,8–23"
+        },
+        {
+          "id": "prolactina",
+          "tipo": "number",
+          "label": "Prolactina",
+          "unidade": "ng/mL",
+          "referencia": "Mulheres: 2–25"
+        },
+        {
+          "id": "tsh",
+          "tipo": "number",
+          "label": "TSH",
+          "unidade": "µUI/mL",
+          "referencia": "0,4–4,0"
+        },
+        {
+          "id": "t4_livre",
+          "tipo": "number",
+          "label": "T4 Livre",
+          "unidade": "ng/dL",
+          "referencia": "0,8–1,8"
+        },
+        {
+          "id": "impressao",
+          "tipo": "select",
+          "label": "Impressão Laboratorial",
+          "opcoes": [
+            {
+              "valor": "perfil_hormonal_preservado",
+              "label": "Perfil hormonal global dentro dos parâmetros de referência"
+            },
+            {
+              "valor": "padrao_ovulatorio_adequado",
+              "label": "Achados compatíveis com atividade ovulatória preservada"
+            },
+            {
+              "valor": "padrao_anovulatorio",
+              "label": "Achados sugestivos de disfunção ovulatória"
+            },
+            {
+              "valor": "hiperprolactinemia",
+              "label": "Elevação dos níveis séricos de prolactina"
+            },
+            {
+              "valor": "disfuncao_tireoidiana",
+              "label": "Alterações laboratoriais da função tireoidiana"
+            },
+            {
+              "valor": "reserva_ovariana_reduzida",
+              "label": "Achados sugestivos de redução da reserva ovariana"
+            },
+            {
+              "valor": "alteracoes_hormonais_multiplas",
+              "label": "Múltiplas alterações hormonais identificadas"
+            }
+          ],
+          "referencia": "Síntese laboratorial"
+        },
+        {
+          "id": "interpretacao",
+          "tipo": "textarea",
+          "label": "Interpretação"
+        },
+        {
+          "id": "conclusao",
+          "tipo": "textarea",
+          "label": "Conclusão"
+        }
+      ]
+    },
+    {
       "id": "horm_cortisol",
       "nome": "Cortisol",
       "descricao": "Avaliação da função adrenal",
